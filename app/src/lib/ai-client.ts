@@ -49,16 +49,38 @@ async function streamGemini(options: ChatOptions): Promise<ReadableStream<Uint8A
     systemInstruction: options.systemPrompt,
   });
 
-  // Convert messages to Gemini format
-  const history = options.messages.slice(0, -1).map((m) => ({
+  // Convert messages to Gemini format.
+  // Gemini requires history to start with a "user" message.
+  // If the conversation starts with a model (interviewer) message,
+  // prepend the synthetic user message that initiated it.
+  const allMessages = options.messages.map((m) => ({
     role: m.role === "assistant" ? "model" as const : "user" as const,
     parts: [{ text: m.content }],
   }));
 
-  const lastMessage = options.messages[options.messages.length - 1];
+  // Ensure first message is user role
+  if (allMessages.length > 0 && allMessages[0].role === "model") {
+    allMessages.unshift({
+      role: "user" as const,
+      parts: [{ text: "[Interview session started]" }],
+    });
+  }
+
+  // Gemini also requires alternating user/model turns — merge consecutive same-role messages
+  const merged: typeof allMessages = [];
+  for (const msg of allMessages) {
+    if (merged.length > 0 && merged[merged.length - 1].role === msg.role) {
+      merged[merged.length - 1].parts[0].text += "\n\n" + msg.parts[0].text;
+    } else {
+      merged.push({ ...msg, parts: [{ text: msg.parts[0].text }] });
+    }
+  }
+
+  const history = merged.slice(0, -1);
+  const lastMessage = merged[merged.length - 1];
 
   const chat = model.startChat({ history });
-  const result = await chat.sendMessageStream(lastMessage.content);
+  const result = await chat.sendMessageStream(lastMessage.parts[0].text);
 
   const encoder = new TextEncoder();
   return new ReadableStream({

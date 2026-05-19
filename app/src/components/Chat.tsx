@@ -32,13 +32,77 @@ function TypingIndicator() {
   )
 }
 
-function MessageBubble({ message }: { message: Message }) {
+function speakText(text: string) {
+  if (typeof window === 'undefined' || !window.speechSynthesis) return
+  window.speechSynthesis.cancel()
+  const utterance = new SpeechSynthesisUtterance(text)
+  utterance.rate = 1.05
+  utterance.pitch = 1
+  // Prefer a natural-sounding English voice
+  const voices = window.speechSynthesis.getVoices()
+  const preferred = voices.find(
+    (v) => v.lang.startsWith('en') && (v.name.includes('Samantha') || v.name.includes('Google') || v.name.includes('Natural'))
+  ) || voices.find((v) => v.lang.startsWith('en'))
+  if (preferred) utterance.voice = preferred
+  window.speechSynthesis.speak(utterance)
+}
+
+function MessageBubble({ message, isLatest }: { message: Message; isLatest: boolean }) {
   const isInterviewer = message.role === 'interviewer'
+  const [expanded, setExpanded] = useState(!isInterviewer)
+  const [isSpeaking, setIsSpeaking] = useState(false)
+  const hasSpoken = useRef(false)
+
+  // Auto-speak new interviewer messages
+  useEffect(() => {
+    if (isInterviewer && isLatest && !hasSpoken.current && typeof window !== 'undefined' && window.speechSynthesis) {
+      hasSpoken.current = true
+      setIsSpeaking(true)
+      // Strip code blocks from speech
+      const cleanText = message.content.replace(/```[\s\S]*?```/g, '(code block omitted)').trim()
+      window.speechSynthesis.cancel()
+      const utterance = new SpeechSynthesisUtterance(cleanText)
+      utterance.rate = 1.05
+      const voices = window.speechSynthesis.getVoices()
+      const preferred = voices.find(
+        (v) => v.lang.startsWith('en') && (v.name.includes('Samantha') || v.name.includes('Google') || v.name.includes('Natural'))
+      ) || voices.find((v) => v.lang.startsWith('en'))
+      if (preferred) utterance.voice = preferred
+      utterance.onend = () => setIsSpeaking(false)
+      utterance.onerror = () => setIsSpeaking(false)
+      window.speechSynthesis.speak(utterance)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const toggleSpeak = () => {
+    if (isSpeaking) {
+      window.speechSynthesis.cancel()
+      setIsSpeaking(false)
+    } else {
+      setIsSpeaking(true)
+      const cleanText = message.content.replace(/```[\s\S]*?```/g, '(code block omitted)').trim()
+      speakText(cleanText)
+      // Monitor when speech ends
+      const check = setInterval(() => {
+        if (!window.speechSynthesis.speaking) {
+          setIsSpeaking(false)
+          clearInterval(check)
+        }
+      }, 200)
+    }
+  }
+
+  const previewLength = 80
+  const isLong = isInterviewer && message.content.length > previewLength
+  const displayText = isInterviewer && !expanded && isLong
+    ? message.content.slice(0, previewLength) + '...'
+    : message.content
 
   return (
     <div className={`flex items-start gap-3 ${isInterviewer ? 'justify-start' : 'justify-end'}`}>
       {isInterviewer && (
-        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-blue-500/20 to-indigo-500/20 flex items-center justify-center border border-slate-700/50">
+        <div className={`flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-blue-500/20 to-indigo-500/20 flex items-center justify-center border border-slate-700/50 ${isSpeaking ? 'ring-2 ring-blue-400/50 animate-pulse' : ''}`}>
           <svg className="w-4 h-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
           </svg>
@@ -51,15 +115,36 @@ function MessageBubble({ message }: { message: Message }) {
             {isInterviewer ? 'Interviewer' : 'You'}
           </span>
           <span className="text-xs text-slate-600">{formatTime(message.timestamp)}</span>
+          {isInterviewer && (
+            <button
+              onClick={toggleSpeak}
+              className={`p-0.5 rounded transition-colors ${isSpeaking ? 'text-blue-400' : 'text-slate-600 hover:text-slate-400'}`}
+              title={isSpeaking ? 'Stop speaking' : 'Read aloud'}
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                {isSpeaking ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
+                )}
+              </svg>
+            </button>
+          )}
         </div>
         <div
           className={`rounded-2xl px-4 py-3 ${
             isInterviewer
               ? 'bg-slate-800/80 text-slate-100 rounded-tl-sm border-l-2 border-blue-500/40'
               : 'bg-blue-600/80 text-white rounded-tr-sm'
-          }`}
+          } ${isInterviewer && isLong ? 'cursor-pointer' : ''}`}
+          onClick={isInterviewer && isLong ? () => setExpanded(!expanded) : undefined}
         >
-          <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
+          <p className="text-sm leading-relaxed whitespace-pre-wrap">{displayText}</p>
+          {isInterviewer && isLong && (
+            <span className="text-xs text-blue-400/70 mt-1 block">
+              {expanded ? '▲ collapse' : '▼ expand full message'}
+            </span>
+          )}
         </div>
       </div>
 
@@ -240,8 +325,8 @@ export default function Chat({ messages, onSendMessage, isLoading }: ChatProps) 
             <p className="text-slate-500 text-sm">Your interview will begin shortly...</p>
           </div>
         )}
-        {messages.map((message) => (
-          <MessageBubble key={message.id} message={message} />
+        {messages.map((message, idx) => (
+          <MessageBubble key={message.id} message={message} isLatest={idx === messages.length - 1} />
         ))}
         {isLoading && <TypingIndicator />}
         <div ref={messagesEndRef} />
