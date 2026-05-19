@@ -68,6 +68,10 @@ function FeedbackContent() {
       const interviewConfig = JSON.parse(configStr) as InterviewConfig
       setConfig(interviewConfig)
 
+      // For ai_native_coding, include prompt history in the feedback request
+      const promptsStr = sessionStorage.getItem('interview_prompts')
+      const prompts = promptsStr ? JSON.parse(promptsStr) : undefined
+
       try {
         const res = await fetch('/api/feedback', {
           method: 'POST',
@@ -75,6 +79,9 @@ function FeedbackContent() {
           body: JSON.stringify({
             transcript: JSON.parse(transcriptStr),
             config: interviewConfig,
+            ...(interviewConfig.interviewType === 'ai_native_coding' && prompts
+              ? { promptHistory: prompts }
+              : {}),
           }),
         })
 

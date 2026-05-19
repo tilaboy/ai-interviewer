@@ -6,9 +6,15 @@ import {
 import { generateText } from "@/lib/ai-client";
 import type { InterviewConfig } from "@/lib/prompt-builder";
 
+interface PromptLogEntry {
+  prompt: string;
+  response: string;
+}
+
 interface FeedbackRequestBody {
   transcript: TranscriptMessage[];
   config: InterviewConfig;
+  promptHistory?: PromptLogEntry[];
 }
 
 export async function POST(request: Request) {
@@ -22,7 +28,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const { transcript, config } = body;
+  const { transcript, config, promptHistory } = body;
 
   if (!config?.company || !config?.role || !config?.level || !config?.interviewType) {
     return Response.json(
@@ -40,7 +46,7 @@ export async function POST(request: Request) {
 
   let feedbackPrompt: string;
   try {
-    feedbackPrompt = buildFeedbackPrompt(config, transcript);
+    feedbackPrompt = buildFeedbackPrompt(config, transcript, promptHistory);
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
     return Response.json(

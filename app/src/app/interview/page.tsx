@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic'
 import Chat from '@/components/Chat'
 import Timer from '@/components/Timer'
 import CodeEditor from '@/components/CodeEditor'
+import AiAssistantPanel from '@/components/AiAssistantPanel'
 import SplitPane from '@/components/SplitPane'
 import type { Message } from '@/types/message'
 
@@ -37,6 +38,11 @@ function isDesignType(type: string): boolean {
   return type === 'system_design' || type === 'ml_design'
 }
 
+interface PromptLogEntry {
+  prompt: string
+  response: string
+}
+
 /**
  * Formats the candidate message to include current code context for coding interviews.
  */
@@ -46,6 +52,46 @@ function buildCodeContextMessage(
   language: string
 ): string {
   return `[Current code]\n\`\`\`${language}\n${code}\n\`\`\`\n\n[Candidate message]\n${text}`
+}
+
+/**
+ * Formats the candidate message for ai_native_coding interviews, including
+ * a summary of recent AI assistant interactions so the interviewer can
+ * observe how the candidate uses AI tools.
+ */
+function buildAiNativeContextMessage(
+  text: string,
+  code: string,
+  language: string,
+  promptHistory: PromptLogEntry[]
+): string {
+  const parts: string[] = []
+
+  if (promptHistory.length > 0) {
+    const recent = promptHistory.slice(-5)
+    parts.push(`[AI Assistant Usage]`)
+    parts.push(
+      `The candidate sent ${promptHistory.length} prompt${promptHistory.length === 1 ? '' : 's'} to the AI assistant${promptHistory.length > 5 ? ' (showing last 5)' : ''}:`
+    )
+    recent.forEach((entry, i) => {
+      const truncatedResponse =
+        entry.response.length > 150
+          ? entry.response.slice(0, 150) + '...'
+          : entry.response
+      parts.push(
+        `${i + 1}. "${entry.prompt}" → [assistant responded: ${truncatedResponse}]`
+      )
+    })
+    parts.push('')
+  }
+
+  parts.push(`[Current code]`)
+  parts.push(`\`\`\`${language}\n${code}\n\`\`\``)
+  parts.push('')
+  parts.push(`[Candidate message]`)
+  parts.push(text)
+
+  return parts.join('\n')
 }
 
 function InterviewContent() {
@@ -70,6 +116,9 @@ function InterviewContent() {
   // Diagram snapshot state (only used for design interview types)
   const [diagramSnapshot, setDiagramSnapshot] = useState<string | null>(null)
 
+  // AI assistant prompt history (only used for ai_native_coding)
+  const [promptHistory, setPromptHistory] = useState<PromptLogEntry[]>([])
+
   const config = { company, role, level, interviewType }
 
   const handleLanguageChange = useCallback(
@@ -82,6 +131,13 @@ function InterviewContent() {
       setLanguage(newLanguage)
     },
     [code, language]
+  )
+
+  const handlePromptLog = useCallback(
+    (prompt: string, response: string) => {
+      setPromptHistory((prev) => [...prev, { prompt, response }])
+    },
+    []
   )
 
   // Fetch initial interviewer greeting on mount
@@ -135,9 +191,14 @@ function InterviewContent() {
       if (interviewEnded) return
 
       // For coding interviews, include code context in the API message
-      const apiContent = isCodingType(interviewType)
-        ? buildCodeContextMessage(text, code, language)
-        : text
+      let apiContent: string
+      if (interviewType === 'ai_native_coding') {
+        apiContent = buildAiNativeContextMessage(text, code, language, promptHistory)
+      } else if (isCodingType(interviewType)) {
+        apiContent = buildCodeContextMessage(text, code, language)
+      } else {
+        apiContent = text
+      }
 
       const candidateMessage: Message = {
         id: crypto.randomUUID(),
@@ -196,7 +257,7 @@ function InterviewContent() {
         setIsLoading(false)
       }
     },
-    [messages, config, interviewEnded, interviewType, code, language]
+    [messages, config, interviewEnded, interviewType, code, language, promptHistory]
   )
 
   const handleTimeUp = useCallback(() => {
@@ -234,13 +295,21 @@ function InterviewContent() {
       )
     }
 
+    // For ai_native_coding, store the prompt history
+    if (interviewType === 'ai_native_coding') {
+      sessionStorage.setItem(
+        'interview_prompts',
+        JSON.stringify(promptHistory)
+      )
+    }
+
     // For design interviews, store the diagram snapshot if available
     if (isDesignType(interviewType) && diagramSnapshot) {
       sessionStorage.setItem('interview_diagram', diagramSnapshot)
     }
 
     router.push('/feedback')
-  }, [messages, config, router, interviewType, language, code, diagramSnapshot])
+  }, [messages, config, router, interviewType, language, code, diagramSnapshot, promptHistory])
 
   const displayCompany = company.charAt(0).toUpperCase() + company.slice(1)
   const displayType = interviewType.replace(/_/g, ' ')
@@ -256,17 +325,27 @@ function InterviewContent() {
     />
   )
 
-  const leftPanel = isCodingType(interviewType) ? (
-    <CodeEditor
-      language={language}
-      code={code}
-      onChange={setCode}
-      onLanguageChange={handleLanguageChange}
-      readOnly={interviewEnded}
-    />
-  ) : isDesignType(interviewType) ? (
-    <DrawingCanvas onSnapshot={setDiagramSnapshot} />
-  ) : null
+  const leftPanel =
+    interviewType === 'ai_native_coding' ? (
+      <AiAssistantPanel
+        code={code}
+        language={language}
+        onCodeChange={setCode}
+        onLanguageChange={handleLanguageChange}
+        onPromptLog={handlePromptLog}
+        readOnly={interviewEnded}
+      />
+    ) : interviewType === 'coding' ? (
+      <CodeEditor
+        language={language}
+        code={code}
+        onChange={setCode}
+        onLanguageChange={handleLanguageChange}
+        readOnly={interviewEnded}
+      />
+    ) : isDesignType(interviewType) ? (
+      <DrawingCanvas onSnapshot={setDiagramSnapshot} />
+    ) : null
 
   return (
     <div className="flex flex-col h-screen bg-gray-900 text-gray-100">

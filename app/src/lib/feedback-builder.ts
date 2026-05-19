@@ -90,9 +90,15 @@ function resolveLevel(company: string, level: string): string {
   return level.toUpperCase();
 }
 
+interface PromptLogEntry {
+  prompt: string;
+  response: string;
+}
+
 export function buildFeedbackPrompt(
   config: InterviewConfig,
   transcript: TranscriptMessage[],
+  promptHistory?: PromptLogEntry[],
 ): string {
   const { company, role, level, interviewType } = config;
   const rubrics = getEvaluationRubrics(company);
@@ -134,6 +140,34 @@ ${formatRubricForFeedback(rubric, level)}`);
 
 The candidate is interviewing for **${normLevel}**. Calibrate your evaluation accordingly:
 ${rubric?.level_calibration[normLevel] ? `- ${rubric.level_calibration[normLevel]}` : `- Evaluate at the ${normLevel} bar.`}`);
+
+  // --- AI Assistant Usage (ai_native_coding only) ---
+  if (
+    interviewType === "ai_native_coding" &&
+    promptHistory &&
+    promptHistory.length > 0
+  ) {
+    parts.push(`
+## AI Assistant Usage
+
+The candidate had access to an AI coding assistant during this interview and sent ${promptHistory.length} prompt${promptHistory.length === 1 ? "" : "s"}:
+${promptHistory
+  .map((entry, i) => {
+    const truncatedResponse =
+      entry.response.length > 200
+        ? entry.response.slice(0, 200) + "..."
+        : entry.response;
+    return `${i + 1}. **Prompt:** "${entry.prompt}"\n   **Response:** ${truncatedResponse}`;
+  })
+  .join("\n\n")}
+
+**Evaluate the candidate's AI tool usage:**
+- Did they decompose the problem effectively before prompting?
+- Did they critically evaluate AI-generated code or blindly accept it?
+- Did they make meaningful modifications to AI suggestions?
+- Did they demonstrate understanding of the AI-generated code when asked?
+- Did they use AI tools strategically (for boilerplate, complex algorithms, etc.) vs. for trivial tasks?`);
+  }
 
   // --- Transcript ---
   parts.push(`
