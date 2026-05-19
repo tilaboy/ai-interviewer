@@ -32,18 +32,37 @@ function TypingIndicator() {
   )
 }
 
-// Ranked list of natural-sounding voices to prefer (macOS/Chrome)
+// ---------------------------------------------------------------------------
+// TTS — tries Google Cloud TTS API first, falls back to browser
+// ---------------------------------------------------------------------------
+
+let audioRef: HTMLAudioElement | null = null
+
+async function speakWithCloudTTS(text: string): Promise<boolean> {
+  try {
+    const res = await fetch('/api/tts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text }),
+    })
+    if (!res.ok) return false
+    const blob = await res.blob()
+    const url = URL.createObjectURL(blob)
+    if (audioRef) { audioRef.pause(); audioRef = null }
+    audioRef = new Audio(url)
+    audioRef.playbackRate = 1.0
+    await audioRef.play()
+    return true
+  } catch {
+    return false
+  }
+}
+
+// Browser TTS fallback
 const PREFERRED_VOICES = [
-  'Zoe (Premium)',       // macOS premium
-  'Samantha (Premium)',  // macOS premium
-  'Karen (Premium)',     // macOS premium Australian
-  'Daniel (Premium)',    // macOS premium British
-  'Zoe',                // macOS
-  'Samantha',           // macOS default
-  'Google UK English Female',
-  'Google US English',
-  'Microsoft Zira',     // Windows
-  'Microsoft David',    // Windows
+  'Zoe (Premium)', 'Samantha (Premium)', 'Karen (Premium)', 'Daniel (Premium)',
+  'Zoe', 'Samantha', 'Google UK English Female', 'Google US English',
+  'Microsoft Zira', 'Microsoft David',
 ]
 
 function getBestVoice(): SpeechSynthesisVoice | null {
@@ -52,21 +71,33 @@ function getBestVoice(): SpeechSynthesisVoice | null {
     const match = voices.find((v) => v.name.includes(name))
     if (match) return match
   }
-  // Fallback: any English voice that isn't "compact" or "espeak"
-  return voices.find((v) => v.lang.startsWith('en') && !v.name.toLowerCase().includes('compact') && !v.name.toLowerCase().includes('espeak'))
+  return voices.find((v) => v.lang.startsWith('en') && !v.name.toLowerCase().includes('compact'))
     || voices.find((v) => v.lang.startsWith('en'))
     || null
 }
 
-function speakText(text: string) {
+function speakWithBrowser(text: string) {
   if (typeof window === 'undefined' || !window.speechSynthesis) return
   window.speechSynthesis.cancel()
   const utterance = new SpeechSynthesisUtterance(text)
-  utterance.rate = 0.95  // slightly slower for natural pacing
+  utterance.rate = 0.95
   utterance.pitch = 1.0
   const voice = getBestVoice()
   if (voice) utterance.voice = voice
   window.speechSynthesis.speak(utterance)
+}
+
+function stopSpeaking() {
+  if (audioRef) { audioRef.pause(); audioRef = null }
+  if (typeof window !== 'undefined' && window.speechSynthesis) {
+    window.speechSynthesis.cancel()
+  }
+}
+
+function isSpeakingNow(): boolean {
+  if (audioRef && !audioRef.paused && !audioRef.ended) return true
+  if (typeof window !== 'undefined' && window.speechSynthesis?.speaking) return true
+  return false
 }
 
 function MessageBubble({ message, isLatest }: { message: Message; isLatest: boolean }) {
@@ -77,38 +108,47 @@ function MessageBubble({ message, isLatest }: { message: Message; isLatest: bool
 
   // Auto-speak new interviewer messages
   useEffect(() => {
-    if (isInterviewer && isLatest && !hasSpoken.current && typeof window !== 'undefined' && window.speechSynthesis) {
-      hasSpoken.current = true
-      setIsSpeaking(true)
-      const cleanText = message.content.replace(/```[\s\S]*?```/g, '(code block omitted)').trim()
-      window.speechSynthesis.cancel()
-      const utterance = new SpeechSynthesisUtterance(cleanText)
-      utterance.rate = 0.95
-      utterance.pitch = 1.0
-      const voice = getBestVoice()
-      if (voice) utterance.voice = voice
-      utterance.onend = () => setIsSpeaking(false)
-      utterance.onerror = () => setIsSpeaking(false)
-      window.speechSynthesis.speak(utterance)
+    if (!isInterviewer || !isLatest || hasSpoken.current) return
+    hasSpoken.current = true
+    setIsSpeaking(true)
+    const cleanText = message.content.replace(/```[\s\S]*?```/g, '(code block omitted)').trim()
+
+    async function speak() {
+      stopSpeaking()
+      const usedCloud = await speakWithCloudTTS(cleanText)
+      if (usedCloud) {
+        // Monitor audio element for end
+        const check = setInterval(() => {
+          if (!isSpeakingNow()) { setIsSpeaking(false); clearInterval(check) }
+        }, 300)
+      } else {
+        // Fallback to browser TTS
+        speakWithBrowser(cleanText)
+        const check = setInterval(() => {
+          if (!isSpeakingNow()) { setIsSpeaking(false); clearInterval(check) }
+        }, 300)
+      }
     }
+    speak()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const toggleSpeak = () => {
     if (isSpeaking) {
-      window.speechSynthesis.cancel()
+      stopSpeaking()
       setIsSpeaking(false)
     } else {
       setIsSpeaking(true)
       const cleanText = message.content.replace(/```[\s\S]*?```/g, '(code block omitted)').trim()
-      speakText(cleanText)
-      // Monitor when speech ends
-      const check = setInterval(() => {
-        if (!window.speechSynthesis.speaking) {
-          setIsSpeaking(false)
-          clearInterval(check)
-        }
-      }, 200)
+      async function speak() {
+        stopSpeaking()
+        const usedCloud = await speakWithCloudTTS(cleanText)
+        if (!usedCloud) speakWithBrowser(cleanText)
+        const check = setInterval(() => {
+          if (!isSpeakingNow()) { setIsSpeaking(false); clearInterval(check) }
+        }, 300)
+      }
+      speak()
     }
   }
 
