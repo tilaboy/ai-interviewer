@@ -88,6 +88,8 @@ function useSpeechRecognition() {
   const [isSupported, setIsSupported] = useState(false)
   const recognitionRef = useRef<ReturnType<typeof createRecognition> | null>(null)
   const onResultRef = useRef<(text: string) => void>(() => {})
+  const onSilenceRef = useRef<(() => void) | undefined>(undefined)
+  const silenceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     setIsSupported(
@@ -96,13 +98,26 @@ function useSpeechRecognition() {
     )
   }, [])
 
-  const start = useCallback((onResult: (text: string) => void) => {
+  const resetSilenceTimer = useCallback(() => {
+    if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current)
+    silenceTimerRef.current = setTimeout(() => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop()
+        recognitionRef.current = null
+      }
+      setIsListening(false)
+      onSilenceRef.current?.()
+    }, 2000)
+  }, [])
+
+  const start = useCallback((onResult: (text: string) => void, onSilence?: () => void) => {
     if (!isSupported || isListening) return
 
     const recognition = createRecognition()
     if (!recognition) return
 
     onResultRef.current = onResult
+    onSilenceRef.current = onSilence
     recognitionRef.current = recognition
 
     recognition.continuous = true
@@ -122,21 +137,26 @@ function useSpeechRecognition() {
         }
       }
       onResultRef.current(finalTranscript + interim)
+      resetSilenceTimer()
     }
 
     recognition.onend = () => {
       setIsListening(false)
+      if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current)
     }
 
     recognition.onerror = () => {
       setIsListening(false)
+      if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current)
     }
 
     recognition.start()
     setIsListening(true)
-  }, [isSupported, isListening])
+    resetSilenceTimer()
+  }, [isSupported, isListening, resetSilenceTimer])
 
   const stop = useCallback(() => {
+    if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current)
     if (recognitionRef.current) {
       recognitionRef.current.stop()
       recognitionRef.current = null
@@ -166,19 +186,25 @@ export default function Chat({ messages, onSendMessage, isLoading }: ChatProps) 
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const { isListening, isSupported, start, stop } = useSpeechRecognition()
   const preVoiceInput = useRef('')
+  const inputRef2 = useRef(input)
+  inputRef2.current = input
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, isLoading])
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    const trimmed = input.trim()
+  const sendCurrentInput = useCallback(() => {
+    const trimmed = inputRef2.current.trim()
     if (!trimmed || isLoading) return
-    if (isListening) stop()
     onSendMessage(trimmed)
     setInput('')
     preVoiceInput.current = ''
+  }, [isLoading, onSendMessage])
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (isListening) stop()
+    sendCurrentInput()
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -191,11 +217,18 @@ export default function Chat({ messages, onSendMessage, isLoading }: ChatProps) 
   const toggleVoice = () => {
     if (isListening) {
       stop()
+      sendCurrentInput()
     } else {
       preVoiceInput.current = input
-      start((text) => {
-        setInput(preVoiceInput.current + (preVoiceInput.current ? ' ' : '') + text)
-      })
+      start(
+        (text) => {
+          setInput(preVoiceInput.current + (preVoiceInput.current ? ' ' : '') + text)
+        },
+        () => {
+          // Auto-send after 2s of silence
+          sendCurrentInput()
+        }
+      )
     }
   }
 
@@ -221,7 +254,7 @@ export default function Chat({ messages, onSendMessage, isLoading }: ChatProps) 
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500" />
             </span>
-            <span className="text-xs text-red-400">Listening... speak now</span>
+            <span className="text-xs text-red-400">Listening — auto-sends after you pause</span>
           </div>
         )}
         <form onSubmit={handleSubmit} className="flex items-end gap-2">
