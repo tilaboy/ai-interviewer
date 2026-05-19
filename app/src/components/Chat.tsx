@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import type { Message } from '@/types/message'
 
 interface ChatProps {
@@ -74,10 +74,98 @@ function MessageBubble({ message }: { message: Message }) {
   )
 }
 
+// ---------------------------------------------------------------------------
+// Speech recognition hook
+// ---------------------------------------------------------------------------
+
+interface SpeechRecognitionEvent {
+  results: SpeechRecognitionResultList
+  resultIndex: number
+}
+
+function useSpeechRecognition() {
+  const [isListening, setIsListening] = useState(false)
+  const [isSupported, setIsSupported] = useState(false)
+  const recognitionRef = useRef<ReturnType<typeof createRecognition> | null>(null)
+  const onResultRef = useRef<(text: string) => void>(() => {})
+
+  useEffect(() => {
+    setIsSupported(
+      typeof window !== 'undefined' &&
+      ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)
+    )
+  }, [])
+
+  const start = useCallback((onResult: (text: string) => void) => {
+    if (!isSupported || isListening) return
+
+    const recognition = createRecognition()
+    if (!recognition) return
+
+    onResultRef.current = onResult
+    recognitionRef.current = recognition
+
+    recognition.continuous = true
+    recognition.interimResults = true
+    recognition.lang = 'en-US'
+
+    let finalTranscript = ''
+
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      let interim = ''
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcript = event.results[i][0].transcript
+        if (event.results[i].isFinal) {
+          finalTranscript += transcript + ' '
+        } else {
+          interim = transcript
+        }
+      }
+      onResultRef.current(finalTranscript + interim)
+    }
+
+    recognition.onend = () => {
+      setIsListening(false)
+    }
+
+    recognition.onerror = () => {
+      setIsListening(false)
+    }
+
+    recognition.start()
+    setIsListening(true)
+  }, [isSupported, isListening])
+
+  const stop = useCallback(() => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop()
+      recognitionRef.current = null
+    }
+    setIsListening(false)
+  }, [])
+
+  return { isListening, isSupported, start, stop }
+}
+
+function createRecognition() {
+  if (typeof window === 'undefined') return null
+  const SpeechRecognition = (window as unknown as Record<string, unknown>).SpeechRecognition ||
+    (window as unknown as Record<string, unknown>).webkitSpeechRecognition
+  if (!SpeechRecognition) return null
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return new (SpeechRecognition as any)()
+}
+
+// ---------------------------------------------------------------------------
+// Chat component
+// ---------------------------------------------------------------------------
+
 export default function Chat({ messages, onSendMessage, isLoading }: ChatProps) {
   const [input, setInput] = useState('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
+  const { isListening, isSupported, start, stop } = useSpeechRecognition()
+  const preVoiceInput = useRef('')
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -87,14 +175,27 @@ export default function Chat({ messages, onSendMessage, isLoading }: ChatProps) 
     e.preventDefault()
     const trimmed = input.trim()
     if (!trimmed || isLoading) return
+    if (isListening) stop()
     onSendMessage(trimmed)
     setInput('')
+    preVoiceInput.current = ''
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
       handleSubmit(e)
+    }
+  }
+
+  const toggleVoice = () => {
+    if (isListening) {
+      stop()
+    } else {
+      preVoiceInput.current = input
+      start((text) => {
+        setInput(preVoiceInput.current + (preVoiceInput.current ? ' ' : '') + text)
+      })
     }
   }
 
@@ -114,17 +215,54 @@ export default function Chat({ messages, onSendMessage, isLoading }: ChatProps) 
       </div>
 
       <div className="border-t border-slate-800/50 bg-[#0a0f1e]/90 backdrop-blur-sm px-4 py-3">
-        <form onSubmit={handleSubmit} className="flex items-end gap-3">
+        {isListening && (
+          <div className="flex items-center gap-2 mb-2 px-1">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500" />
+            </span>
+            <span className="text-xs text-red-400">Listening... speak now</span>
+          </div>
+        )}
+        <form onSubmit={handleSubmit} className="flex items-end gap-2">
           <textarea
             ref={inputRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Type your answer..."
+            placeholder={isListening ? 'Listening...' : 'Type or speak your answer...'}
             rows={1}
-            className="flex-1 resize-none rounded-xl bg-slate-800/60 border border-slate-700/50 px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/30 max-h-32 transition-all"
+            className={`flex-1 resize-none rounded-xl bg-slate-800/60 border px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/30 max-h-32 transition-all ${
+              isListening ? 'border-red-500/40 ring-1 ring-red-500/20' : 'border-slate-700/50'
+            }`}
             disabled={isLoading}
           />
+
+          {isSupported && (
+            <button
+              type="button"
+              onClick={toggleVoice}
+              disabled={isLoading}
+              className={`flex-shrink-0 rounded-xl px-3 py-2.5 text-sm font-medium transition-all focus:outline-none disabled:opacity-30 disabled:cursor-not-allowed ${
+                isListening
+                  ? 'bg-red-500/80 text-white hover:bg-red-500 ring-2 ring-red-500/30'
+                  : 'bg-slate-800/60 text-slate-400 border border-slate-700/50 hover:text-white hover:bg-slate-700/60'
+              }`}
+              title={isListening ? 'Stop recording' : 'Start voice input'}
+            >
+              {isListening ? (
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
+                </svg>
+              )}
+            </button>
+          )}
+
           <button
             type="submit"
             disabled={!input.trim() || isLoading}
