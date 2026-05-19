@@ -1,0 +1,245 @@
+{
+  "meta": {
+    "description": "Google-specific behavioral interview questions targeting Googleyness and General Cognitive Ability (GCA)",
+    "sources": ["Google careers site", "Glassdoor Google interviews", "public Google interview prep resources"],
+    "last_updated": "2026-05-19",
+    "google_behavioral_dimensions": [
+      "Googleyness: intellectual humility, conscientiousness, comfort with ambiguity, courage, collaborative nature",
+      "General Cognitive Ability (GCA): learning ability, problem-solving in real-time, structured thinking, insight generation",
+      "Emergent Leadership: leading without authority, stepping up when needed, empowering others",
+      "Role-Related Knowledge: applied domain expertise in ambiguous situations"
+    ]
+  },
+  "questions": [
+    {
+      "id": "gb001",
+      "category": "intellectual_humility",
+      "googleyness_dimension": "Intellectual Humility",
+      "target_levels": ["L3", "L4", "L5"],
+      "question": "Tell me about a time you realized you were wrong about something important at work. How did you handle it?",
+      "what_interviewer_looks_for": [
+        "Genuine acknowledgment of being wrong (not a disguised humble brag)",
+        "How quickly they recognized and admitted the mistake",
+        "Whether they changed course based on new information",
+        "Openness to feedback from others, including junior team members"
+      ],
+      "probing_questions": [
+        "What made you realize you were wrong?",
+        "How did you communicate the change to people who had already bought into your original position?",
+        "Was there pushback when you changed direction? How did you handle it?",
+        "What would you do differently next time to catch it earlier?"
+      ],
+      "evaluation_rubric": {
+        "strong": "Openly acknowledges a meaningful mistake, describes learning from others (including those junior), changed behavior going forward. Shows no defensiveness.",
+        "weak": "Picks a trivial or ambiguous example, frames it as others being wrong, doesn't show genuine reflection or behavior change."
+      }
+    },
+    {
+      "id": "gb002",
+      "category": "comfort_with_ambiguity",
+      "googleyness_dimension": "Comfort with Ambiguity",
+      "target_levels": ["L4", "L5", "L6"],
+      "question": "Describe a situation where you had to make progress on a project with unclear requirements and no obvious right answer. How did you navigate the ambiguity?",
+      "what_interviewer_looks_for": [
+        "Ability to structure an ambiguous problem",
+        "Comfort making decisions without perfect information",
+        "Iterative approach: hypothesis, test, learn, adjust",
+        "Not paralyzed by uncertainty, but also not reckless"
+      ],
+      "probing_questions": [
+        "How did you decide what to do first when nothing was clear?",
+        "What frameworks or mental models did you use to break down the problem?",
+        "At what point did you feel confident enough to commit to a direction?",
+        "How did you communicate uncertainty to stakeholders while still driving progress?"
+      ],
+      "evaluation_rubric": {
+        "strong": "Demonstrates a structured approach to ambiguity — defines what they know vs don't know, identifies key assumptions to test, makes progress iteratively. Comfortable saying 'I don't know yet.'",
+        "weak": "Either waited for someone else to clarify everything, or charged ahead without thinking. No framework for navigating uncertainty."
+      }
+    },
+    {
+      "id": "gb003",
+      "category": "emergent_leadership",
+      "googleyness_dimension": "Emergent Leadership",
+      "target_levels": ["L3", "L4", "L5"],
+      "question": "Tell me about a time you stepped into a leadership role even though it wasn't your official responsibility. Why did you step up and what happened?",
+      "what_interviewer_looks_for": [
+        "Initiative to lead when needed, not when assigned",
+        "Influence without authority",
+        "Empowering others rather than directing them",
+        "Knowing when to step back once the situation is stabilized"
+      ],
+      "probing_questions": [
+        "Why did you feel you needed to step up rather than waiting for someone else?",
+        "How did the rest of the team respond to your stepping up?",
+        "Did you face any resistance? How did you handle it?",
+        "When and how did you transition back from that leadership role?"
+      ],
+      "evaluation_rubric": {
+        "strong": "Identified a genuine leadership vacuum, stepped up thoughtfully, influenced through collaboration not authority, and empowered others. Knew when to step back.",
+        "weak": "Took over because they wanted control, didn't empower others, or stepped up on something trivial. No evidence of influencing without authority."
+      }
+    },
+    {
+      "id": "gb004",
+      "category": "doing_the_right_thing",
+      "googleyness_dimension": "Doing the Right Thing / Conscientiousness",
+      "target_levels": ["L3", "L4", "L5", "L6"],
+      "question": "Tell me about a time you pushed back on a decision or direction because you believed it was not the right thing to do, even though it would have been easier to go along.",
+      "what_interviewer_looks_for": [
+        "Moral courage: willing to speak up even when unpopular",
+        "Constructive disagreement: respectful but firm",
+        "Prioritizing users or long-term good over short-term convenience",
+        "Following through even when pushback is uncomfortable"
+      ],
+      "probing_questions": [
+        "What specifically felt wrong about the direction?",
+        "Who were you pushing back against, and what was at stake?",
+        "How did you make your case? What data or arguments did you use?",
+        "What was the outcome? Would you do it the same way again?"
+      ],
+      "evaluation_rubric": {
+        "strong": "Took a principled stand on something that mattered (user impact, ethical concern, technical integrity), communicated respectfully but clearly, and followed through regardless of personal cost.",
+        "weak": "Pushback was about personal preference not principle, gave up easily, or was confrontational rather than constructive."
+      }
+    },
+    {
+      "id": "gb005",
+      "category": "general_cognitive_ability",
+      "googleyness_dimension": "General Cognitive Ability (GCA)",
+      "target_levels": ["L3", "L4", "L5"],
+      "question": "Walk me through how you would approach a problem you've never seen before. Pick a real example from your work where you faced something genuinely novel.",
+      "what_interviewer_looks_for": [
+        "Structured thinking process when facing the unknown",
+        "Ability to decompose novel problems into tractable sub-problems",
+        "Learning agility: how quickly they pick up new concepts",
+        "Generating non-obvious insights during problem-solving"
+      ],
+      "probing_questions": [
+        "What was your first instinct? Did you follow it or override it?",
+        "How did you decide what to research vs what to figure out on your own?",
+        "What was the key insight that unlocked the solution?",
+        "How long did it take, and would you approach it differently with hindsight?"
+      ],
+      "evaluation_rubric": {
+        "strong": "Shows a clear meta-process for tackling novel problems: decomposition, analogy to known problems, quick experimentation, pattern recognition. Generates at least one non-obvious insight.",
+        "weak": "No structured approach, relied entirely on Googling or asking others, or picked a problem that wasn't genuinely novel."
+      }
+    },
+    {
+      "id": "gb006",
+      "category": "collaboration",
+      "googleyness_dimension": "Collaborative Nature",
+      "target_levels": ["L4", "L5", "L6"],
+      "question": "Tell me about a time you had to work with someone whose working style or perspective was very different from yours. How did you make the collaboration effective?",
+      "what_interviewer_looks_for": [
+        "Genuine respect for diverse perspectives",
+        "Adaptability in communication and working style",
+        "Finding complementary strengths rather than clashing",
+        "Focus on shared goals over personal comfort"
+      ],
+      "probing_questions": [
+        "What specifically was different about their approach?",
+        "What did you learn from their perspective that you wouldn't have seen on your own?",
+        "Was there a moment where the difference in styles caused friction? How did you resolve it?",
+        "How did this experience change how you approach collaboration?"
+      ],
+      "evaluation_rubric": {
+        "strong": "Shows genuine curiosity about different perspectives, adapted their own style, found a way to leverage the difference as a strength. Specific example of learning from the other person.",
+        "weak": "Tolerated the difference without engaging with it, or changed the other person to match their own style. No learning or growth."
+      }
+    },
+    {
+      "id": "gb007",
+      "category": "gca_structured_thinking",
+      "googleyness_dimension": "General Cognitive Ability (GCA) - Structured Thinking",
+      "target_levels": ["L4", "L5", "L6"],
+      "question": "Tell me about a complex decision you made that involved weighing multiple competing factors. How did you structure your thinking and arrive at a decision?",
+      "what_interviewer_looks_for": [
+        "Explicit decision framework or structured analysis",
+        "Identification and weighting of trade-offs",
+        "Use of data to inform the decision (not just intuition)",
+        "Ability to articulate reasoning clearly to others"
+      ],
+      "probing_questions": [
+        "What were the key factors you considered? How did you weight them?",
+        "What data did you gather to inform the decision?",
+        "Were there any factors you initially overlooked? How did you discover them?",
+        "How did you communicate your decision and its rationale to stakeholders?"
+      ],
+      "evaluation_rubric": {
+        "strong": "Clear framework for decision-making, identified non-obvious trade-offs, used data effectively, communicated reasoning transparently. Can explain why alternative options were inferior.",
+        "weak": "Made a gut decision and rationalized it after the fact, missed important trade-offs, couldn't explain reasoning clearly."
+      }
+    },
+    {
+      "id": "gb008",
+      "category": "user_focus",
+      "googleyness_dimension": "Googleyness - Focus on the User",
+      "target_levels": ["L3", "L4", "L5"],
+      "question": "Tell me about a time you advocated for a better user experience even when it conflicted with business metrics, technical constraints, or team priorities.",
+      "what_interviewer_looks_for": [
+        "Deep empathy for end users",
+        "Willingness to champion user needs even when inconvenient",
+        "Ability to find solutions that serve both users and business goals",
+        "Data-driven approach to user experience decisions"
+      ],
+      "probing_questions": [
+        "How did you understand what the user actually needed (vs what was assumed)?",
+        "What resistance did you face and from whom?",
+        "How did you quantify the user impact to build your case?",
+        "Did you find a way to satisfy both user needs and the competing priority, or did you have to make a hard trade-off?"
+      ],
+      "evaluation_rubric": {
+        "strong": "Went beyond surface-level user feedback to understand root needs, built a data-backed case, found creative solutions to serve both users and business. Outcome clearly benefited users.",
+        "weak": "Equated user focus with adding features users asked for, didn't use data, or caved to business pressure without fighting for the user."
+      }
+    },
+    {
+      "id": "gb009",
+      "category": "gca_learning_agility",
+      "googleyness_dimension": "General Cognitive Ability (GCA) - Learning Ability",
+      "target_levels": ["L3", "L4"],
+      "question": "Tell me about a time you had to learn something completely outside your area of expertise to solve a problem. What was your learning process?",
+      "what_interviewer_looks_for": [
+        "Speed and efficiency of learning",
+        "Self-awareness about what they know and don't know",
+        "Resourcefulness in finding learning sources",
+        "Ability to apply new knowledge effectively under time pressure"
+      ],
+      "probing_questions": [
+        "How did you decide what was essential to learn vs what you could skip?",
+        "Who did you learn from, and how did you find them?",
+        "How did you validate your understanding before applying it?",
+        "How long did it take to go from zero to productive? What would you do differently?"
+      ],
+      "evaluation_rubric": {
+        "strong": "Shows a deliberate learning strategy (not just trial and error), prioritized what to learn, found experts efficiently, validated understanding before acting, delivered successfully under time pressure.",
+        "weak": "Learned passively (just read docs), didn't seek out experts, took too long to ramp, or couldn't apply the knowledge effectively."
+      }
+    },
+    {
+      "id": "gb010",
+      "category": "navigating_organizational_complexity",
+      "googleyness_dimension": "Emergent Leadership + Comfort with Ambiguity",
+      "target_levels": ["L5", "L6"],
+      "question": "Tell me about a time you drove a cross-functional initiative where different teams had conflicting priorities. How did you align everyone and deliver the outcome?",
+      "what_interviewer_looks_for": [
+        "Ability to understand multiple stakeholder perspectives",
+        "Finding win-win solutions rather than forcing compromise",
+        "Influence and persuasion across organizational boundaries",
+        "Persistence through organizational friction without burning bridges"
+      ],
+      "probing_questions": [
+        "What were the conflicting priorities, and why did they conflict?",
+        "How did you understand what each team actually cared about (vs what they said they cared about)?",
+        "What creative solutions did you find that addressed multiple teams' needs?",
+        "Was there a point where you had to escalate? How did you handle it?"
+      ],
+      "evaluation_rubric": {
+        "strong": "Mapped stakeholder motivations deeply (not surface-level), found creative alignment opportunities, built trust across teams, delivered outcome that multiple teams valued. Escalated judiciously when needed.",
+        "weak": "Forced their own team's priority, escalated prematurely, or achieved alignment by having leadership mandate it. No creative problem-solving."
+      }
+    }
+  ]
+}

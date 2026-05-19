@@ -1,0 +1,309 @@
+{
+  "meta": {
+    "description": "SQL interview questions for Data Engineer (DE) roles, organized by difficulty and topic, covering E3-E6 levels",
+    "sources": ["Glassdoor DE interviews", "Blind", "public interview prep resources", "data engineering community forums"],
+    "last_updated": "2026-05-19"
+  },
+  "questions": [
+    {
+      "id": "sql001",
+      "title": "Revenue by Product Category",
+      "difficulty": "easy",
+      "target_levels": ["E3"],
+      "target_roles": ["DE"],
+      "topics": ["joins", "aggregations", "GROUP BY"],
+      "description": "You have two tables:\n\nCREATE TABLE orders (\n  order_id INT PRIMARY KEY,\n  user_id INT,\n  product_id INT,\n  quantity INT,\n  order_date DATE\n);\n\nCREATE TABLE products (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(100),\n  category VARCHAR(50),\n  price DECIMAL(10,2)\n);\n\nWrite a query to find the total revenue (quantity * price) for each product category, sorted by revenue descending. Only include categories with total revenue above $10,000.",
+      "follow_ups": [
+        "How would you optimize this query if the orders table has billions of rows?",
+        "What index would you add to speed this up?",
+        "How would you modify this to show month-over-month revenue trends per category?"
+      ],
+      "evaluation_criteria": ["Correct JOIN between orders and products", "Proper use of GROUP BY with aggregate", "HAVING clause vs WHERE distinction", "ORDER BY on the computed column"]
+    },
+    {
+      "id": "sql002",
+      "title": "Finding Duplicate Records",
+      "difficulty": "easy",
+      "target_levels": ["E3"],
+      "target_roles": ["DE"],
+      "topics": ["aggregations", "GROUP BY", "HAVING", "data_quality"],
+      "description": "You have a table of user events:\n\nCREATE TABLE user_events (\n  event_id INT PRIMARY KEY,\n  user_id INT,\n  event_type VARCHAR(50),\n  event_timestamp TIMESTAMP,\n  session_id VARCHAR(100),\n  payload JSON\n);\n\nDue to a logging bug, some events were recorded multiple times. Write a query to find all (user_id, event_type, event_timestamp) combinations that appear more than once, along with the count of duplicates. Then write a DELETE statement that removes duplicates, keeping only the row with the smallest event_id for each combination.",
+      "follow_ups": [
+        "How would you prevent this duplication at the ingestion layer?",
+        "What if the table has no primary key and truly identical rows exist?",
+        "How would you handle this in a partitioned Hive table where DELETE is not supported?"
+      ],
+      "evaluation_criteria": ["Correct GROUP BY with HAVING COUNT(*) > 1", "DELETE using subquery or CTE with ROW_NUMBER", "Understanding of data quality patterns", "Awareness of engine-specific constraints"]
+    },
+    {
+      "id": "sql003",
+      "title": "User Retention Analysis",
+      "difficulty": "medium",
+      "target_levels": ["E3", "E4"],
+      "target_roles": ["DE"],
+      "topics": ["self_joins", "date_functions", "aggregations"],
+      "description": "You have a table tracking daily active users:\n\nCREATE TABLE daily_active_users (\n  user_id INT,\n  active_date DATE,\n  country VARCHAR(50),\n  platform VARCHAR(20)\n);\n\nWrite a query to calculate Day-1 retention rate: for each day, what percentage of users who were active on that day also came back the next day? Return the date and retention rate, ordered by date.",
+      "follow_ups": [
+        "How would you extend this to Day-7 and Day-30 retention?",
+        "How would you optimize this if the table has hundreds of millions of rows per day?",
+        "How would you break this down by country and platform?"
+      ],
+      "evaluation_criteria": ["Self-join on user_id with date offset", "Correct COUNT DISTINCT for both numerator and denominator", "Proper percentage calculation", "Understanding of retention as a product metric"]
+    },
+    {
+      "id": "sql004",
+      "title": "Ranking Users by Activity",
+      "difficulty": "medium",
+      "target_levels": ["E3", "E4"],
+      "target_roles": ["DE"],
+      "topics": ["window_functions", "ROW_NUMBER", "RANK", "DENSE_RANK"],
+      "description": "You have a table of user posts on a social platform:\n\nCREATE TABLE user_posts (\n  post_id INT PRIMARY KEY,\n  user_id INT,\n  post_date DATE,\n  likes_count INT,\n  comments_count INT,\n  shares_count INT\n);\n\nWrite a query that:\n1. Calculates each user's total engagement score (likes + comments*2 + shares*3) for the last 30 days.\n2. Ranks users within each month using RANK and DENSE_RANK.\n3. Returns only the top 10 users per month.\n\nExplain the difference between ROW_NUMBER, RANK, and DENSE_RANK with examples from your result set.",
+      "follow_ups": [
+        "When would you use ROW_NUMBER vs RANK vs DENSE_RANK in practice?",
+        "How would you handle ties in the ranking?",
+        "How would you compute this incrementally instead of recomputing from scratch each day?"
+      ],
+      "evaluation_criteria": ["Correct window function syntax with PARTITION BY and ORDER BY", "Clear explanation of ROW_NUMBER vs RANK vs DENSE_RANK differences", "Proper filtering with subquery or CTE to get top N", "Understanding of engagement score weighting"]
+    },
+    {
+      "id": "sql005",
+      "title": "Running Totals and Moving Averages",
+      "difficulty": "medium",
+      "target_levels": ["E4"],
+      "target_roles": ["DE"],
+      "topics": ["window_functions", "frame_specification", "aggregations"],
+      "description": "You have a table of daily revenue:\n\nCREATE TABLE daily_revenue (\n  revenue_date DATE PRIMARY KEY,\n  region VARCHAR(50),\n  revenue DECIMAL(15,2),\n  transactions INT\n);\n\nWrite queries to compute:\n1. A running total of revenue per region, ordered by date.\n2. A 7-day moving average of revenue per region.\n3. The percentage change in revenue compared to the same day last week, per region.\n\nUse proper window frame specifications (ROWS vs RANGE).",
+      "follow_ups": [
+        "What is the difference between ROWS BETWEEN and RANGE BETWEEN? When does it matter?",
+        "How would you handle missing dates (days with no revenue)?",
+        "How would you implement this in a streaming context?"
+      ],
+      "evaluation_criteria": ["Correct window frame syntax (ROWS BETWEEN 6 PRECEDING AND CURRENT ROW)", "Understanding of ROWS vs RANGE semantics", "LAG function for week-over-week comparison", "Handling of NULL values for incomplete windows"]
+    },
+    {
+      "id": "sql006",
+      "title": "Sessionization of Click Stream Data",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "target_roles": ["DE"],
+      "topics": ["window_functions", "LAG", "CTEs", "conditional_logic"],
+      "description": "You have raw click stream data:\n\nCREATE TABLE click_events (\n  event_id BIGINT PRIMARY KEY,\n  user_id INT,\n  page_url VARCHAR(500),\n  event_timestamp TIMESTAMP,\n  event_type VARCHAR(50)\n);\n\nA session is defined as a sequence of events by the same user where no two consecutive events are more than 30 minutes apart. Write a query to:\n1. Assign a session_id to each event.\n2. Calculate the duration and number of pages per session.\n3. Find the average session duration and bounce rate (sessions with only 1 page view).",
+      "follow_ups": [
+        "How would you handle this in a Spark/distributed SQL environment?",
+        "What if the session timeout is different per platform (mobile vs web)?",
+        "How would you design the output table for downstream analytics?"
+      ],
+      "evaluation_criteria": ["Use of LAG to compute time gaps between events", "Cumulative SUM to assign session boundaries", "CTE-based step-by-step approach for readability", "Correct bounce rate calculation"]
+    },
+    {
+      "id": "sql007",
+      "title": "Funnel Analysis",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "target_roles": ["DE"],
+      "topics": ["CTEs", "conditional_aggregation", "self_joins", "window_functions"],
+      "description": "You have an events table for an e-commerce platform:\n\nCREATE TABLE funnel_events (\n  event_id BIGINT PRIMARY KEY,\n  user_id INT,\n  event_name VARCHAR(50),  -- 'page_view', 'add_to_cart', 'checkout_start', 'purchase'\n  event_timestamp TIMESTAMP,\n  product_id INT,\n  device_type VARCHAR(20)\n);\n\nWrite a query to build a conversion funnel showing:\n1. The count of unique users at each stage.\n2. The conversion rate from each stage to the next.\n3. The median time between stages.\n\nThe funnel stages must be ordered: page_view -> add_to_cart -> checkout_start -> purchase. A user must complete the stages in order (their add_to_cart must come after their page_view, etc.).",
+      "follow_ups": [
+        "How would you handle users who skip stages (e.g., direct to checkout)?",
+        "How would you partition this funnel by device_type to compare mobile vs desktop?",
+        "How would you build this as a reusable parameterized query or view?"
+      ],
+      "evaluation_criteria": ["Correct sequential funnel logic (events must be in order)", "Use of CTEs to build up funnel step by step", "Proper conversion rate calculation (stage N / stage N-1)", "Handling of users who do not complete all stages"]
+    },
+    {
+      "id": "sql008",
+      "title": "Detecting Gaps and Islands",
+      "difficulty": "hard",
+      "target_levels": ["E4", "E5"],
+      "target_roles": ["DE"],
+      "topics": ["window_functions", "ROW_NUMBER", "date_functions", "gaps_and_islands"],
+      "description": "You have a table tracking server uptime:\n\nCREATE TABLE server_status (\n  server_id INT,\n  status_date DATE,\n  status VARCHAR(10)  -- 'up' or 'down'\n);\n\nThe table has one row per server per day. Write a query to find all continuous periods (islands) where each server was down, returning server_id, start_date, end_date, and duration_days for each downtime period. Then find the top 5 longest downtime periods across all servers.",
+      "follow_ups": [
+        "How does the classic gaps-and-islands technique work and why?",
+        "How would you handle missing rows (days with no entry)?",
+        "How would you set up an alert if a server is down for more than 3 consecutive days?"
+      ],
+      "evaluation_criteria": ["Classic gaps-and-islands pattern using ROW_NUMBER difference", "Correct grouping to find contiguous periods", "Proper date arithmetic for duration", "Clear explanation of why the technique works"]
+    },
+    {
+      "id": "sql009",
+      "title": "Hierarchical Employee Reporting",
+      "difficulty": "hard",
+      "target_levels": ["E4", "E5"],
+      "target_roles": ["DE"],
+      "topics": ["recursive_CTEs", "self_joins", "hierarchical_data"],
+      "description": "You have an employee hierarchy:\n\nCREATE TABLE employees (\n  employee_id INT PRIMARY KEY,\n  employee_name VARCHAR(100),\n  manager_id INT REFERENCES employees(employee_id),\n  department VARCHAR(50),\n  salary DECIMAL(10,2),\n  hire_date DATE\n);\n\nWrite queries to:\n1. Find the full management chain for a given employee (from them up to the CEO).\n2. Find all direct and indirect reports for a given manager.\n3. Calculate the total salary budget for each manager (sum of salaries of all reports at all levels below them).\n4. Find the depth of each employee in the org hierarchy.",
+      "follow_ups": [
+        "What are the performance implications of recursive CTEs on large hierarchies?",
+        "How would you model this in a data warehouse for efficient querying (materialized path, nested sets)?",
+        "How would you detect cycles in the hierarchy data?"
+      ],
+      "evaluation_criteria": ["Correct recursive CTE syntax with base case and recursive case", "Proper termination condition", "Aggregation over recursive results", "Understanding of alternative hierarchy representations"]
+    },
+    {
+      "id": "sql010",
+      "title": "Slowly Changing Dimensions Type 2",
+      "difficulty": "hard",
+      "target_levels": ["E5", "E6"],
+      "target_roles": ["DE"],
+      "topics": ["slowly_changing_dimensions", "data_modeling", "window_functions", "ETL"],
+      "description": "You have a Type 2 Slowly Changing Dimension table for customer data:\n\nCREATE TABLE dim_customer_scd2 (\n  surrogate_key INT PRIMARY KEY,\n  customer_id INT,\n  customer_name VARCHAR(100),\n  email VARCHAR(200),\n  city VARCHAR(100),\n  state VARCHAR(50),\n  membership_tier VARCHAR(20),\n  effective_date DATE,\n  expiration_date DATE,  -- '9999-12-31' for current records\n  is_current BOOLEAN\n);\n\nCREATE TABLE stg_customer_updates (\n  customer_id INT,\n  customer_name VARCHAR(100),\n  email VARCHAR(200),\n  city VARCHAR(100),\n  state VARCHAR(50),\n  membership_tier VARCHAR(20),\n  updated_at TIMESTAMP\n);\n\nWrite the SQL to perform the SCD2 merge:\n1. Identify new customers (INSERT).\n2. Identify changed customers (expire old row, INSERT new row).\n3. Leave unchanged customers as-is.\n\nAlso write a query to reconstruct a customer's full change history and a point-in-time query to get the state of all customers as of a specific date.",
+      "follow_ups": [
+        "What are the trade-offs between SCD Type 1, 2, 3, and 6 (hybrid)?",
+        "How would you implement this in a columnar warehouse like BigQuery or Redshift where MERGE has limitations?",
+        "How would you handle late-arriving dimension updates?"
+      ],
+      "evaluation_criteria": ["Correct MERGE/UPSERT logic with expire + insert pattern", "Understanding of SCD2 concepts (surrogate key, effective/expiration dates, is_current)", "Point-in-time query using BETWEEN on dates", "Awareness of practical challenges (late arrivals, reprocessing)"]
+    },
+    {
+      "id": "sql011",
+      "title": "Query Optimization and Execution Plans",
+      "difficulty": "hard",
+      "target_levels": ["E5", "E6"],
+      "target_roles": ["DE"],
+      "topics": ["query_optimization", "indexing", "execution_plans", "partitioning"],
+      "description": "You have a large analytics table:\n\nCREATE TABLE ad_impressions (\n  impression_id BIGINT PRIMARY KEY,\n  ad_id INT,\n  campaign_id INT,\n  user_id BIGINT,\n  impression_timestamp TIMESTAMP,\n  country VARCHAR(5),\n  device_type VARCHAR(20),\n  cost DECIMAL(10,6),\n  is_click BOOLEAN,\n  is_conversion BOOLEAN\n) PARTITION BY RANGE (impression_timestamp);\n\n-- Table has 50 billion rows, partitioned by day\n-- Indexes: (campaign_id), (user_id), (ad_id, impression_timestamp)\n\nA data scientist complains the following query takes 45 minutes:\n\nSELECT campaign_id,\n       country,\n       COUNT(*) AS impressions,\n       SUM(CASE WHEN is_click THEN 1 ELSE 0 END) AS clicks,\n       SUM(CASE WHEN is_conversion THEN 1 ELSE 0 END) AS conversions,\n       SUM(cost) AS total_cost\nFROM ad_impressions\nWHERE impression_timestamp >= '2026-01-01'\n  AND impression_timestamp < '2026-04-01'\n  AND country IN ('US', 'GB', 'DE', 'FR', 'JP')\nGROUP BY campaign_id, country\nORDER BY total_cost DESC;\n\nDiagnose the performance issues and propose optimizations. Consider indexing, partitioning, materialized views, and query rewrites.",
+      "follow_ups": [
+        "How would you read and interpret the EXPLAIN ANALYZE output for this query?",
+        "What is partition pruning and how does it apply here?",
+        "When would you use a materialized view vs a pre-aggregated table vs a query rewrite?"
+      ],
+      "evaluation_criteria": ["Systematic diagnosis approach (partition pruning, index usage, scan type)", "Multiple optimization strategies with trade-offs", "Understanding of EXPLAIN plans", "Awareness of materialized views and pre-aggregation patterns"]
+    },
+    {
+      "id": "sql012",
+      "title": "Event Attribution with Lookback Windows",
+      "difficulty": "hard",
+      "target_levels": ["E5", "E6"],
+      "target_roles": ["DE"],
+      "topics": ["window_functions", "LEAD", "LAG", "interval_joins", "attribution"],
+      "description": "You have ad exposure and conversion data:\n\nCREATE TABLE ad_exposures (\n  exposure_id BIGINT PRIMARY KEY,\n  user_id BIGINT,\n  ad_id INT,\n  campaign_id INT,\n  channel VARCHAR(50),  -- 'search', 'social', 'display', 'email'\n  exposure_timestamp TIMESTAMP\n);\n\nCREATE TABLE conversions (\n  conversion_id BIGINT PRIMARY KEY,\n  user_id BIGINT,\n  conversion_type VARCHAR(50),\n  revenue DECIMAL(10,2),\n  conversion_timestamp TIMESTAMP\n);\n\nImplement three attribution models in SQL:\n1. Last-touch attribution: credit goes to the last ad exposure within a 7-day lookback window before conversion.\n2. First-touch attribution: credit goes to the first ad exposure within a 30-day lookback window.\n3. Linear attribution: credit is split equally among all ad exposures within a 7-day lookback window.\n\nFor each model, return campaign_id, channel, attributed_conversions, and attributed_revenue.",
+      "follow_ups": [
+        "How would you implement time-decay attribution where more recent touches get more credit?",
+        "What are the scalability challenges when the exposure table has billions of rows?",
+        "How would you handle cross-device attribution?"
+      ],
+      "evaluation_criteria": ["Correct interval join logic (conversion timestamp - lookback window)", "ROW_NUMBER for first/last touch identification", "Fractional credit calculation for linear attribution", "Understanding of attribution modeling concepts"]
+    },
+    {
+      "id": "sql013",
+      "title": "Data Skew and Join Optimization",
+      "difficulty": "hard",
+      "target_levels": ["E5", "E6"],
+      "target_roles": ["DE"],
+      "topics": ["join_optimization", "data_skew", "broadcast_joins", "salting"],
+      "description": "You are working with two tables in a distributed SQL engine (Spark SQL / Presto):\n\nCREATE TABLE user_actions (\n  action_id BIGINT,\n  user_id BIGINT,\n  action_type VARCHAR(50),\n  action_timestamp TIMESTAMP,\n  metadata JSON\n);\n-- 10 billion rows, heavily skewed: 0.1% of users generate 40% of rows\n\nCREATE TABLE user_profiles (\n  user_id BIGINT PRIMARY KEY,\n  username VARCHAR(100),\n  account_type VARCHAR(20),  -- 'regular', 'power_user', 'bot'\n  signup_date DATE,\n  country VARCHAR(50)\n);\n-- 500 million rows\n\nThe following query takes 6 hours and frequently OOMs on some executors:\n\nSELECT p.account_type,\n       p.country,\n       COUNT(*) AS total_actions,\n       COUNT(DISTINCT a.user_id) AS unique_users\nFROM user_actions a\nJOIN user_profiles p ON a.user_id = p.user_id\nWHERE a.action_timestamp >= '2026-01-01'\nGROUP BY p.account_type, p.country;\n\nDiagnose the skew problem and provide at least three different strategies to fix it, with SQL examples for each.",
+      "follow_ups": [
+        "How does salting work and what are its downsides?",
+        "When would you use a broadcast join vs a sort-merge join?",
+        "How would you detect data skew before it causes problems in production?"
+      ],
+      "evaluation_criteria": ["Identification of data skew as the root cause", "Broadcast join strategy for smaller table", "Salting technique with key augmentation", "Isolate-and-union approach for hot keys", "Understanding of distributed execution model"]
+    },
+    {
+      "id": "sql014",
+      "title": "Building a Metric Reporting Layer",
+      "difficulty": "hard",
+      "target_levels": ["E5", "E6"],
+      "target_roles": ["DE"],
+      "topics": ["data_modeling", "star_schema", "aggregations", "CTEs", "materialized_views"],
+      "description": "You are designing a metric reporting layer for a subscription business. Here are your source tables:\n\nCREATE TABLE subscriptions (\n  subscription_id INT PRIMARY KEY,\n  user_id INT,\n  plan_type VARCHAR(20),  -- 'free', 'basic', 'premium', 'enterprise'\n  start_date DATE,\n  end_date DATE,          -- NULL if active\n  mrr DECIMAL(10,2),      -- monthly recurring revenue\n  billing_cycle VARCHAR(10) -- 'monthly', 'annual'\n);\n\nCREATE TABLE subscription_events (\n  event_id INT PRIMARY KEY,\n  subscription_id INT,\n  event_type VARCHAR(30),  -- 'new', 'upgrade', 'downgrade', 'churn', 'reactivation'\n  event_date DATE,\n  old_plan VARCHAR(20),\n  new_plan VARCHAR(20),\n  old_mrr DECIMAL(10,2),\n  new_mrr DECIMAL(10,2)\n);\n\nWrite queries to compute the following monthly metrics:\n1. Total MRR at month-end (snapshot).\n2. Net New MRR broken down by: New, Expansion (upgrades), Contraction (downgrades), Churn.\n3. Gross and Net Revenue Retention rates.\n4. A cohort retention table showing MRR retention by signup month cohort.\n\nDesign the output as a monthly metrics fact table.",
+      "follow_ups": [
+        "How would you design the data model to make these metrics queryable in under 5 seconds?",
+        "How would you handle mid-month plan changes in the MRR snapshot?",
+        "How would you backfill this metrics table if the event history goes back 3 years?"
+      ],
+      "evaluation_criteria": ["Correct MRR decomposition (New + Expansion - Contraction - Churn = Net New)", "Cohort analysis using first subscription date", "Revenue retention calculation (current period MRR / starting period MRR for a cohort)", "Practical data modeling decisions for the output table"]
+    },
+    {
+      "id": "sql015",
+      "title": "Cross-Database Data Reconciliation",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "target_roles": ["DE"],
+      "topics": ["set_operations", "FULL_OUTER_JOIN", "data_quality", "EXCEPT", "INTERSECT"],
+      "description": "You are migrating data from a legacy system to a new data warehouse. You have the same logical table in both systems:\n\nSource (legacy):\nCREATE TABLE legacy.orders (\n  order_id INT PRIMARY KEY,\n  customer_id INT,\n  order_total DECIMAL(10,2),\n  order_status VARCHAR(20),\n  created_at TIMESTAMP\n);\n\nTarget (new warehouse):\nCREATE TABLE warehouse.orders (\n  order_id INT PRIMARY KEY,\n  customer_id INT,\n  order_total DECIMAL(10,2),\n  order_status VARCHAR(20),\n  created_at TIMESTAMP,\n  loaded_at TIMESTAMP\n);\n\nWrite reconciliation queries to find:\n1. Orders in legacy but missing from warehouse (data loss).\n2. Orders in warehouse but not in legacy (phantom records).\n3. Orders that exist in both but have mismatched values in any column.\n4. A summary report with match rate, mismatch rate, and missing rate.\n\nAlso write a query to identify the most common types of mismatches.",
+      "follow_ups": [
+        "How would you automate this reconciliation to run daily?",
+        "How would you handle floating-point precision differences in order_total?",
+        "What would your approach be if the tables have 500 columns?"
+      ],
+      "evaluation_criteria": ["FULL OUTER JOIN or EXCEPT/INTERSECT usage", "Column-by-column comparison for mismatches", "Summary statistics query", "Awareness of practical reconciliation challenges (precision, NULLs, timestamps)"]
+    },
+    {
+      "id": "sql016",
+      "title": "Cumulative Active Users (L7, L28)",
+      "difficulty": "medium",
+      "target_levels": ["E3", "E4"],
+      "target_roles": ["DE"],
+      "topics": ["window_functions", "date_functions", "self_joins", "COUNT_DISTINCT"],
+      "description": "You have a table of daily user logins:\n\nCREATE TABLE user_logins (\n  user_id INT,\n  login_date DATE,\n  platform VARCHAR(20)  -- 'ios', 'android', 'web'\n);\n\nWrite queries to compute for each day:\n1. DAU (Daily Active Users): count of distinct users who logged in that day.\n2. WAU (L7): count of distinct users who logged in at least once in the past 7 days.\n3. MAU (L28): count of distinct users who logged in at least once in the past 28 days.\n4. DAU/MAU ratio (stickiness) per day.\n\nNote: Window functions with COUNT(DISTINCT ...) may not be supported in all engines. Provide solutions that work around this limitation.",
+      "follow_ups": [
+        "COUNT(DISTINCT) is not allowed in window functions in most SQL engines. How do you work around this?",
+        "How would you compute L7 efficiently at scale (billions of login rows)?",
+        "How would you break this down by platform?"
+      ],
+      "evaluation_criteria": ["Understanding that COUNT(DISTINCT) is not a window function", "Self-join or subquery approach for rolling distinct counts", "Correct date range calculations", "Awareness of HyperLogLog or bitmap approaches for approximate distinct counts at scale"]
+    },
+    {
+      "id": "sql017",
+      "title": "Pivoting and Unpivoting Data",
+      "difficulty": "easy",
+      "target_levels": ["E3", "E4"],
+      "target_roles": ["DE"],
+      "topics": ["CASE_expressions", "conditional_aggregation", "UNION_ALL", "pivot"],
+      "description": "You have quarterly sales data in a normalized format:\n\nCREATE TABLE quarterly_sales (\n  sales_rep_id INT,\n  sales_rep_name VARCHAR(100),\n  quarter VARCHAR(6),   -- 'Q1_2025', 'Q2_2025', etc.\n  region VARCHAR(50),\n  revenue DECIMAL(12,2)\n);\n\nWrite queries to:\n1. Pivot the data so each quarter becomes a column: sales_rep_name, Q1_2025, Q2_2025, Q3_2025, Q4_2025.\n2. Given the pivoted result stored as a table, unpivot it back to the original format.\n3. Calculate each rep's quarter-over-quarter growth rate in the pivoted format.",
+      "follow_ups": [
+        "How do PIVOT and UNPIVOT syntax differ across SQL engines (BigQuery, Redshift, Postgres, Spark SQL)?",
+        "What are the advantages of storing data in normalized vs pivoted format?",
+        "How would you handle a dynamic number of quarters without hardcoding column names?"
+      ],
+      "evaluation_criteria": ["CASE WHEN with aggregate for manual pivot", "UNION ALL for unpivot", "Understanding of when to use pivoted vs normalized representation", "Clean, readable SQL"]
+    },
+    {
+      "id": "sql018",
+      "title": "Time Zone Handling in Multi-Region Data",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "target_roles": ["DE"],
+      "topics": ["timestamp_handling", "time_zones", "date_functions", "data_modeling"],
+      "description": "You have event data stored in UTC and a mapping table for user time zones:\n\nCREATE TABLE events (\n  event_id BIGINT PRIMARY KEY,\n  user_id INT,\n  event_name VARCHAR(50),\n  event_timestamp_utc TIMESTAMP,\n  server_region VARCHAR(20)\n);\n\nCREATE TABLE user_settings (\n  user_id INT PRIMARY KEY,\n  display_name VARCHAR(100),\n  timezone VARCHAR(50),      -- e.g., 'America/Los_Angeles', 'Europe/London'\n  utc_offset_hours DECIMAL(3,1)  -- e.g., -8.0, 0.0, 5.5\n);\n\nWrite queries to:\n1. Convert each event timestamp to the user's local time.\n2. Calculate DAU where 'day' is defined in the user's local time zone (not UTC).\n3. Find the peak usage hour in each user's local time zone.\n4. Handle the edge case where a user's time zone observes Daylight Saving Time (so utc_offset_hours changes during the year).",
+      "follow_ups": [
+        "Why is it dangerous to use a fixed UTC offset instead of a proper timezone identifier?",
+        "How would you store timestamps in a data warehouse to support both UTC and local time queries?",
+        "What problems arise when you aggregate across time zones?"
+      ],
+      "evaluation_criteria": ["Use of AT TIME ZONE or timestamp arithmetic for conversion", "Awareness of DST complications", "Correct DAU calculation in local time", "Understanding of storing UTC and converting at query time"]
+    },
+    {
+      "id": "sql019",
+      "title": "Designing a Partition Strategy",
+      "difficulty": "hard",
+      "target_levels": ["E5", "E6"],
+      "target_roles": ["DE"],
+      "topics": ["partitioning", "partition_pruning", "bucketing", "query_optimization", "data_modeling"],
+      "description": "You are designing the physical storage layout for a large analytics table in a Hive/Spark data warehouse:\n\nLogical schema:\nCREATE TABLE fact_user_interactions (\n  interaction_id BIGINT,\n  user_id BIGINT,\n  interaction_type VARCHAR(50),\n  content_id BIGINT,\n  interaction_timestamp TIMESTAMP,\n  country VARCHAR(5),\n  device_type VARCHAR(20),\n  session_id VARCHAR(100),\n  duration_seconds INT,\n  referrer_type VARCHAR(50)\n);\n\n-- Daily volume: ~2 billion rows\n-- Common query patterns:\n--   1. Daily/weekly aggregations filtered by date range and country\n--   2. User-level journey analysis (all interactions for a user in a time range)\n--   3. Content performance (aggregations by content_id for a date range)\n--   4. Funnel analysis by interaction_type within sessions\n\nDesign the partitioning and bucketing strategy. Write DDL showing your chosen layout, and explain:\n1. What columns to partition by and why.\n2. What columns to bucket by and why.\n3. How your design supports each of the four query patterns.\n4. Trade-offs of your approach (small file problem, partition explosion, etc.).",
+      "follow_ups": [
+        "How would you handle late-arriving data that belongs to a past partition?",
+        "What is the small files problem and how does it affect query performance?",
+        "How would you evolve the partitioning scheme as query patterns change over time?"
+      ],
+      "evaluation_criteria": ["Partition by date (ds) for time-range pruning", "Secondary partitioning or bucketing rationale", "Clear mapping of each query pattern to how the layout helps", "Awareness of trade-offs (partition explosion, small files, rebalancing)"]
+    },
+    {
+      "id": "sql020",
+      "title": "Deduplication Pipeline with Deterministic Matching",
+      "difficulty": "hard",
+      "target_levels": ["E5", "E6"],
+      "target_roles": ["DE"],
+      "topics": ["deduplication", "window_functions", "string_functions", "data_quality", "ETL"],
+      "description": "You receive customer data from multiple source systems that need to be unified:\n\nCREATE TABLE raw_customers (\n  source_system VARCHAR(20),  -- 'CRM', 'billing', 'support', 'marketing'\n  source_id VARCHAR(50),\n  first_name VARCHAR(100),\n  last_name VARCHAR(100),\n  email VARCHAR(200),\n  phone VARCHAR(20),\n  address_line1 VARCHAR(200),\n  city VARCHAR(100),\n  state VARCHAR(50),\n  zip VARCHAR(10),\n  created_at TIMESTAMP\n);\n\nWrite SQL to:\n1. Standardize fields (lowercase emails, strip non-digits from phone numbers, trim whitespace).\n2. Implement deterministic matching rules:\n   - Exact match on email (highest confidence).\n   - Exact match on phone number (medium confidence).\n   - Exact match on (first_name, last_name, zip) (lower confidence).\n3. Assign a unified customer_id using the matching rules with a priority order.\n4. Create a master customer record that picks the best value for each field across sources (e.g., most recent non-null value).\n\nUse window functions and CTEs to build this step by step.",
+      "follow_ups": [
+        "How would you add fuzzy matching (Levenshtein distance, Soundex) as a fallback?",
+        "How would you handle conflicting data across sources for the same field?",
+        "How would you build this as an incremental pipeline that processes only new/changed records?"
+      ],
+      "evaluation_criteria": ["Clean standardization logic with string functions", "Clear matching rule priority and implementation", "Use of window functions for golden record selection", "Incremental processing awareness"]
+    }
+  ]
+}

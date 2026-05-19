@@ -95,7 +95,7 @@ export function buildFeedbackPrompt(
   transcript: TranscriptMessage[],
 ): string {
   const { company, role, level, interviewType } = config;
-  const rubrics = getEvaluationRubrics();
+  const rubrics = getEvaluationRubrics(company);
   const values = getCompanyValues(company);
 
   const rubricKey = interviewType.replace(/-/g, "_");

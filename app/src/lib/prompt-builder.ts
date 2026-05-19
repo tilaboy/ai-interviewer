@@ -79,11 +79,11 @@ export function buildInterviewerPrompt(config: InterviewConfig): InterviewPrompt
   const persona = getCompanyPersona(company);
   const values = getCompanyValues(company);
   const loops = getInterviewLoops(company);
-  const rubrics = getEvaluationRubrics();
+  const rubrics = getEvaluationRubrics(company);
 
   // Map level to company-specific code (e.g. "mid" -> "E4" for Meta)
   const normLevel = resolveLevel(company, level);
-  const question = selectQuestion(interviewType, normLevel, role);
+  const question = selectQuestion(interviewType, normLevel, role, company);
 
   // Resolve interview round metadata for context
   const roleData = loops.roles?.[role.toUpperCase()];

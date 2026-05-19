@@ -1,0 +1,412 @@
+{
+  "meta": {
+    "description": "Amazon Leadership Principles behavioral interview questions - one per LP, STAR format with LP-specific probing follow-ups",
+    "sources": ["Amazon careers site", "Glassdoor Amazon interviews", "public LP interview prep resources"],
+    "last_updated": "2026-05-19",
+    "interview_format_notes": "Amazon behavioral interviews use the STAR method (Situation, Task, Action, Result). Interviewers are trained to probe deeply into each story. Each interviewer is typically assigned 2-3 LPs to assess. Candidates should prepare 2-3 stories per LP.",
+    "leadership_principles": [
+      "Customer Obsession",
+      "Ownership",
+      "Invent and Simplify",
+      "Are Right, A Lot",
+      "Learn and Be Curious",
+      "Hire and Develop the Best",
+      "Insist on the Highest Standards",
+      "Think Big",
+      "Bias for Action",
+      "Frugality",
+      "Earn Trust",
+      "Dive Deep",
+      "Have Backbone; Disagree and Commit",
+      "Deliver Results",
+      "Strive to be Earth's Best Employer",
+      "Success and Scale Bring Broad Responsibility"
+    ]
+  },
+  "questions": [
+    {
+      "id": "alp001",
+      "leadership_principle": "Customer Obsession",
+      "lp_description": "Leaders start with the customer and work backwards. They work vigorously to earn and keep customer trust. Although leaders pay attention to competitors, they obsess over customers.",
+      "category": "customer_obsession",
+      "target_levels": ["L4", "L5", "L6", "L7"],
+      "question": "Tell me about a time you went above and beyond for a customer, even when it wasn't the most efficient or cost-effective approach.",
+      "what_interviewer_looks_for": [
+        "Starts with customer needs, not business or technical constraints",
+        "Deep understanding of who the customer is and what they need",
+        "Willingness to make personal or team sacrifices for customer benefit",
+        "Concrete, measurable customer impact"
+      ],
+      "star_probing_follow_ups": {
+        "situation": ["Who was the customer? What was their pain point?", "How did you discover this need?"],
+        "task": ["What was your specific role?", "What were the constraints or competing priorities?"],
+        "action": ["Walk me through exactly what you did, step by step.", "What trade-offs did you make? What did you deprioritize?", "Did anyone push back on the customer-first approach?"],
+        "result": ["What was the measurable impact on the customer?", "How did this affect business metrics?", "What did the customer say or do as a result?", "What would you do differently?"]
+      },
+      "evaluation_rubric": {
+        "strong": "Demonstrates genuine customer empathy, not just following a process. Made difficult trade-offs in favor of the customer. Can quantify both customer impact and business impact.",
+        "weak": "Customer is abstract or unnamed. Actions were standard operating procedure, not going above and beyond. No measurable customer outcome."
+      }
+    },
+    {
+      "id": "alp002",
+      "leadership_principle": "Ownership",
+      "lp_description": "Leaders are owners. They think long term and don't sacrifice long-term value for short-term results. They act on behalf of the entire company, beyond just their own team. They never say 'that's not my job.'",
+      "category": "ownership",
+      "target_levels": ["L4", "L5", "L6", "L7"],
+      "question": "Tell me about a time you took on something significant that was outside your area of responsibility because you saw it needed to be done.",
+      "what_interviewer_looks_for": [
+        "Acts beyond their job description",
+        "Thinks about the company's interests, not just their team's",
+        "Long-term thinking over short-term convenience",
+        "Doesn't wait for permission to do the right thing"
+      ],
+      "star_probing_follow_ups": {
+        "situation": ["Why wasn't anyone else handling this?", "What was the risk of it not being addressed?"],
+        "task": ["What was your official responsibility at the time?", "How did you decide this was worth taking on?"],
+        "action": ["How did you balance this with your existing responsibilities?", "Did you need to get buy-in from your manager or the team that normally owns this?", "What specifically did you do that went beyond your role?"],
+        "result": ["What was the outcome for the team/company?", "Did this change how ownership was structured going forward?", "How did your manager react to you taking this on?"]
+      },
+      "evaluation_rubric": {
+        "strong": "Took on a genuinely important problem that was no one's responsibility. Thought about long-term implications, not just putting out a fire. Acted on behalf of the company, not for personal credit.",
+        "weak": "The example is really just doing their job well. Took on something minor or low-risk. Motivation was personal visibility, not company impact."
+      }
+    },
+    {
+      "id": "alp003",
+      "leadership_principle": "Invent and Simplify",
+      "lp_description": "Leaders expect and require innovation and invention from their teams, and always find ways to simplify. They are externally aware, look for new ideas from everywhere, and are not limited by 'not invented here.' As we do new things, we accept that we may be misunderstood for long periods of time.",
+      "category": "invent_and_simplify",
+      "target_levels": ["L4", "L5", "L6", "L7"],
+      "question": "Tell me about a time you found a simple solution to a seemingly complex problem. What made the simpler approach better?",
+      "what_interviewer_looks_for": [
+        "Ability to cut through complexity to find the core issue",
+        "Courage to challenge existing complex solutions",
+        "Creativity in approach, not just incremental improvement",
+        "Acceptance that simple solutions may initially be misunderstood"
+      ],
+      "star_probing_follow_ups": {
+        "situation": ["What was the complex problem or process?", "Why had previous solutions been complex?"],
+        "task": ["What were you asked to do?", "What was the expected approach?"],
+        "action": ["How did you arrive at the simpler solution?", "Did anyone resist the simpler approach? Why?", "What complexity did you intentionally remove, and how did you validate it was safe to remove?"],
+        "result": ["How much simpler was the final solution? Can you quantify it (lines of code, steps, latency, cost)?", "Did the simpler solution hold up over time?", "What feedback did you get from the team?"]
+      },
+      "evaluation_rubric": {
+        "strong": "Identified a genuinely simpler approach that others had missed. Can explain why the complex approach existed and why simpler was better. Quantifies the simplification. Solution was adopted and held up.",
+        "weak": "The 'simple' solution was obvious and no one had tried because it was wrong or incomplete. Or the simplification traded off important qualities (reliability, scalability) without acknowledging it."
+      }
+    },
+    {
+      "id": "alp004",
+      "leadership_principle": "Are Right, A Lot",
+      "lp_description": "Leaders are right a lot. They have strong judgment and good instincts. They seek diverse perspectives and work to disconfirm their beliefs.",
+      "category": "are_right_a_lot",
+      "target_levels": ["L5", "L6", "L7"],
+      "question": "Tell me about a time you made a judgment call that turned out to be correct, even though many people initially disagreed with you. How did you build conviction?",
+      "what_interviewer_looks_for": [
+        "Strong analytical thinking leading to a non-obvious conclusion",
+        "Actively sought diverse perspectives before deciding",
+        "Sought to disconfirm their own belief, not just confirm it",
+        "Calibrated confidence: strong conviction, loosely held"
+      ],
+      "star_probing_follow_ups": {
+        "situation": ["What was the decision, and what was the conventional wisdom?", "What data was available?"],
+        "task": ["What was your role in making this decision?", "What were the stakes?"],
+        "action": ["What analysis or data led you to your conclusion?", "Whose perspectives did you seek? Did you specifically look for people who would disagree?", "What would have changed your mind?", "How did you communicate your position to skeptics?"],
+        "result": ["How did you know you were right?", "What was the impact of being right?", "Can you give me an example of a similar situation where you turned out to be wrong? What was different?"]
+      },
+      "evaluation_rubric": {
+        "strong": "Formed a rigorous, data-informed view. Actively sought disconfirming evidence. Can articulate what would have changed their mind. Also shares a counter-example of being wrong, showing calibration.",
+        "weak": "Got lucky rather than demonstrating good judgment. Didn't seek diverse perspectives. Can't explain their reasoning process. No self-awareness about when they've been wrong."
+      }
+    },
+    {
+      "id": "alp005",
+      "leadership_principle": "Learn and Be Curious",
+      "lp_description": "Leaders are never done learning and always seek to improve themselves. They are curious about new possibilities and act to explore them.",
+      "category": "learn_and_be_curious",
+      "target_levels": ["L4", "L5", "L6"],
+      "question": "Tell me about a time your curiosity led you to explore something that ended up creating significant value for your team or company.",
+      "what_interviewer_looks_for": [
+        "Genuine intellectual curiosity, not just task-driven learning",
+        "Self-directed exploration beyond what was required",
+        "Connecting dots between different domains or fields",
+        "Translating curiosity into tangible value"
+      ],
+      "star_probing_follow_ups": {
+        "situation": ["What sparked your curiosity?", "Was this related to your current work or completely tangential?"],
+        "task": ["Did anyone ask you to explore this, or was it self-directed?", "How did you carve out time for it alongside your regular work?"],
+        "action": ["What was your learning process?", "How deep did you go? How did you decide when you had learned enough?", "How did you connect what you learned to your team's work?"],
+        "result": ["What value did this create?", "Was the value immediate or did it pay off over a longer period?", "How has this changed your approach to learning and exploration?"]
+      },
+      "evaluation_rubric": {
+        "strong": "Curiosity was genuine and self-directed, not assigned. Explored deeply enough to generate real insight. Successfully translated learning into value. Shows a pattern of curiosity, not a one-off.",
+        "weak": "Learned something because they had to for a project (that's just doing your job). Surface-level exploration. Can't connect the learning to concrete value."
+      }
+    },
+    {
+      "id": "alp006",
+      "leadership_principle": "Hire and Develop the Best",
+      "lp_description": "Leaders raise the performance bar with every hire and promotion. They recognize exceptional talent, and willingly move them throughout the organization. Leaders develop leaders and take seriously their role in coaching others.",
+      "category": "hire_and_develop_the_best",
+      "target_levels": ["L5", "L6", "L7"],
+      "question": "Tell me about a time you identified and developed someone on your team who went on to significantly exceed expectations. What did you see in them and what did you do?",
+      "what_interviewer_looks_for": [
+        "Ability to spot talent and potential beyond current performance",
+        "Active investment in others' growth with tailored approaches",
+        "Willingness to give stretch assignments and support risk-taking",
+        "Measuring success by the growth of their people"
+      ],
+      "star_probing_follow_ups": {
+        "situation": ["What was this person's starting point?", "What potential did you see that others might have missed?"],
+        "task": ["What was your development goal for them?", "What challenges did they face?"],
+        "action": ["What specific development actions did you take?", "How did you tailor your coaching to this individual?", "What stretch assignments or opportunities did you create for them?", "How did you balance support with letting them struggle productively?"],
+        "result": ["Where is this person now?", "What did they accomplish that exceeded expectations?", "What did you learn about developing talent from this experience?"]
+      },
+      "evaluation_rubric": {
+        "strong": "Identified specific potential in someone, created a tailored development plan, gave stretch opportunities with appropriate support. The person's growth is clearly attributable to the leader's investment. Shows pattern of developing multiple people.",
+        "weak": "The person was already high-performing and just needed to be left alone. Development was generic (sent to a training). Can only give one example."
+      }
+    },
+    {
+      "id": "alp007",
+      "leadership_principle": "Insist on the Highest Standards",
+      "lp_description": "Leaders have relentlessly high standards — many people may think these standards are unreasonably high. Leaders are continually raising the bar and drive their teams to deliver high-quality products, services, and processes.",
+      "category": "insist_on_highest_standards",
+      "target_levels": ["L4", "L5", "L6", "L7"],
+      "question": "Tell me about a time you refused to accept a deliverable or outcome that met the stated requirements but didn't meet your quality bar. What did you do?",
+      "what_interviewer_looks_for": [
+        "High personal quality bar that goes beyond what is asked",
+        "Ability to articulate why higher standards matter",
+        "Constructive approach to raising the bar (not just criticizing)",
+        "Balancing high standards with pragmatism and deadlines"
+      ],
+      "star_probing_follow_ups": {
+        "situation": ["What was the deliverable and what was wrong with it?", "What was the stated requirement vs your expectation?"],
+        "task": ["Why did you feel the current quality was insufficient?", "What was the risk of shipping at the current quality level?"],
+        "action": ["How did you communicate your concerns to the team?", "How did you help the team achieve the higher standard (not just demand it)?", "Was there a deadline pressure? How did you balance quality vs speed?"],
+        "result": ["What was the final quality level?", "What was the impact of the higher standard?", "Did the team internalize the higher bar, or did it feel imposed?"]
+      },
+      "evaluation_rubric": {
+        "strong": "Identified a specific quality gap that had real consequences. Helped the team reach the higher bar rather than just demanding it. Found a way to balance quality with delivery. Team internalized the higher standard.",
+        "weak": "Perfectionism for its own sake with no clear customer or business impact. Imposed standards without helping. Couldn't balance quality with delivery timelines."
+      }
+    },
+    {
+      "id": "alp008",
+      "leadership_principle": "Think Big",
+      "lp_description": "Thinking small is a self-fulfilling prophecy. Leaders create and communicate a bold direction that inspires results. They think differently and look around corners for ways to serve customers.",
+      "category": "think_big",
+      "target_levels": ["L5", "L6", "L7"],
+      "question": "Tell me about a time you proposed a bold vision or idea that was significantly larger in scope than what was originally planned. How did you champion it?",
+      "what_interviewer_looks_for": [
+        "Ability to think beyond incremental improvements",
+        "Vision that connects to real customer or business needs",
+        "Courage to propose something ambitious",
+        "Practical plan to make the big idea achievable"
+      ],
+      "star_probing_follow_ups": {
+        "situation": ["What was the original plan or scope?", "What made you think bigger was necessary?"],
+        "task": ["What was your role? Were you expected to think at this level?"],
+        "action": ["How did you develop the bigger vision?", "How did you sell it to leadership and your team?", "How did you break the big vision into achievable milestones?", "What resistance did you face?"],
+        "result": ["What was achieved?", "How much bigger was the actual impact compared to the original plan?", "What would you do differently to think even bigger?"]
+      },
+      "evaluation_rubric": {
+        "strong": "Identified a genuine opportunity to expand scope in a way that created disproportionate value. Had a credible plan to execute the bigger vision. Inspired others around the vision. Delivered meaningful results.",
+        "weak": "The 'big thinking' was just scope creep without strategic rationale. Vision was disconnected from customer needs. No execution plan. Didn't actually deliver on the big vision."
+      }
+    },
+    {
+      "id": "alp009",
+      "leadership_principle": "Bias for Action",
+      "lp_description": "Speed matters in business. Many decisions and actions are reversible and do not need extensive study. We value calculated risk taking.",
+      "category": "bias_for_action",
+      "target_levels": ["L4", "L5", "L6"],
+      "question": "Tell me about a time you took a calculated risk and moved forward on something important without having all the information you wanted. What was the outcome?",
+      "what_interviewer_looks_for": [
+        "Ability to distinguish reversible from irreversible decisions",
+        "Speed of decision-making when appropriate",
+        "Calculated risk-taking, not recklessness",
+        "Course-correction when new information emerged"
+      ],
+      "star_probing_follow_ups": {
+        "situation": ["What was the decision and what was at stake?", "What information was missing?"],
+        "task": ["Why couldn't you wait for more information?", "What was the cost of delay?"],
+        "action": ["How did you assess the risk?", "What was your plan to course-correct if you were wrong?", "Was this a one-way or two-way door decision?", "How quickly did you move once you decided?"],
+        "result": ["What happened?", "Did you need to course-correct? How?", "What did you learn about when to act fast vs when to slow down?"]
+      },
+      "evaluation_rubric": {
+        "strong": "Made a sound risk assessment, moved quickly on a genuinely time-sensitive decision, had a clear rollback plan, and learned from the outcome. Understands two-way door concept.",
+        "weak": "Acted impulsively without risk assessment. Or the 'bias for action' was on something that wasn't time-sensitive. No rollback plan."
+      }
+    },
+    {
+      "id": "alp010",
+      "leadership_principle": "Frugality",
+      "lp_description": "Accomplish more with less. Constraints breed resourcefulness, self-sufficiency, and invention. There are no extra points for growing headcount, budget size, or fixed expense.",
+      "category": "frugality",
+      "target_levels": ["L4", "L5", "L6"],
+      "question": "Tell me about a time you achieved a significant result with far fewer resources than expected. How did constraints drive your approach?",
+      "what_interviewer_looks_for": [
+        "Creativity under resource constraints",
+        "Doing more with less as a deliberate strategy, not just necessity",
+        "Prioritization: focus on what matters most",
+        "Not confusing frugality with under-investing"
+      ],
+      "star_probing_follow_ups": {
+        "situation": ["What were the constraints? Budget, headcount, time, or tools?", "What was the expected resource level for this kind of project?"],
+        "task": ["What outcome were you trying to achieve?", "Did you have the option to ask for more resources?"],
+        "action": ["How did the constraint change your approach?", "What did you cut or simplify?", "What creative workarounds did you find?", "How did you decide what to invest in vs what to skip?"],
+        "result": ["What was the outcome compared to expectations?", "Was the frugal approach sustainable, or did it create tech debt?", "What would you have done with more resources?"]
+      },
+      "evaluation_rubric": {
+        "strong": "Achieved a strong result with genuinely limited resources through creative problem-solving and prioritization. Constraint led to a better solution, not just a cheaper one. Sustainable approach.",
+        "weak": "Cut corners rather than finding a better approach. The frugal approach created significant tech debt or quality issues. Or the 'constraint' was normal resourcing."
+      }
+    },
+    {
+      "id": "alp011",
+      "leadership_principle": "Earn Trust",
+      "lp_description": "Leaders listen attentively, speak candidly, and treat others respectfully. They are vocally self-critical, even when doing so is awkward or embarrassing. Leaders do not believe their or their team's body odor smells of perfume. They benchmark themselves and their teams against the best.",
+      "category": "earn_trust",
+      "target_levels": ["L4", "L5", "L6", "L7"],
+      "question": "Tell me about a time you had to deliver uncomfortable or critical feedback to a peer, stakeholder, or leader. How did you approach it?",
+      "what_interviewer_looks_for": [
+        "Candor combined with respect",
+        "Vocal self-criticism: willing to acknowledge own mistakes first",
+        "Listening before speaking",
+        "Building trust through honesty, not just agreement"
+      ],
+      "star_probing_follow_ups": {
+        "situation": ["What was the feedback and why was it uncomfortable?", "What was your relationship with this person?"],
+        "task": ["Why did you feel this feedback needed to be given?", "What was the risk of not giving it?"],
+        "action": ["How did you prepare for the conversation?", "How did you deliver the feedback? What words did you use?", "How did you listen to their perspective?", "Did you acknowledge any of your own shortcomings in the situation?"],
+        "result": ["How did the person respond?", "Did the relationship improve or suffer?", "Did the feedback lead to a change?", "What did you learn about giving difficult feedback?"]
+      },
+      "evaluation_rubric": {
+        "strong": "Delivered honest, specific, constructive feedback with empathy. Acknowledged their own role in the situation. Listened actively. The relationship and the outcome both improved. Pattern of candid communication.",
+        "weak": "Avoided the hard feedback, sugarcoated it beyond usefulness, or delivered it harshly. Didn't listen to the other side. Relationship was damaged. No self-criticism."
+      }
+    },
+    {
+      "id": "alp012",
+      "leadership_principle": "Dive Deep",
+      "lp_description": "Leaders operate at all levels, stay connected to the details, audit frequently, and are skeptical when metrics and anecdote differ. No task is beneath them.",
+      "category": "dive_deep",
+      "target_levels": ["L5", "L6", "L7"],
+      "question": "Tell me about a time you discovered something important by diving into the details that everyone else had overlooked. What made you dig deeper?",
+      "what_interviewer_looks_for": [
+        "Willingness to get into the details regardless of seniority",
+        "Healthy skepticism when data doesn't match the narrative",
+        "Systematic investigation process",
+        "Knowing when surface-level understanding is insufficient"
+      ],
+      "star_probing_follow_ups": {
+        "situation": ["What was the surface-level narrative?", "What triggered your suspicion that something was off?"],
+        "task": ["What were you responsible for?", "Did others think diving deeper was necessary?"],
+        "action": ["How did you investigate? What data did you look at?", "How deep did you go? At what level of detail?", "What did you find that others had missed?", "How did you validate your findings?"],
+        "result": ["What was the impact of your discovery?", "What would have happened if no one had dug deeper?", "How did this change the team's approach to detail?"]
+      },
+      "evaluation_rubric": {
+        "strong": "Noticed a meaningful discrepancy, investigated systematically, found a root cause that had real impact. The discovery prevented a significant problem or unlocked an opportunity. Shows a pattern of appropriate deep-diving.",
+        "weak": "Dove deep on something trivial. Investigation was unsystematic. The 'discovery' was something that would have been found through normal processes."
+      }
+    },
+    {
+      "id": "alp013",
+      "leadership_principle": "Have Backbone; Disagree and Commit",
+      "lp_description": "Leaders are obligated to respectfully challenge decisions when they disagree, even when doing so is uncomfortable or exhausting. Leaders have conviction and are tenacious. They do not compromise for the sake of social cohesion. Once a decision is determined, they commit wholly.",
+      "category": "have_backbone_disagree_and_commit",
+      "target_levels": ["L5", "L6", "L7"],
+      "question": "Tell me about a time you strongly disagreed with a decision made by your team or leadership. How did you handle the disagreement, and what did you do after the final decision was made?",
+      "what_interviewer_looks_for": [
+        "Courage to voice dissent respectfully",
+        "Data and logic backing the disagreement, not just opinion",
+        "Genuine commitment to the decision once made, even if they still disagree",
+        "No passive-aggressive undermining after committing"
+      ],
+      "star_probing_follow_ups": {
+        "situation": ["What was the decision and why did you disagree?", "Who made the decision?"],
+        "task": ["What was at stake?", "Did you feel obligated to voice your dissent?"],
+        "action": ["How did you express your disagreement?", "What data or evidence did you present?", "How many times did you push back before accepting the decision?", "Once the decision was final, what specifically did you do to commit?"],
+        "result": ["What was the outcome?", "Were you right or wrong in your original disagreement?", "How did you feel about committing to something you disagreed with?", "Would you disagree again in the same situation?"]
+      },
+      "evaluation_rubric": {
+        "strong": "Voiced a principled, data-backed disagreement respectfully and persistently. Once the decision was made, committed fully and executed with energy. Can describe examples of being right and being wrong. No bitterness.",
+        "weak": "Didn't actually disagree openly (just complained privately), or couldn't commit after the decision. Passive-aggressively undermined the decision. Only has examples where they were right."
+      }
+    },
+    {
+      "id": "alp014",
+      "leadership_principle": "Deliver Results",
+      "lp_description": "Leaders focus on the key inputs for their business and deliver them with the right quality and in a timely fashion. Despite setbacks, they rise to the occasion and never settle.",
+      "category": "deliver_results",
+      "target_levels": ["L4", "L5", "L6", "L7"],
+      "question": "Tell me about the most challenging goal you've delivered on. What obstacles did you face and how did you overcome them to deliver?",
+      "what_interviewer_looks_for": [
+        "Relentless focus on outcomes, not just activities",
+        "Ability to overcome significant obstacles",
+        "Adaptability when the plan doesn't survive contact with reality",
+        "Delivering quality results, not just checking the box"
+      ],
+      "star_probing_follow_ups": {
+        "situation": ["What was the goal and why was it challenging?", "What was the timeline?"],
+        "task": ["What was your role and what were you accountable for?", "What did success look like?"],
+        "action": ["What obstacles did you encounter?", "How did you adjust your approach when things went wrong?", "What did you do when it looked like you might miss the goal?", "What did you sacrifice or trade off to deliver?"],
+        "result": ["Did you deliver? On time? At the expected quality level?", "What was the business impact?", "What would you do differently next time?", "What did you learn about your own resilience?"]
+      },
+      "evaluation_rubric": {
+        "strong": "Overcame genuine, significant obstacles to deliver a high-quality result. Adapted approach as needed. Didn't just work harder — worked smarter. Clear, measurable business impact.",
+        "weak": "The goal was not genuinely challenging, or they simply worked extra hours (brute force, not strategy). Delivered but at poor quality. No real obstacles overcome."
+      }
+    },
+    {
+      "id": "alp015",
+      "leadership_principle": "Strive to be Earth's Best Employer",
+      "lp_description": "Leaders work every day to create a safer, more productive, higher performing, more diverse, and more just work environment. They lead with empathy, have fun at work, and make it easy for others to have fun. Leaders ask themselves: Are my fellow employees growing? Are they empowered? Are they ready for what's next? Leaders have a vision for and commitment to their employees' personal success, whether that be at Amazon or elsewhere.",
+      "category": "strive_to_be_earths_best_employer",
+      "target_levels": ["L5", "L6", "L7"],
+      "question": "Tell me about a time you made a significant change to improve the working environment, culture, or experience for your team. What motivated you and what was the impact?",
+      "what_interviewer_looks_for": [
+        "Genuine care for team members' well-being and growth",
+        "Proactive action, not just responding to complaints",
+        "Systemic improvements, not just one-off gestures",
+        "Empathy and fun, not just productivity"
+      ],
+      "star_probing_follow_ups": {
+        "situation": ["What was the working environment like before?", "What told you something needed to change?"],
+        "task": ["What improvement did you want to make?", "Did anyone else recognize the need?"],
+        "action": ["What specifically did you change?", "How did you involve the team in the solution?", "How did you ensure the change was sustainable, not a one-time fix?", "How did you handle people who were resistant to the change?"],
+        "result": ["How did the team's experience change?", "Can you measure the impact (retention, engagement, productivity)?", "Is the change still in place today?", "What feedback did you receive?"]
+      },
+      "evaluation_rubric": {
+        "strong": "Identified a systemic issue in team experience, took proactive action, involved the team in the solution, and created lasting improvement. Can measure impact beyond anecdote. Shows empathy and genuine care.",
+        "weak": "Change was superficial (team lunch, not systemic). Didn't involve the team. Improvement was short-lived. Motivated by looking good as a manager, not genuine care."
+      }
+    },
+    {
+      "id": "alp016",
+      "leadership_principle": "Success and Scale Bring Broad Responsibility",
+      "lp_description": "We started in a garage, but we're not there anymore. We are big, we impact the world, and we are far from perfect. We must be humble and thoughtful about even the secondary effects of our actions. Our local communities, planet, and future generations need us to be better every day. We must begin each day with a determination to make better, do better, and be better for our customers, our employees, our partners, and the world at large. And we must end every day knowing we can do even more tomorrow. Leaders create more than they consume and always leave things better than how they found them.",
+      "category": "success_and_scale_bring_broad_responsibility",
+      "target_levels": ["L6", "L7"],
+      "question": "Tell me about a time you considered the broader impact of a technical or business decision beyond the immediate problem. How did thinking about secondary effects change your approach?",
+      "what_interviewer_looks_for": [
+        "Awareness of secondary and tertiary effects of decisions",
+        "Humility about the reach and impact of their work",
+        "Balancing business goals with broader responsibility",
+        "Leaving things better than they found them"
+      ],
+      "star_probing_follow_ups": {
+        "situation": ["What was the decision?", "What broader impacts were at stake (community, environment, future teams, industry)?"],
+        "task": ["What was the primary goal?", "When did you start thinking about broader impacts — from the beginning or later?"],
+        "action": ["How did you identify the secondary effects?", "How did you weigh business goals against broader responsibility?", "What did you change in your approach based on this thinking?", "Did you need to advocate for the responsible approach against pressure for speed or cost?"],
+        "result": ["What was the outcome — both for the primary goal and the broader impact?", "Did your awareness of broader responsibility slow you down or make the result better?", "How has this experience shaped how you think about scale and responsibility?"]
+      },
+      "evaluation_rubric": {
+        "strong": "Proactively identified meaningful secondary effects, adjusted approach to address them, and achieved both the primary goal and the broader good. Shows humility about the scale of impact. Pattern of thinking beyond the immediate problem.",
+        "weak": "Broader thinking was an afterthought or PR exercise. Identified secondary effects but didn't actually change anything. Only thought about it because someone else raised the concern."
+      }
+    }
+  ]
+}

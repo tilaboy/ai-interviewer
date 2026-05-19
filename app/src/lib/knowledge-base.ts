@@ -147,7 +147,14 @@ export function getInterviewLoops(company: string): InterviewLoops {
   return loadJson<InterviewLoops>(companyPath(company, "interview_loops.json"));
 }
 
-export function getEvaluationRubrics(): EvaluationRubrics {
+export function getEvaluationRubrics(company?: string): EvaluationRubrics {
+  // Try company-specific rubrics first, fall back to top-level
+  if (company) {
+    const companyRubricPath = companyPath(company, "evaluation_rubrics.json");
+    try {
+      return loadJson<EvaluationRubrics>(companyRubricPath);
+    } catch { /* fall through to default */ }
+  }
   return loadJson<EvaluationRubrics>(
     path.join(KNOWLEDGE_BASE_ROOT, "evaluation_rubrics.json"),
   );
@@ -157,36 +164,80 @@ export function getQuestions(interviewType: string): QuestionsFile {
   return loadJson<QuestionsFile>(questionsPath(interviewType));
 }
 
+/**
+ * Load all question files for a given interview type, including
+ * company-specific and role-specific supplements.
+ */
+function getAllQuestions(
+  interviewType: string,
+  company: string,
+  role: string,
+): Question[] {
+  const baseFile = getQuestions(interviewType);
+  const questions = [...baseFile.questions];
+
+  // Load company-specific behavioral questions
+  if (interviewType === "behavioral") {
+    const companyFiles: Record<string, string> = {
+      google: "google_behavioral.json",
+      amazon: "amazon_lp_questions.json",
+    };
+    const extra = companyFiles[company.toLowerCase()];
+    if (extra) {
+      const extraPath = path.join(
+        KNOWLEDGE_BASE_ROOT, "questions", "behavioral", extra,
+      );
+      try {
+        const extraFile = loadJson<QuestionsFile>(extraPath);
+        questions.push(...extraFile.questions);
+      } catch { /* file may not exist */ }
+    }
+  }
+
+  // Load SQL questions for DE coding interviews
+  if (interviewType === "coding" && role.toLowerCase() === "de") {
+    const sqlPath = path.join(
+      KNOWLEDGE_BASE_ROOT, "questions", "coding", "sql_questions.json",
+    );
+    try {
+      const sqlFile = loadJson<QuestionsFile>(sqlPath);
+      questions.push(...sqlFile.questions);
+    } catch { /* file may not exist */ }
+  }
+
+  return questions;
+}
+
 // ---------------------------------------------------------------------------
 // Question selector
 // ---------------------------------------------------------------------------
 
 /**
- * Select a random question that is appropriate for the given level and role.
+ * Select a random question appropriate for the given level, role, and company.
  *
- * Filtering rules:
- *   1. If the question has `target_levels`, it must include the requested level.
- *   2. If the question has `target_roles`, it must include the requested role.
- *   3. Otherwise the question is considered a wildcard and always eligible.
- *
- * Falls back to a random question from the full pool if no filtered match.
+ * Filtering:
+ *   1. Loads base + company-specific + role-specific question pools.
+ *   2. Filters by target_levels if present.
+ *   3. Filters by target_roles if present.
+ *   4. Falls back to the full pool if no filtered match.
  */
 export function selectQuestion(
   interviewType: string,
   level: string,
-  _role: string,
+  role: string,
+  company?: string,
 ): Question {
-  const file = getQuestions(interviewType);
-  const questions = file.questions;
+  const questions = getAllQuestions(interviewType, company ?? "meta", role);
 
-  // Normalise level to upper-case (e.g. "e4" -> "E4")
   const normLevel = level.toUpperCase();
+  const normRole = role.toUpperCase();
 
   const eligible = questions.filter((q) => {
-    if (q.target_levels && q.target_levels.length > 0) {
-      return q.target_levels.includes(normLevel);
-    }
-    return true;
+    const levelOk = !q.target_levels || q.target_levels.length === 0 ||
+      q.target_levels.includes(normLevel);
+    const roleOk = !q.target_roles || (q.target_roles as string[]).length === 0 ||
+      (q.target_roles as string[]).some(r => r.toUpperCase() === normRole);
+    return levelOk && roleOk;
   });
 
   const pool = eligible.length > 0 ? eligible : questions;

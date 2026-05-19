@@ -4,9 +4,39 @@ import { useState, useCallback, useEffect, useRef, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Chat from '@/components/Chat'
 import Timer from '@/components/Timer'
+import CodeEditor from '@/components/CodeEditor'
+import SplitPane from '@/components/SplitPane'
 import type { Message } from '@/types/message'
 
 const INTERVIEW_DURATION_SECONDS = 45 * 60
+
+const DEFAULT_CODE_BY_LANGUAGE: Record<string, string> = {
+  python: '# Write your solution here\n\n',
+  javascript: '// Write your solution here\n\n',
+  typescript: '// Write your solution here\n\n',
+  java: '// Write your solution here\n\npublic class Solution {\n    \n}\n',
+  cpp: '// Write your solution here\n#include <bits/stdc++.h>\nusing namespace std;\n\n',
+  go: '// Write your solution here\npackage main\n\n',
+}
+
+function isCodingType(type: string): boolean {
+  return type === 'coding' || type === 'ai_native_coding'
+}
+
+function isDesignType(type: string): boolean {
+  return type === 'system_design' || type === 'ml_design'
+}
+
+/**
+ * Formats the candidate message to include current code context for coding interviews.
+ */
+function buildCodeContextMessage(
+  text: string,
+  code: string,
+  language: string
+): string {
+  return `[Current code]\n\`\`\`${language}\n${code}\n\`\`\`\n\n[Candidate message]\n${text}`
+}
 
 function InterviewContent() {
   const searchParams = useSearchParams()
@@ -23,7 +53,23 @@ function InterviewContent() {
   const [interviewEnded, setInterviewEnded] = useState(false)
   const initialized = useRef(false)
 
+  // Code editor state (only used for coding interview types)
+  const [code, setCode] = useState(DEFAULT_CODE_BY_LANGUAGE['python'])
+  const [language, setLanguage] = useState('python')
+
   const config = { company, role, level, interviewType }
+
+  const handleLanguageChange = useCallback(
+    (newLanguage: string) => {
+      // If the current code is still the default for the old language, swap to the new default
+      const oldDefault = DEFAULT_CODE_BY_LANGUAGE[language] ?? ''
+      if (code === oldDefault || code.trim() === '') {
+        setCode(DEFAULT_CODE_BY_LANGUAGE[newLanguage] ?? '')
+      }
+      setLanguage(newLanguage)
+    },
+    [code, language]
+  )
 
   // Fetch initial interviewer greeting on mount
   useEffect(() => {
@@ -75,10 +121,15 @@ function InterviewContent() {
     async (text: string) => {
       if (interviewEnded) return
 
+      // For coding interviews, include code context in the API message
+      const apiContent = isCodingType(interviewType)
+        ? buildCodeContextMessage(text, code, language)
+        : text
+
       const candidateMessage: Message = {
         id: crypto.randomUUID(),
         role: 'candidate',
-        content: text,
+        content: text, // Display the original message in the chat UI
         timestamp: new Date(),
       }
 
@@ -86,10 +137,15 @@ function InterviewContent() {
       setIsLoading(true)
 
       // Build conversation history for the API (map to user/assistant roles)
-      const apiMessages = [...messages, candidateMessage].map((m) => ({
+      // For past messages, use the stored content. For the new message, use apiContent.
+      const apiMessages = [...messages].map((m) => ({
         role: m.role === 'candidate' ? ('user' as const) : ('assistant' as const),
         content: m.content,
       }))
+      apiMessages.push({
+        role: 'user' as const,
+        content: apiContent,
+      })
 
       try {
         const res = await fetch('/api/chat', {
@@ -127,7 +183,7 @@ function InterviewContent() {
         setIsLoading(false)
       }
     },
-    [messages, config, interviewEnded]
+    [messages, config, interviewEnded, interviewType, code, language]
   )
 
   const handleTimeUp = useCallback(() => {
@@ -157,16 +213,69 @@ function InterviewContent() {
     sessionStorage.setItem('interview_transcript', JSON.stringify(transcript))
     sessionStorage.setItem('interview_config', JSON.stringify(config))
 
+    // For coding interviews, also store the final code
+    if (isCodingType(interviewType)) {
+      sessionStorage.setItem(
+        'interview_code',
+        JSON.stringify({ language, code })
+      )
+    }
+
     router.push('/feedback')
-  }, [messages, config, router])
+  }, [messages, config, router, interviewType, language, code])
 
   const displayCompany = company.charAt(0).toUpperCase() + company.slice(1)
   const displayType = interviewType.replace(/_/g, ' ')
 
+  // Determine layout based on interview type
+  const showSplitPane = isCodingType(interviewType) || isDesignType(interviewType)
+
+  const chatPanel = (
+    <Chat
+      messages={messages}
+      onSendMessage={handleSendMessage}
+      isLoading={isLoading}
+    />
+  )
+
+  const leftPanel = isCodingType(interviewType) ? (
+    <CodeEditor
+      language={language}
+      code={code}
+      onChange={setCode}
+      onLanguageChange={handleLanguageChange}
+      readOnly={interviewEnded}
+    />
+  ) : isDesignType(interviewType) ? (
+    <div className="flex items-center justify-center h-full bg-gray-900">
+      <div className="text-center px-6">
+        <svg
+          className="w-16 h-16 text-gray-600 mx-auto mb-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"
+          />
+        </svg>
+        <p className="text-gray-400 text-sm font-medium">
+          Drawing canvas coming in Phase 3
+        </p>
+        <p className="text-gray-500 text-xs mt-2">
+          For now, describe your design in the chat panel
+        </p>
+      </div>
+    </div>
+  ) : null
+
   return (
     <div className="flex flex-col h-screen bg-gray-900 text-gray-100">
       <header className="flex-shrink-0 border-b border-gray-700 bg-gray-800">
-        <div className="flex items-center justify-between px-4 py-3 max-w-4xl mx-auto w-full">
+        <div className="flex items-center justify-between px-4 py-3 w-full">
           <div className="min-w-0">
             <h1 className="text-sm font-semibold text-gray-100 truncate">
               {displayCompany} &middot; {role.toUpperCase()}
@@ -192,12 +301,18 @@ function InterviewContent() {
         </div>
       </header>
 
-      <main className="flex-1 overflow-hidden max-w-4xl mx-auto w-full">
-        <Chat
-          messages={messages}
-          onSendMessage={handleSendMessage}
-          isLoading={isLoading}
-        />
+      <main className="flex-1 overflow-hidden">
+        {showSplitPane && leftPanel ? (
+          <SplitPane
+            left={leftPanel}
+            right={chatPanel}
+            defaultSplit={55}
+            leftLabel={isCodingType(interviewType) ? 'Code' : 'Design'}
+            rightLabel="Chat"
+          />
+        ) : (
+          <div className="max-w-4xl mx-auto w-full h-full">{chatPanel}</div>
+        )}
       </main>
     </div>
   )

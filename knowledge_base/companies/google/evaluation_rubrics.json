@@ -1,0 +1,513 @@
+{
+  "meta": {
+    "description": "What Google interviewers look for: positive and negative signals by interview type and level",
+    "last_updated": "2026-05-19"
+  },
+  "coding": {
+    "dimensions": [
+      {
+        "name": "Problem Solving & Algorithm Design",
+        "weight": "high",
+        "positive_signals": [
+          "Clarifies problem thoroughly — asks about constraints, input format, edge cases before coding",
+          "Reasons from first principles rather than pattern-matching to a memorized solution",
+          "Explores multiple approaches and articulates trade-offs before committing",
+          "Identifies optimal time/space complexity and can prove why it's optimal",
+          "Breaks complex problems into clean sub-problems with clear invariants",
+          "Demonstrates strong mathematical reasoning when relevant (combinatorics, graph theory, number theory)",
+          "Adapts approach fluidly when interviewer adds constraints or follow-ups",
+          "Handles the single problem deeply — explores variations, optimizations, and generalizations"
+        ],
+        "negative_signals": [
+          "Jumps to coding without understanding the problem deeply",
+          "Recognizes a pattern but can't explain why it works — rote memorization",
+          "Gets stuck on one approach and can't pivot even with hints",
+          "Cannot analyze time/space complexity of own solution",
+          "Misses edge cases even after prompting",
+          "Cannot extend solution when interviewer poses a follow-up variation",
+          "Skips mathematical reasoning and guesses at correctness"
+        ]
+      },
+      {
+        "name": "Code Quality",
+        "weight": "medium",
+        "positive_signals": [
+          "Clean, readable code with descriptive variable and function names",
+          "Modular design — extracts helper functions naturally",
+          "Consistent style and clear control flow",
+          "Handles edge cases in the code, not just verbally",
+          "Code compiles and runs correctly on first or second attempt",
+          "Uses language idioms and standard library effectively",
+          "Chooses appropriate data structures with clear reasoning"
+        ],
+        "negative_signals": [
+          "Messy code with deeply nested logic and unclear control flow",
+          "Single-letter variable names throughout",
+          "Numerous syntax errors or code that wouldn't compile",
+          "Copy-paste duplication instead of abstraction",
+          "Ignores error cases and boundary conditions in code",
+          "Over-engineers with unnecessary abstractions for a 45-minute interview"
+        ]
+      },
+      {
+        "name": "Communication & Thought Process",
+        "weight": "medium-high",
+        "positive_signals": [
+          "Thinks aloud clearly — interviewer can follow the reasoning at every step",
+          "Explains the 'why' behind each decision, not just the 'what'",
+          "Asks precise clarifying questions that demonstrate understanding",
+          "Discusses trade-offs between approaches articulately",
+          "Responds to hints constructively — integrates them into reasoning",
+          "Walks through examples and traces code execution to verify correctness",
+          "Engages the interviewer as a collaborator — the discussion feels like pair programming"
+        ],
+        "negative_signals": [
+          "Long silences — interviewer cannot follow what the candidate is thinking",
+          "Cannot explain own code when asked",
+          "Ignores or dismisses interviewer hints and nudges",
+          "Becomes defensive when approach is questioned",
+          "Over-explains trivial details, glosses over complex decisions"
+        ]
+      },
+      {
+        "name": "Testing & Verification",
+        "weight": "medium",
+        "positive_signals": [
+          "Proactively tests with normal, edge, and adversarial cases",
+          "Dry-runs code mentally or on the whiteboard before declaring done",
+          "Catches own bugs during code review",
+          "Proposes how they would formally verify correctness (loop invariants, induction)",
+          "Considers stress testing and performance edge cases"
+        ],
+        "negative_signals": [
+          "Declares 'done' without testing",
+          "Only tests the happy path example",
+          "Cannot find bugs when interviewer points to a problematic area",
+          "No awareness of potential failure modes"
+        ]
+      }
+    ],
+    "level_calibration": {
+      "L3": "Solve one medium problem thoroughly with optimal solution. Clear communication of reasoning. Minor hints OK. Demonstrate foundational CS knowledge.",
+      "L4": "Solve one hard or one medium with deep follow-ups. Reach optimal solution with clean code. Strong first-principles reasoning. Drive the problem exploration.",
+      "L5": "Solve hards efficiently with elegant code. Deep discussion of trade-offs, complexity proofs, and generalizations. Interviewer learns something from the conversation.",
+      "L6": "Solve hards with multiple approaches. Discuss system-level implications of algorithmic choices. Demonstrate research-level thinking. Mentor-quality explanations."
+    }
+  },
+  "behavioral": {
+    "dimensions": [
+      {
+        "name": "Googleyness",
+        "weight": "high",
+        "positive_signals": [
+          "Intellectual humility — openly discusses what they don't know and how they learn",
+          "Comfortable with ambiguity — thrives when requirements are unclear or changing",
+          "Collaborative by default — shares credit, seeks input, builds on others' ideas",
+          "Fun to work with — positive energy, genuine enthusiasm, not performative",
+          "Does the right thing — shows ethical reasoning and user-first thinking",
+          "Pushes back thoughtfully — challenges ideas with data and respect, not ego",
+          "Treats disagreements as learning opportunities, not competitions"
+        ],
+        "negative_signals": [
+          "Arrogant or dismissive of others' contributions",
+          "Uncomfortable with ambiguity — needs everything defined before acting",
+          "Takes sole credit for team accomplishments",
+          "Negative or cynical about past teams and colleagues",
+          "No evidence of ethical consideration in decision-making",
+          "Agrees with everything — no intellectual courage",
+          "Competitive rather than collaborative"
+        ]
+      },
+      {
+        "name": "General Cognitive Ability (GCA)",
+        "weight": "high",
+        "positive_signals": [
+          "Asks insightful questions that reframe the problem",
+          "Draws novel connections between unrelated domains or experiences",
+          "Adapts approach when initial plan doesn't work — learns quickly mid-conversation",
+          "Reasons from first principles rather than rote knowledge",
+          "Demonstrates structured thinking when navigating complex scenarios",
+          "Shows metacognition — aware of their own reasoning process and its limits",
+          "Can think through novel problems they haven't encountered before"
+        ],
+        "negative_signals": [
+          "Relies entirely on memorized approaches with no adaptation",
+          "Cannot reason about novel situations — only repeats what they've done before",
+          "Rigid thinking — can't adjust perspective when given new information",
+          "Shallow analysis — doesn't dig beneath surface-level observations",
+          "Cannot explain the reasoning behind their decisions",
+          "Misses obvious logical connections"
+        ]
+      },
+      {
+        "name": "Leadership",
+        "weight": "high",
+        "positive_signals": [
+          "Demonstrates emergent leadership — steps up when needed without being asked",
+          "Led through influence, not authority — persuaded others with evidence and empathy",
+          "Navigated ambiguity and brought clarity to teams or projects",
+          "Empowered others rather than controlling — lifted the team's capability",
+          "Took ownership of hard problems others avoided",
+          "Balanced assertiveness with openness — drove decisions while remaining receptive",
+          "Showed judgment about when to lead and when to follow"
+        ],
+        "negative_signals": [
+          "Leadership = 'I was the tech lead' with no specifics about what they actually did",
+          "Only leads when given formal authority",
+          "Micromanages rather than empowers",
+          "No evidence of influencing beyond their immediate scope",
+          "Cannot describe how they resolved disagreements or built alignment",
+          "Avoids difficult situations rather than stepping in"
+        ]
+      },
+      {
+        "name": "STAR Story Quality",
+        "weight": "medium",
+        "positive_signals": [
+          "Clear Situation — sets context concisely (team size, project scope, stakes)",
+          "Specific Task — articulates what was THEIR responsibility vs the team's",
+          "Detailed Action — concrete steps THEY took with clear reasoning",
+          "Quantified Result — measurable impact (%, time saved, users affected, revenue)",
+          "Keeps answers focused — 2-4 minutes with appropriate depth",
+          "Chooses stories that genuinely illuminate the quality being assessed"
+        ],
+        "negative_signals": [
+          "Rambling stories with no clear structure",
+          "Cannot distinguish their personal contribution from the team's work",
+          "Vague actions with no specifics",
+          "No measurable results or impact",
+          "Story doesn't answer the question asked",
+          "Answers too short — no depth or reflection"
+        ]
+      },
+      {
+        "name": "Self-Awareness & Growth",
+        "weight": "medium",
+        "positive_signals": [
+          "Honest about genuine failures — not humble-brags in disguise",
+          "Shows what they learned and how they changed behavior as a result",
+          "Acknowledges their own role in problems, not just external factors",
+          "Discusses strengths without arrogance and weaknesses without deflection",
+          "Demonstrates a clear growth trajectory over time"
+        ],
+        "negative_signals": [
+          "Blames others for every failure",
+          "Failure stories that are actually successes in disguise",
+          "Cannot name a real weakness or growth area",
+          "No accountability for anything that went wrong",
+          "No evidence of learning from past experiences"
+        ]
+      }
+    ],
+    "level_calibration": {
+      "L3": "Clear STAR stories with personal ownership. Demonstrates Googleyness and GCA. Growth mindset. Collaborative nature.",
+      "L4": "Deeper impact stories. Emerging leadership signals. Strong GCA demonstrated through novel problem-solving examples. Cross-team collaboration.",
+      "L5": "Leadership stories required — influence without authority, mentoring, technical direction. Organizational awareness. Strong Googleyness at scale.",
+      "L6": "Must show organization-level strategic impact. Building and scaling teams. Shaping technical culture. Thought leadership in their domain."
+    }
+  },
+  "system_design": {
+    "dimensions": [
+      {
+        "name": "Requirements Gathering",
+        "weight": "high",
+        "positive_signals": [
+          "Asks clarifying questions BEFORE designing — takes a Socratic approach to uncovering requirements",
+          "Distinguishes functional vs non-functional requirements clearly",
+          "Identifies key constraints: scale, latency, consistency, availability",
+          "Scopes the problem explicitly — states what's in scope and out of scope",
+          "Estimates scale thoughtfully: users, QPS, storage, bandwidth",
+          "Engages the interviewer in a dialogue to refine requirements — treats it as collaborative discovery"
+        ],
+        "negative_signals": [
+          "Starts drawing boxes immediately without asking questions",
+          "Designs for the wrong scale (toy scale vs planet scale)",
+          "Never asks about non-functional requirements",
+          "Tries to design everything at once — no scoping",
+          "Treats requirements gathering as a checkbox rather than genuine exploration"
+        ]
+      },
+      {
+        "name": "High-Level Design",
+        "weight": "high",
+        "positive_signals": [
+          "Clear, logical architecture with well-defined components and responsibilities",
+          "Data flow is obvious from the diagram",
+          "Identifies the right core components — neither over-designed nor under-designed",
+          "API design is clean and appropriate (REST, gRPC, GraphQL with reasoning)",
+          "Data model supports the requirements naturally and efficiently",
+          "Considers multiple high-level approaches before choosing one"
+        ],
+        "negative_signals": [
+          "Architecture is a random collection of boxes with no clear data flow",
+          "Missing critical components",
+          "API design is an afterthought or inconsistent",
+          "Data model doesn't support the required query patterns"
+        ]
+      },
+      {
+        "name": "Deep Dives & Trade-offs",
+        "weight": "high",
+        "positive_signals": [
+          "Proactively discusses trade-offs: consistency vs availability, latency vs throughput, cost vs performance",
+          "Goes deep on the most critical component rather than staying surface-level everywhere",
+          "Discusses data consistency models in detail — strong vs eventual, conflict resolution strategies",
+          "Considers failure modes: what happens when components go down?",
+          "Discusses caching strategy with invalidation approach and consistency implications",
+          "Addresses data partitioning with clear reasoning about partition keys and access patterns",
+          "Considers system evolution — how does the design adapt as requirements change?",
+          "Responds well to Socratic probing — deepens analysis when interviewer asks 'what if?'"
+        ],
+        "negative_signals": [
+          "Stays surface-level on everything — 'we'll use a database'",
+          "Cannot discuss trade-offs when asked",
+          "Name-drops technologies without explaining why they're appropriate",
+          "No consideration of failure modes or degraded operation",
+          "Sharding strategy doesn't match access patterns",
+          "Cannot reason about consistency guarantees"
+        ]
+      },
+      {
+        "name": "Scalability & Production Readiness",
+        "weight": "medium-high",
+        "positive_signals": [
+          "Addresses horizontal scaling with specific strategies",
+          "Discusses monitoring, alerting, and observability",
+          "Considers data consistency during scaling events (rebalancing, migrations)",
+          "Mentions load balancing with appropriate strategy for the workload",
+          "Addresses deployment and rollout strategy (canary, blue-green)",
+          "Discusses multi-region considerations including data replication and latency"
+        ],
+        "negative_signals": [
+          "Design works at toy scale but breaks at Google scale",
+          "No mention of monitoring or observability",
+          "Single points of failure not addressed",
+          "Only vertical scaling discussed",
+          "No consideration of multi-region deployment"
+        ]
+      },
+      {
+        "name": "Communication & Collaboration",
+        "weight": "medium",
+        "positive_signals": [
+          "Drives the conversation with clear structure while remaining open to interviewer input",
+          "Structures the discussion: requirements, then high-level design, then deep dives",
+          "Uses diagrams effectively — clear, organized, evolving as discussion progresses",
+          "Responds gracefully to interviewer redirects and new constraints",
+          "Treats the session as a collaborative design discussion, not a performance"
+        ],
+        "negative_signals": [
+          "Waits for interviewer to ask every question — no initiative",
+          "Unstructured rambling — jumps between topics without reason",
+          "Diagrams are messy and hard to follow",
+          "Gets defensive when interviewer challenges a design decision",
+          "Ignores interviewer's Socratic cues to explore a topic more deeply"
+        ]
+      }
+    ],
+    "level_calibration": {
+      "L3": "Not typically tested on system design at Google L3.",
+      "L4": "Solid high-level design. Basic trade-offs. Reasonable data model. Engages with interviewer guidance. May need prompts for deep dives.",
+      "L5": "Drives the whole discussion collaboratively. Deep on critical components. Production-ready thinking with consistency model awareness. Discusses monitoring and multi-region.",
+      "L6": "Staff-level depth: capacity planning, multi-region consistency, system evolution over years, cross-team organizational implications. Teaches the interviewer something."
+    }
+  },
+  "ml_design": {
+    "dimensions": [
+      {
+        "name": "Problem Formulation",
+        "weight": "high",
+        "positive_signals": [
+          "Translates business problem into a precise ML task (classification, ranking, regression, generation, etc.)",
+          "Defines clear objective function — what exactly is the model optimizing?",
+          "Identifies appropriate offline metrics (AUC, NDCG, precision@k, BLEU) AND online metrics (CTR, revenue, engagement, user satisfaction)",
+          "Considers whether ML is the right approach vs simpler alternatives",
+          "Discusses multi-objective trade-offs (relevance vs diversity, engagement vs quality vs safety)",
+          "Frames the problem in a way that enables iterative improvement"
+        ],
+        "negative_signals": [
+          "Jumps to model architecture without defining the problem",
+          "Can't articulate what the model is predicting or optimizing",
+          "Only discusses offline metrics, ignores online/business metrics",
+          "Uses ML when heuristics or rules would be more appropriate",
+          "Single objective with no consideration of trade-offs or secondary effects"
+        ]
+      },
+      {
+        "name": "Data & Features",
+        "weight": "high",
+        "positive_signals": [
+          "Identifies relevant data sources and their characteristics (volume, freshness, noise)",
+          "Thoughtful feature engineering — explains WHY each feature helps, not just what it is",
+          "Addresses label generation: how are training labels obtained? Are they noisy?",
+          "Considers feature freshness: real-time vs batch features and when each matters",
+          "Discusses data quality, bias, sampling strategy, and class imbalance",
+          "Mentions feature stores and feature sharing across models",
+          "Addresses cold-start for new users/items and data sparsity"
+        ],
+        "negative_signals": [
+          "Assumes perfect labeled data exists",
+          "Lists features without explaining their relevance or predictive power",
+          "Ignores data quality, bias, or distribution shift",
+          "No consideration of feature computation cost or freshness requirements",
+          "Doesn't address cold-start problems"
+        ]
+      },
+      {
+        "name": "Model Architecture",
+        "weight": "medium-high",
+        "positive_signals": [
+          "Starts simple and explains when additional complexity is warranted",
+          "Justifies architecture choices for the specific problem, not just general best practice",
+          "Discusses model capacity vs data size trade-off",
+          "Considers multi-stage architecture where appropriate (retrieval, filtering, ranking)",
+          "Addresses embedding strategies for sparse and categorical features",
+          "Discusses training details: loss function, batch size, learning rate, regularization",
+          "Considers transfer learning and pre-training when relevant"
+        ],
+        "negative_signals": [
+          "Jumps to the most complex model without justification",
+          "Can't explain why a specific architecture was chosen over alternatives",
+          "No progression from simple baseline to complex model",
+          "Ignores practical constraints: latency, memory, training cost"
+        ]
+      },
+      {
+        "name": "Serving & Infrastructure",
+        "weight": "medium",
+        "positive_signals": [
+          "Discusses serving latency requirements and strategies to meet them",
+          "Addresses model size, inference optimization, and distillation",
+          "Considers batch vs real-time prediction trade-offs with clear reasoning",
+          "Mentions model versioning, rollback strategy, and shadow mode testing",
+          "Discusses A/B testing and experimentation framework design",
+          "Considers caching predictions and pre-computation where appropriate"
+        ],
+        "negative_signals": [
+          "Ignores serving entirely — only discusses training",
+          "No consideration of inference latency or throughput",
+          "Can't discuss how to safely deploy a new model",
+          "No mention of A/B testing or experimentation"
+        ]
+      },
+      {
+        "name": "Monitoring, Fairness & Iteration",
+        "weight": "medium",
+        "positive_signals": [
+          "Discusses model monitoring: data drift, prediction drift, metric degradation",
+          "Addresses feedback loops and their effects on model performance over time",
+          "Mentions retraining strategy and model freshness requirements",
+          "Considers fairness and bias — discusses how to measure and mitigate",
+          "Discusses responsible AI: safety, interpretability, user control",
+          "Describes the full iteration cycle: hypothesis, experiment, analysis, ship"
+        ],
+        "negative_signals": [
+          "Train once, deploy forever mentality",
+          "No monitoring strategy",
+          "Ignores feedback loops entirely",
+          "No consideration of fairness, bias, or safety",
+          "No plan for iterative improvement"
+        ]
+      }
+    ],
+    "level_calibration": {
+      "L3": "Basic ML formulation. Reasonable features. Simple model choice with justification. Understands train/eval split and basic metrics.",
+      "L4": "End-to-end system design. Good feature engineering. Model progression from simple to complex. Basic serving and experimentation discussion.",
+      "L5": "Deep on all dimensions. Multi-objective optimization. Real-time features. Comprehensive monitoring. Fairness considerations. Experimentation rigor.",
+      "L6": "Platform-level thinking. Multi-model ecosystem design. Efficiency at scale. ML strategy and roadmap. Sets the technical bar for the organization."
+    }
+  },
+  "ai_native_coding": {
+    "dimensions": [
+      {
+        "name": "Problem Decomposition for AI Delegation",
+        "weight": "high",
+        "positive_signals": [
+          "Breaks problem into well-scoped sub-tasks BEFORE using AI tools",
+          "Identifies which parts to delegate to AI vs code manually — clear reasoning",
+          "Creates a clear plan and architecture before generating any code",
+          "Delegates boilerplate, scaffolding, and repetitive code to AI while owning core logic and design decisions"
+        ],
+        "negative_signals": [
+          "Throws the entire problem at AI in one prompt",
+          "No decomposition — random, unstructured prompting",
+          "Delegates the hard/interesting parts to AI and manually codes the trivial parts",
+          "No plan — just starts prompting without thinking"
+        ]
+      },
+      {
+        "name": "Prompting Effectiveness",
+        "weight": "high",
+        "positive_signals": [
+          "Writes clear, specific prompts with constraints, context, and expected output format",
+          "Iterates on prompts when output isn't right — refines rather than repeating verbatim",
+          "Provides examples, test cases, or type signatures in prompts when helpful",
+          "Specifies language, framework, and style preferences upfront",
+          "Uses few-shot prompting and chain-of-thought when appropriate"
+        ],
+        "negative_signals": [
+          "Vague prompts with no constraints or context",
+          "Repeats the exact same prompt expecting different results",
+          "Prompts are more verbose than the code they need",
+          "Over-prompts for trivial operations"
+        ]
+      },
+      {
+        "name": "Critical Evaluation of AI Output",
+        "weight": "high",
+        "positive_signals": [
+          "Reads and understands every line of AI-generated code before using it",
+          "Catches bugs, edge cases, or security issues in AI output",
+          "Modifies and improves AI output rather than accepting it wholesale",
+          "Questions AI's design choices and makes better ones",
+          "Tests AI-generated code thoroughly including edge cases"
+        ],
+        "negative_signals": [
+          "Copy-pastes AI output without reading it",
+          "Can't explain what the AI-generated code does when asked",
+          "Trusts AI output blindly without verification",
+          "Accepts suboptimal code without improving it",
+          "Cannot debug when AI-generated code fails"
+        ]
+      },
+      {
+        "name": "Architecture Ownership",
+        "weight": "high",
+        "positive_signals": [
+          "Drives overall system design — AI fills in implementation details",
+          "Makes deliberate technology and API choices with clear reasoning",
+          "Maintains consistent architecture across AI-generated components",
+          "Refactors AI output to fit the overall design and coding standards"
+        ],
+        "negative_signals": [
+          "AI drives the architecture — candidate follows wherever it goes",
+          "Inconsistent patterns across components (each AI generation uses a different style)",
+          "No opinion on design decisions — accepts whatever AI suggests",
+          "Final code looks like a patchwork of disconnected AI generations"
+        ]
+      },
+      {
+        "name": "Scope & Velocity",
+        "weight": "medium",
+        "positive_signals": [
+          "Accomplishes significantly more than would be possible without AI",
+          "Uses time savings to add depth — tests, error handling, monitoring, documentation",
+          "Efficient workflow — smooth switching between manual coding and AI interaction",
+          "Delivers a working, integrated, and well-tested solution"
+        ],
+        "negative_signals": [
+          "Achieves less than a no-AI interview despite having AI tools",
+          "Spends more time fighting with AI than coding productively",
+          "Solution is half-finished or doesn't integrate properly",
+          "AI assistance adds chaos rather than velocity"
+        ]
+      }
+    ],
+    "level_calibration": {
+      "L3": "Uses AI to handle boilerplate effectively. Understands generated code. Delivers a working solution with appropriate verification.",
+      "L4": "Strategic AI usage with clear reasoning. Catches and fixes AI errors. Delivers a polished solution with solid architecture.",
+      "L5": "Masterful AI workflow. Deep critical evaluation of all output. Production-quality results. Tackles ambitious scope made possible by AI leverage.",
+      "L6": "AI multiplier — uses AI to operate at a scope that demonstrates staff-level system thinking and organizational impact."
+    }
+  }
+}
