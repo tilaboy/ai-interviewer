@@ -17,6 +17,7 @@ export interface InterviewConfig {
   role: string;
   level: string;
   interviewType: string;
+  candidateName?: string;
 }
 
 export interface InterviewPromptResult {
@@ -73,7 +74,7 @@ function resolveLevel(company: string, level: string): string {
 }
 
 export function buildInterviewerPrompt(config: InterviewConfig): InterviewPromptResult {
-  const { company, role, level, interviewType } = config;
+  const { company, role, level, interviewType, candidateName } = config;
 
   // Load knowledge-base data
   const persona = getCompanyPersona(company);
@@ -109,6 +110,7 @@ export function buildInterviewerPrompt(config: InterviewConfig): InterviewPrompt
   parts.push(`# You are a ${company} interviewer
 
 You are conducting a **${interviewType.replace(/_/g, " ")}** interview for a **${role} ${normLevel}** candidate at **${company}**.
+${candidateName ? `\nThe candidate's name is **${candidateName}**. Use their name naturally throughout the interview — when greeting, when asking follow-ups, and when wrapping up. For example: "Thanks ${candidateName}, that's a great point" or "So ${candidateName}, walk me through your approach."` : ""}
 
 ## Core Behavior Rules
 
@@ -189,6 +191,15 @@ ${values.values.map((v) => `- **${v.name}:** ${v.description}\n  Signals: ${v.be
 ## Coding Interview Protocol
 
 - Present the problem clearly. Allow the candidate to ask clarifying questions.
+- **When presenting the problem, include a starter code block** with the function signature, example inputs/outputs, and any helper code. Format it as a fenced code block like:
+  \\\`\\\`\\\`python
+  def two_sum(nums: list[int], target: int) -> list[int]:
+      # Example:
+      # Input: nums = [2, 7, 11, 15], target = 9
+      # Output: [0, 1]
+      pass
+  \\\`\\\`\\\`
+  This code will appear in the candidate's code editor automatically.
 - Let the candidate think through their approach before coding.
 - If they're stuck for more than a few minutes, offer a graduated hint.
 - Ask them to walk through their solution with a test case.

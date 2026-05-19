@@ -62,18 +62,19 @@ const steps = [
 
 export default function SetupPage() {
   const router = useRouter()
+  const [candidateName, setCandidateName] = useState('')
   const [company, setCompany] = useState<Company | null>(null)
   const [role, setRole] = useState<Role | null>(null)
   const [level, setLevel] = useState<Level | null>(null)
   const [interviewType, setInterviewType] = useState<InterviewType | null>(null)
   const [questionMode, setQuestionMode] = useState<QuestionMode>('random')
 
-  const isComplete = company && role && level && interviewType
+  const isComplete = company && role && level && interviewType && candidateName.trim()
   const currentStep = !company ? 1 : !role ? 2 : !level ? 3 : !interviewType ? 4 : 5
 
   function handleStart() {
     if (!isComplete) return
-    const params = new URLSearchParams({ company, role, level, type: interviewType, mode: questionMode })
+    const params = new URLSearchParams({ company, role, level, type: interviewType, mode: questionMode, name: candidateName.trim() })
     router.push(`/interview?${params.toString()}`)
   }
 
@@ -105,6 +106,18 @@ export default function SetupPage() {
             </div>
           ))}
         </div>
+
+        {/* Name */}
+        <section className="mb-10">
+          <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-4">Your Name</h2>
+          <input
+            type="text"
+            value={candidateName}
+            onChange={(e) => setCandidateName(e.target.value)}
+            placeholder="Enter your first name..."
+            className="w-full sm:w-72 px-4 py-3 rounded-xl glass text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/30 transition-all"
+          />
+        </section>
 
         {/* Company */}
         <section className="mb-10">

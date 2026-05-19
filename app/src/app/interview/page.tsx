@@ -38,6 +38,16 @@ function isDesignType(type: string): boolean {
   return type === 'system_design' || type === 'ml_design'
 }
 
+/**
+ * Extract the first fenced code block from an interviewer message.
+ * Returns { lang, code } or null if no code block found.
+ */
+function extractCodeBlock(text: string): { lang: string; code: string } | null {
+  const match = text.match(/```(\w+)?\s*\n([\s\S]*?)```/)
+  if (!match) return null
+  return { lang: match[1]?.toLowerCase() || 'python', code: match[2].trimEnd() }
+}
+
 interface PromptLogEntry {
   prompt: string
   response: string
@@ -102,6 +112,7 @@ function InterviewContent() {
   const role = searchParams.get('role') || 'swe'
   const level = searchParams.get('level') || 'mid'
   const interviewType = searchParams.get('type') || 'behavioral'
+  const candidateName = searchParams.get('name') || ''
 
   const [messages, setMessages] = useState<Message[]>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -119,7 +130,7 @@ function InterviewContent() {
   // AI assistant prompt history (only used for ai_native_coding)
   const [promptHistory, setPromptHistory] = useState<PromptLogEntry[]>([])
 
-  const config = { company, role, level, interviewType }
+  const config = { company, role, level, interviewType, candidateName }
 
   const handleLanguageChange = useCallback(
     (newLanguage: string) => {
@@ -159,12 +170,24 @@ function InterviewContent() {
           throw new Error(err.error || 'Failed to start interview')
         }
 
-        const text = await readStream(res)
+        const responseText = await readStream(res)
+
+        // If it's a coding interview, extract code block and populate editor
+        if (isCodingType(interviewType)) {
+          const codeBlock = extractCodeBlock(responseText)
+          if (codeBlock) {
+            setCode(codeBlock.code)
+            if (codeBlock.lang && codeBlock.lang !== language) {
+              setLanguage(codeBlock.lang)
+            }
+          }
+        }
+
         setMessages([
           {
             id: crypto.randomUUID(),
             role: 'interviewer',
-            content: text,
+            content: responseText,
             timestamp: new Date(),
           },
         ])
@@ -233,13 +256,25 @@ function InterviewContent() {
           throw new Error(err.error || 'Failed to get response')
         }
 
-        const text = await readStream(res)
+        const responseText2 = await readStream(res)
+
+        // Auto-populate editor if interviewer sends a code block in follow-up
+        if (isCodingType(interviewType)) {
+          const codeBlock = extractCodeBlock(responseText2)
+          if (codeBlock) {
+            setCode(codeBlock.code)
+            if (codeBlock.lang && codeBlock.lang !== language) {
+              setLanguage(codeBlock.lang)
+            }
+          }
+        }
+
         setMessages((prev) => [
           ...prev,
           {
             id: crypto.randomUUID(),
             role: 'interviewer',
-            content: text,
+            content: responseText2,
             timestamp: new Date(),
           },
         ])
