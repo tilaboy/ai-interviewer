@@ -59,6 +59,19 @@ function formatRubricForPrompt(rubric: RubricSection, level: string): string {
 // Main builder
 // ---------------------------------------------------------------------------
 
+// Map generic level names to company-specific level codes
+const LEVEL_MAP: Record<string, Record<string, string>> = {
+  meta:   { junior: "E3", mid: "E4", senior: "E5", staff: "E6" },
+  google: { junior: "L3", mid: "L4", senior: "L5", staff: "L6" },
+  amazon: { junior: "SDE_I", mid: "SDE_II", senior: "Senior_SDE", staff: "Principal_SDE" },
+};
+
+function resolveLevel(company: string, level: string): string {
+  const map = LEVEL_MAP[company.toLowerCase()];
+  if (map && map[level.toLowerCase()]) return map[level.toLowerCase()];
+  return level.toUpperCase();
+}
+
 export function buildInterviewerPrompt(config: InterviewConfig): InterviewPromptResult {
   const { company, role, level, interviewType } = config;
 
@@ -67,10 +80,12 @@ export function buildInterviewerPrompt(config: InterviewConfig): InterviewPrompt
   const values = getCompanyValues(company);
   const loops = getInterviewLoops(company);
   const rubrics = getEvaluationRubrics();
-  const question = selectQuestion(interviewType, level, role);
+
+  // Map level to company-specific code (e.g. "mid" -> "E4" for Meta)
+  const normLevel = resolveLevel(company, level);
+  const question = selectQuestion(interviewType, normLevel, role);
 
   // Resolve interview round metadata for context
-  const normLevel = level.toUpperCase();
   const roleData = loops.roles?.[role.toUpperCase()];
   const levelData = roleData?.levels?.[normLevel];
   const round = levelData?.interview_rounds?.find(
@@ -207,22 +222,48 @@ ${values.values.map((v) => `- **${v.name}:** ${v.description}\n  Signals: ${v.be
   }
 
   // --- Selected question ---
-  parts.push(`
+  // Question schemas vary by interview type — normalize field access
+  const questionText = question.question || question.title || question.description || "Ask an appropriate question for this interview type.";
+  const questionDescription = question.description || question.question || "";
+  const lookFor = question.what_interviewer_looks_for || question.key_discussion_points || question.what_to_evaluate || question.evaluation_criteria || [];
+  const followUps = question.follow_ups || [];
+  const rubricStrong = question.evaluation_rubric?.strong || "";
+  const rubricWeak = question.evaluation_rubric?.weak || "";
+  const depthByLevel = question.expected_depth_by_level as Record<string, string> | undefined;
+
+  const questionLines = [`
 ## Your Primary Question
 
-**Question:** ${question.question}
+**Question:** ${questionText}`];
 
-**Category:** ${question.category}
-**Target levels:** ${question.target_levels.join(", ")}
+  if (questionDescription && questionDescription !== questionText) {
+    questionLines.push(`\n**Description:** ${questionDescription}`);
+  }
 
-**What to look for:** ${question.what_interviewer_looks_for.join("; ")}
+  questionLines.push(`\n**Target levels:** ${question.target_levels?.join(", ") || "all"}`);
 
-**Follow-up questions you can use:**
-${question.follow_ups.map((f) => `- ${f}`).join("\n")}
+  if (Array.isArray(lookFor) && lookFor.length > 0) {
+    questionLines.push(`\n**What to look for:** ${lookFor.join("; ")}`);
+  }
 
-**Internal rubric (do NOT share with candidate):**
-- Strong signal: ${question.evaluation_rubric.strong}
-- Weak signal: ${question.evaluation_rubric.weak}`);
+  if (followUps.length > 0) {
+    questionLines.push(`\n**Follow-up questions you can use:**\n${followUps.map((f: string) => `- ${f}`).join("\n")}`);
+  }
+
+  if (rubricStrong || rubricWeak) {
+    questionLines.push(`\n**Internal rubric (do NOT share with candidate):**`);
+    if (rubricStrong) questionLines.push(`- Strong signal: ${rubricStrong}`);
+    if (rubricWeak) questionLines.push(`- Weak signal: ${rubricWeak}`);
+  }
+
+  if (depthByLevel) {
+    const relevantDepth = depthByLevel[normLevel] || depthByLevel[Object.keys(depthByLevel)[0]];
+    if (relevantDepth) {
+      questionLines.push(`\n**Expected depth at ${normLevel}:** ${relevantDepth}`);
+    }
+  }
+
+  parts.push(questionLines.join(""));
 
   // --- Evaluation rubric for this interview type ---
   if (rubricSection) {
@@ -231,17 +272,31 @@ ${question.follow_ups.map((f) => `- ${f}`).join("\n")}
 
 Use this rubric to mentally evaluate the candidate. You will NOT share scores or feedback during the interview.
 
-${formatRubricForPrompt(rubricSection, level)}`);
+${formatRubricForPrompt(rubricSection, normLevel)}`);
   }
 
   // --- Level expectations ---
+  const genericLevel = level.toLowerCase();
+  const levelExpectation: Record<string, string> = {
+    junior: "Entry-level: Focus on potential, learning ability, and basic competence. Lower bar on leadership.",
+    mid: "Mid-level: Expect clear ownership, solid technical skills, and beginning cross-team collaboration.",
+    senior: "Senior: Expect leadership stories, mentoring, technical direction, and organizational awareness.",
+    staff: "Staff: Expect org-level impact, strategic thinking, team building, and deep technical vision.",
+  };
+  const levelDifferentiator: Record<string, string> = {
+    junior: "independence and ability to deliver with minimal guidance",
+    mid: "scope of impact and beginning to influence beyond their own work",
+    senior: "consistent leadership, mentoring others, and driving technical decisions",
+    staff: "org-wide impact, building teams, and shaping technical strategy",
+  };
+
   parts.push(`
 ## Level Expectations for ${normLevel}
 
 The candidate is interviewing for **${normLevel}** (${role}). Calibrate your internal expectations accordingly:
-- ${normLevel === "E3" ? "Entry-level: Focus on potential, learning ability, and basic competence. Lower bar on leadership." : ""}${normLevel === "E4" ? "Mid-level: Expect clear ownership, solid technical skills, and beginning cross-team collaboration." : ""}${normLevel === "E5" ? "Senior: Expect leadership stories, mentoring, technical direction, and organizational awareness." : ""}${normLevel === "E6" ? "Staff: Expect org-level impact, strategic thinking, team building, and deep technical vision." : ""}
+- ${levelExpectation[genericLevel] || levelExpectation["mid"]}
 - Adjust your probing depth to match: push harder for senior levels, be more supportive for junior levels.
-- For ${normLevel}, the key differentiator from the level below is: ${normLevel === "E3" ? "independence and ability to deliver with minimal guidance" : normLevel === "E4" ? "scope of impact and beginning to influence beyond their own work" : normLevel === "E5" ? "consistent leadership, mentoring others, and driving technical decisions" : "org-wide impact, building teams, and shaping technical strategy"}.`);
+- For ${normLevel}, the key differentiator from the level below is: ${levelDifferentiator[genericLevel] || levelDifferentiator["mid"]}.`);
 
   return {
     systemPrompt: parts.join("\n"),

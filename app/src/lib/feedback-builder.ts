@@ -78,6 +78,18 @@ function formatRubricForFeedback(rubric: RubricSection, level: string): string {
 // Feedback prompt builder
 // ---------------------------------------------------------------------------
 
+const LEVEL_MAP: Record<string, Record<string, string>> = {
+  meta:   { junior: "E3", mid: "E4", senior: "E5", staff: "E6" },
+  google: { junior: "L3", mid: "L4", senior: "L5", staff: "L6" },
+  amazon: { junior: "SDE_I", mid: "SDE_II", senior: "Senior_SDE", staff: "Principal_SDE" },
+};
+
+function resolveLevel(company: string, level: string): string {
+  const map = LEVEL_MAP[company.toLowerCase()];
+  if (map && map[level.toLowerCase()]) return map[level.toLowerCase()];
+  return level.toUpperCase();
+}
+
 export function buildFeedbackPrompt(
   config: InterviewConfig,
   transcript: TranscriptMessage[],
@@ -91,7 +103,7 @@ export function buildFeedbackPrompt(
     | RubricSection
     | undefined;
 
-  const normLevel = level.toUpperCase();
+  const normLevel = resolveLevel(company, level);
 
   const parts: string[] = [];
 
