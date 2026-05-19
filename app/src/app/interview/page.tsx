@@ -348,16 +348,16 @@ function InterviewContent() {
     ) : null
 
   return (
-    <div className="flex flex-col h-screen bg-gray-900 text-gray-100">
-      <header className="flex-shrink-0 border-b border-gray-700 bg-gray-800">
+    <div className="flex flex-col h-screen bg-[#0a0f1e] text-slate-100">
+      <header className="flex-shrink-0 border-b border-slate-800/50 bg-[#0a0f1e]/90 backdrop-blur-xl">
         <div className="flex items-center justify-between px-4 py-3 w-full">
-          <div className="min-w-0">
-            <h1 className="text-sm font-semibold text-gray-100 truncate">
-              {displayCompany} &middot; {role.toUpperCase()}
-            </h1>
-            <p className="text-xs text-gray-400">
-              {level} &middot; {displayType.charAt(0).toUpperCase() + displayType.slice(1)} Interview
-            </p>
+          <div className="min-w-0 flex items-center gap-3">
+            <div className="flex items-center gap-2">
+              <span className="px-2 py-0.5 text-xs font-mono bg-slate-800/80 rounded text-slate-300 capitalize">{displayCompany}</span>
+              <span className="px-2 py-0.5 text-xs font-mono bg-slate-800/80 rounded text-slate-300">{role.toUpperCase()}</span>
+              <span className="px-2 py-0.5 text-xs font-mono bg-slate-800/80 rounded text-slate-300 capitalize">{level}</span>
+            </div>
+            <span className="text-xs text-slate-500">{displayType.charAt(0).toUpperCase() + displayType.slice(1)}</span>
           </div>
 
           <div className="flex items-center gap-3">
@@ -368,12 +368,13 @@ function InterviewContent() {
             />
             <button
               onClick={handleEndInterview}
-              className="rounded-lg bg-red-600 px-3 py-2 text-xs font-medium text-white hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors"
+              className="rounded-lg bg-red-500/80 px-3 py-2 text-xs font-medium text-white hover:bg-red-500 transition-all"
             >
               End Interview
             </button>
           </div>
         </div>
+        <div className="h-px bg-gradient-to-r from-transparent via-blue-500/40 to-transparent" />
       </header>
 
       <main className="flex-1 overflow-hidden">
