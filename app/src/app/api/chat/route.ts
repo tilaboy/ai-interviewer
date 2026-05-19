@@ -1,10 +1,6 @@
-import Anthropic from "@anthropic-ai/sdk";
 import { buildInterviewerPrompt } from "@/lib/prompt-builder";
+import { streamChat } from "@/lib/ai-client";
 import type { InterviewConfig } from "@/lib/prompt-builder";
-
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
 
 interface ChatMessage {
   role: "user" | "assistant";
@@ -16,21 +12,7 @@ interface ChatRequestBody {
   config: InterviewConfig;
 }
 
-// ---------------------------------------------------------------------------
-// Route handler
-// ---------------------------------------------------------------------------
-
 export async function POST(request: Request) {
-  // --- Validate API key ---
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    return Response.json(
-      { error: "ANTHROPIC_API_KEY is not configured" },
-      { status: 500 },
-    );
-  }
-
-  // --- Parse request body ---
   let body: ChatRequestBody;
   try {
     body = await request.json();
@@ -50,7 +32,6 @@ export async function POST(request: Request) {
     );
   }
 
-  // --- Build system prompt and select question ---
   let systemPrompt: string;
   try {
     const result = buildInterviewerPrompt(config);
@@ -63,62 +44,27 @@ export async function POST(request: Request) {
     );
   }
 
-  // --- Prepare messages for Claude ---
-  const claudeMessages: Anthropic.MessageParam[] = [];
+  const chatMessages: ChatMessage[] = [];
 
   if (!messages || messages.length === 0) {
-    // First call — the user hasn't said anything yet.
-    // We send a synthetic user message to get the interviewer to introduce
-    // themselves and start the interview.
-    claudeMessages.push({
+    chatMessages.push({
       role: "user",
       content:
         "[The candidate has joined the interview room. Please introduce yourself and begin the interview.]",
     });
   } else {
-    // Subsequent calls — forward the conversation history.
     for (const msg of messages) {
-      claudeMessages.push({
-        role: msg.role,
-        content: msg.content,
-      });
+      chatMessages.push({ role: msg.role, content: msg.content });
     }
   }
 
-  // --- Call Claude with streaming ---
-  const client = new Anthropic({ apiKey });
-
   try {
-    const stream = await client.messages.create({
-      model: "claude-sonnet-4-6-20250514",
-      max_tokens: 1024,
-      system: systemPrompt,
-      messages: claudeMessages,
-      stream: true,
+    const stream = await streamChat({
+      systemPrompt,
+      messages: chatMessages,
     });
 
-    // Convert the Anthropic stream into a ReadableStream of text chunks
-    const encoder = new TextEncoder();
-
-    const readableStream = new ReadableStream({
-      async start(controller) {
-        try {
-          for await (const event of stream) {
-            if (
-              event.type === "content_block_delta" &&
-              event.delta.type === "text_delta"
-            ) {
-              controller.enqueue(encoder.encode(event.delta.text));
-            }
-          }
-          controller.close();
-        } catch (err) {
-          controller.error(err);
-        }
-      },
-    });
-
-    return new Response(readableStream, {
+    return new Response(stream, {
       headers: {
         "Content-Type": "text/plain; charset=utf-8",
         "Cache-Control": "no-cache",
@@ -126,16 +72,10 @@ export async function POST(request: Request) {
       },
     });
   } catch (err) {
-    if (err instanceof Anthropic.APIError) {
-      return Response.json(
-        { error: `Claude API error: ${err.message}` },
-        { status: err.status ?? 502 },
-      );
-    }
     const message = err instanceof Error ? err.message : "Unknown error";
     return Response.json(
-      { error: `Failed to call Claude: ${message}` },
-      { status: 500 },
+      { error: `AI provider error: ${message}` },
+      { status: 502 },
     );
   }
 }

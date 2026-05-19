@@ -1,35 +1,17 @@
-import Anthropic from "@anthropic-ai/sdk";
 import {
   buildFeedbackPrompt,
   type TranscriptMessage,
   type FeedbackResponse,
 } from "@/lib/feedback-builder";
+import { generateText } from "@/lib/ai-client";
 import type { InterviewConfig } from "@/lib/prompt-builder";
-
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
 
 interface FeedbackRequestBody {
   transcript: TranscriptMessage[];
   config: InterviewConfig;
 }
 
-// ---------------------------------------------------------------------------
-// Route handler
-// ---------------------------------------------------------------------------
-
 export async function POST(request: Request) {
-  // --- Validate API key ---
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    return Response.json(
-      { error: "ANTHROPIC_API_KEY is not configured" },
-      { status: 500 },
-    );
-  }
-
-  // --- Parse request body ---
   let body: FeedbackRequestBody;
   try {
     body = await request.json();
@@ -56,7 +38,6 @@ export async function POST(request: Request) {
     );
   }
 
-  // --- Build feedback prompt ---
   let feedbackPrompt: string;
   try {
     feedbackPrompt = buildFeedbackPrompt(config, transcript);
@@ -68,37 +49,13 @@ export async function POST(request: Request) {
     );
   }
 
-  // --- Call Claude (non-streaming, structured JSON response) ---
-  const client = new Anthropic({ apiKey });
-
   try {
-    const response = await client.messages.create({
-      model: "claude-opus-4-6-20250514",
-      max_tokens: 4096,
-      messages: [
-        {
-          role: "user",
-          content: feedbackPrompt,
-        },
-      ],
-    });
+    const rawText = await generateText(feedbackPrompt, "thorough");
 
-    // Extract text content from Claude's response
-    const textBlock = response.content.find((block) => block.type === "text");
-    if (!textBlock || textBlock.type !== "text") {
-      return Response.json(
-        { error: "No text response from Claude" },
-        { status: 502 },
-      );
-    }
-
-    // Parse the JSON from Claude's response
-    // Claude may wrap the JSON in markdown code fences; strip them if present.
-    let jsonText = textBlock.text.trim();
+    // Parse JSON from the response (strip markdown code fences if present)
+    let jsonText = rawText.trim();
     if (jsonText.startsWith("```")) {
-      // Remove opening fence (```json or ```)
       jsonText = jsonText.replace(/^```(?:json)?\s*\n?/, "");
-      // Remove closing fence
       jsonText = jsonText.replace(/\n?\s*```\s*$/, "");
     }
 
@@ -107,15 +64,11 @@ export async function POST(request: Request) {
       feedback = JSON.parse(jsonText) as FeedbackResponse;
     } catch {
       return Response.json(
-        {
-          error: "Failed to parse feedback JSON from Claude",
-          raw: textBlock.text,
-        },
+        { error: "Failed to parse feedback JSON from AI", raw: rawText },
         { status: 502 },
       );
     }
 
-    // Basic validation of the response shape
     if (
       typeof feedback.overallScore !== "number" ||
       typeof feedback.levelAssessment !== "string" ||
@@ -125,26 +78,17 @@ export async function POST(request: Request) {
       !Array.isArray(feedback.improvements)
     ) {
       return Response.json(
-        {
-          error: "Feedback response has unexpected shape",
-          raw: feedback,
-        },
+        { error: "Feedback response has unexpected shape", raw: feedback },
         { status: 502 },
       );
     }
 
     return Response.json(feedback);
   } catch (err) {
-    if (err instanceof Anthropic.APIError) {
-      return Response.json(
-        { error: `Claude API error: ${err.message}` },
-        { status: err.status ?? 502 },
-      );
-    }
     const message = err instanceof Error ? err.message : "Unknown error";
     return Response.json(
-      { error: `Failed to call Claude: ${message}` },
-      { status: 500 },
+      { error: `AI provider error: ${message}` },
+      { status: 502 },
     );
   }
 }
