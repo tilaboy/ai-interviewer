@@ -2,11 +2,21 @@
 
 import { useState, useCallback, useEffect, useRef, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
+import dynamic from 'next/dynamic'
 import Chat from '@/components/Chat'
 import Timer from '@/components/Timer'
 import CodeEditor from '@/components/CodeEditor'
 import SplitPane from '@/components/SplitPane'
 import type { Message } from '@/types/message'
+
+const DrawingCanvas = dynamic(() => import('@/components/DrawingCanvas'), {
+  ssr: false,
+  loading: () => (
+    <div className="flex items-center justify-center h-full bg-gray-900">
+      <p className="text-gray-400 text-sm">Loading canvas...</p>
+    </div>
+  ),
+})
 
 const INTERVIEW_DURATION_SECONDS = 45 * 60
 
@@ -56,6 +66,9 @@ function InterviewContent() {
   // Code editor state (only used for coding interview types)
   const [code, setCode] = useState(DEFAULT_CODE_BY_LANGUAGE['python'])
   const [language, setLanguage] = useState('python')
+
+  // Diagram snapshot state (only used for design interview types)
+  const [diagramSnapshot, setDiagramSnapshot] = useState<string | null>(null)
 
   const config = { company, role, level, interviewType }
 
@@ -221,8 +234,13 @@ function InterviewContent() {
       )
     }
 
+    // For design interviews, store the diagram snapshot if available
+    if (isDesignType(interviewType) && diagramSnapshot) {
+      sessionStorage.setItem('interview_diagram', diagramSnapshot)
+    }
+
     router.push('/feedback')
-  }, [messages, config, router, interviewType, language, code])
+  }, [messages, config, router, interviewType, language, code, diagramSnapshot])
 
   const displayCompany = company.charAt(0).toUpperCase() + company.slice(1)
   const displayType = interviewType.replace(/_/g, ' ')
@@ -247,29 +265,7 @@ function InterviewContent() {
       readOnly={interviewEnded}
     />
   ) : isDesignType(interviewType) ? (
-    <div className="flex items-center justify-center h-full bg-gray-900">
-      <div className="text-center px-6">
-        <svg
-          className="w-16 h-16 text-gray-600 mx-auto mb-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={1.5}
-            d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"
-          />
-        </svg>
-        <p className="text-gray-400 text-sm font-medium">
-          Drawing canvas coming in Phase 3
-        </p>
-        <p className="text-gray-500 text-xs mt-2">
-          For now, describe your design in the chat panel
-        </p>
-      </div>
-    </div>
+    <DrawingCanvas onSnapshot={setDiagramSnapshot} />
   ) : null
 
   return (
@@ -307,7 +303,7 @@ function InterviewContent() {
             left={leftPanel}
             right={chatPanel}
             defaultSplit={55}
-            leftLabel={isCodingType(interviewType) ? 'Code' : 'Design'}
+            leftLabel={isCodingType(interviewType) ? 'Code' : 'Whiteboard'}
             rightLabel="Chat"
           />
         ) : (

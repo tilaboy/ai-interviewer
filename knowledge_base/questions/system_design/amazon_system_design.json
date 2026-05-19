@@ -1,0 +1,203 @@
+{
+  "meta": {
+    "description": "System design interview questions commonly associated with Amazon SDE interviews",
+    "sources": ["Glassdoor", "Blind", "system design primer", "public interview prep"],
+    "last_updated": "2026-05-19"
+  },
+  "framework": {
+    "steps": [
+      "Requirements clarification (functional + non-functional)",
+      "Capacity estimation (traffic, storage, bandwidth)",
+      "API design",
+      "Data model / schema design",
+      "High-level architecture",
+      "Detailed component design",
+      "Scalability & trade-offs",
+      "Monitoring, alerting, and operations"
+    ]
+  },
+  "questions": [
+    {
+      "id": "asd001",
+      "title": "Design Amazon.com Product Page",
+      "difficulty": "medium",
+      "target_levels": ["SDE_I", "SDE_II", "Senior_SDE"],
+      "target_roles": ["SWE"],
+      "description": "Design the product detail page on Amazon.com that displays product information, pricing, reviews, availability, and seller offers with high availability during peak traffic like Prime Day.",
+      "key_discussion_points": [
+        "Product catalog storage and schema (billions of SKUs)",
+        "Dynamic pricing and offer selection (buy box algorithm)",
+        "Customer reviews and ratings aggregation",
+        "Real-time inventory and availability checks",
+        "Personalization: related products, frequently bought together",
+        "Image and media asset serving via CDN",
+        "Caching strategy for product data (multi-tier cache)",
+        "Handling traffic spikes during sales events (Prime Day, Black Friday)"
+      ],
+      "expected_depth_by_level": {
+        "SDE_I": "Core page data model, API design for product info retrieval, basic caching, CDN for images",
+        "SDE_II": "Multi-tier caching, buy box logic overview, review aggregation pipeline, inventory check integration, handling traffic spikes",
+        "Senior_SDE": "Microservice decomposition, global catalog consistency, personalization integration, graceful degradation under extreme load, platform-level caching infrastructure"
+      }
+    },
+    {
+      "id": "asd002",
+      "title": "Design an Order Processing System",
+      "difficulty": "hard",
+      "target_levels": ["SDE_II", "Senior_SDE", "Principal_SDE"],
+      "target_roles": ["SWE"],
+      "description": "Design Amazon's order processing pipeline from checkout through payment, fulfillment, shipping, and delivery tracking.",
+      "key_discussion_points": [
+        "Order state machine (placed, confirmed, picking, packing, shipped, delivered)",
+        "Payment processing and fraud detection integration",
+        "Inventory reservation and decrement (avoiding overselling)",
+        "Distributed transactions across microservices (saga pattern)",
+        "Fulfillment center selection and routing optimization",
+        "Event-driven architecture for order lifecycle events",
+        "Retry and idempotency for payment and inventory operations",
+        "Order tracking and customer notification pipeline"
+      ],
+      "expected_depth_by_level": {
+        "SDE_II": "Order state machine, basic saga pattern, payment integration, inventory reservation, event-driven notifications",
+        "Senior_SDE": "Distributed saga orchestration, idempotency design, multi-warehouse fulfillment optimization, exactly-once payment processing, monitoring and alerting",
+        "Principal_SDE": "Cross-region order processing, global consistency model, fulfillment network optimization, platform-level reliability guarantees, cost optimization across the pipeline"
+      }
+    },
+    {
+      "id": "asd003",
+      "title": "Design AWS S3",
+      "difficulty": "hard",
+      "target_levels": ["Senior_SDE", "Principal_SDE"],
+      "target_roles": ["SWE"],
+      "description": "Design a highly durable, available, and scalable object storage service that stores trillions of objects.",
+      "key_discussion_points": [
+        "Object storage API: PUT, GET, DELETE, LIST with bucket namespace",
+        "Data durability: replication across availability zones (11 nines)",
+        "Storage node architecture and data placement",
+        "Metadata management at massive scale",
+        "Consistency model: strong read-after-write consistency",
+        "Storage classes and lifecycle policies (Standard, IA, Glacier)",
+        "Multipart upload for large objects",
+        "Access control: bucket policies, IAM, pre-signed URLs"
+      ],
+      "expected_depth_by_level": {
+        "Senior_SDE": "Core object storage architecture, replication for durability, metadata indexing, consistency model, multi-part upload, access control",
+        "Principal_SDE": "Cross-AZ and cross-region replication, erasure coding vs replication trade-offs, storage class tiering with lifecycle transitions, metadata sharding at trillion-object scale, cost-per-GB optimization"
+      }
+    },
+    {
+      "id": "asd004",
+      "title": "Design a Recommendation Engine for Amazon",
+      "difficulty": "medium",
+      "target_levels": ["SDE_I", "SDE_II", "Senior_SDE"],
+      "target_roles": ["SWE"],
+      "description": "Design the system that powers product recommendations across Amazon including 'Customers who bought this also bought', 'Recommended for you', and personalized homepage.",
+      "key_discussion_points": [
+        "Collaborative filtering: item-to-item and user-to-user approaches",
+        "Content-based filtering using product attributes",
+        "Two-stage architecture: candidate generation and ranking",
+        "Real-time signals: recent views, searches, cart additions",
+        "Batch computation of recommendation models (item similarity matrices)",
+        "A/B testing framework for recommendation algorithms",
+        "Cold start handling for new users and new products",
+        "Serving architecture: pre-computed vs real-time recommendations"
+      ],
+      "expected_depth_by_level": {
+        "SDE_I": "Collaborative filtering basics, item similarity computation, pre-computed recommendation lists, basic API design",
+        "SDE_II": "Two-stage retrieval and ranking, real-time signal integration, cold start strategies, A/B testing, caching recommendations",
+        "Senior_SDE": "Embedding-based retrieval with ANN, multi-objective ranking, personalization at scale, feedback loop mitigation, platform-level recommendation infrastructure"
+      }
+    },
+    {
+      "id": "asd005",
+      "title": "Design Alexa Voice Assistant Backend",
+      "difficulty": "hard",
+      "target_levels": ["SDE_II", "Senior_SDE", "Principal_SDE"],
+      "target_roles": ["SWE"],
+      "description": "Design the backend system for a voice assistant that handles speech recognition, natural language understanding, skill routing, and response generation.",
+      "key_discussion_points": [
+        "Audio streaming and speech-to-text (ASR) pipeline",
+        "Natural language understanding: intent classification and entity extraction",
+        "Skill routing and third-party skill integration",
+        "Dialog management and context tracking across turns",
+        "Text-to-speech (TTS) response generation",
+        "Wake word detection (on-device vs cloud)",
+        "Latency budget: end-to-end response within 1-2 seconds",
+        "Smart home device integration and IoT protocol handling"
+      ],
+      "expected_depth_by_level": {
+        "SDE_II": "Audio streaming pipeline, ASR service integration, intent classification, skill routing, TTS response, basic dialog state",
+        "Senior_SDE": "Multi-turn dialog management, low-latency pipeline optimization, third-party skill platform design, smart home protocol bridging, on-device vs cloud partitioning",
+        "Principal_SDE": "End-to-end latency optimization across the full pipeline, multi-language and multi-region deployment, skill platform scalability, proactive assistance and context-aware responses, privacy architecture"
+      }
+    },
+    {
+      "id": "asd006",
+      "title": "Design a Delivery Routing System",
+      "difficulty": "medium",
+      "target_levels": ["SDE_II", "Senior_SDE"],
+      "target_roles": ["SWE"],
+      "description": "Design a system that optimizes delivery routes for Amazon's last-mile delivery fleet, minimizing delivery time and cost while handling real-time constraints.",
+      "key_discussion_points": [
+        "Vehicle Routing Problem (VRP) with time windows and capacity constraints",
+        "Route optimization algorithms: heuristic approaches for NP-hard problem",
+        "Real-time rerouting based on traffic, weather, and delivery failures",
+        "Driver assignment and workload balancing",
+        "Delivery time window promises and SLA management",
+        "Integration with mapping and traffic data services",
+        "Package grouping and load optimization",
+        "Tracking and real-time delivery status updates"
+      ],
+      "expected_depth_by_level": {
+        "SDE_II": "VRP formulation, basic routing heuristics, driver assignment, time window constraints, tracking pipeline",
+        "Senior_SDE": "Real-time rerouting with dynamic constraints, multi-depot optimization, delivery promise accuracy, fleet utilization metrics, integration with warehouse dispatch"
+      }
+    },
+    {
+      "id": "asd007",
+      "title": "Design Amazon Prime Video Streaming",
+      "difficulty": "hard",
+      "target_levels": ["SDE_II", "Senior_SDE", "Principal_SDE"],
+      "target_roles": ["SWE"],
+      "description": "Design a video streaming platform that delivers on-demand and live content to millions of concurrent viewers with adaptive quality across devices.",
+      "key_discussion_points": [
+        "Video ingestion and transcoding pipeline (multiple codecs, resolutions, bitrates)",
+        "Content storage and CDN distribution strategy",
+        "Adaptive bitrate streaming (ABR) with DASH/HLS",
+        "DRM and content protection across devices",
+        "Playback session management and resume functionality",
+        "Live streaming architecture with low latency",
+        "Content catalog and metadata management",
+        "Personalized content recommendations and continue-watching"
+      ],
+      "expected_depth_by_level": {
+        "SDE_II": "Transcoding pipeline, CDN basics, ABR streaming, DRM overview, playback session state, catalog API",
+        "Senior_SDE": "Multi-codec strategy (AV1, H.265, H.264), CDN origin-shield architecture, per-title encoding optimization, live streaming ingest, device-specific packaging",
+        "Principal_SDE": "Global CDN placement and capacity planning, cost-per-stream optimization, real-time quality of experience monitoring, platform convergence for VOD and live, multi-region content licensing enforcement"
+      }
+    },
+    {
+      "id": "asd008",
+      "title": "Design an Inventory Management System",
+      "difficulty": "medium",
+      "target_levels": ["SDE_I", "SDE_II", "Senior_SDE"],
+      "target_roles": ["SWE"],
+      "description": "Design an inventory management system that tracks stock across hundreds of fulfillment centers, supports real-time availability checks, and handles inventory replenishment.",
+      "key_discussion_points": [
+        "Inventory data model: SKU, location, quantity, reservation state",
+        "Real-time stock level tracking across warehouses",
+        "Inventory reservation during checkout (soft lock with TTL)",
+        "Consistency vs availability trade-off for stock counts",
+        "Demand forecasting and automated replenishment triggers",
+        "Multi-warehouse allocation and transfer optimization",
+        "Handling overselling and backorder scenarios",
+        "Integration with supplier systems and purchase order management"
+      ],
+      "expected_depth_by_level": {
+        "SDE_I": "Core data model, CRUD APIs for inventory operations, basic reservation with TTL, stock level queries",
+        "SDE_II": "Distributed inventory across warehouses, reservation consistency, demand-based replenishment triggers, handling race conditions, event-driven stock updates",
+        "Senior_SDE": "Global inventory visibility with eventual consistency, multi-warehouse allocation optimization, forecasting integration, oversell mitigation strategies, audit trail and reconciliation"
+      }
+    }
+  ]
+}

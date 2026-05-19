@@ -205,6 +205,35 @@ function getAllQuestions(
     } catch { /* file may not exist */ }
   }
 
+  // Load company-specific system design questions
+  if (interviewType === "system_design") {
+    const companyFiles: Record<string, string> = {
+      google: "google_system_design.json",
+      amazon: "amazon_system_design.json",
+    };
+    const extra = companyFiles[company.toLowerCase()];
+    if (extra) {
+      const extraPath = path.join(
+        KNOWLEDGE_BASE_ROOT, "questions", "system_design", extra,
+      );
+      try {
+        const extraFile = loadJson<QuestionsFile>(extraPath);
+        questions.push(...extraFile.questions);
+      } catch { /* file may not exist */ }
+    }
+  }
+
+  // Load advanced ML design questions
+  if (interviewType === "ml_design") {
+    const advancedPath = path.join(
+      KNOWLEDGE_BASE_ROOT, "questions", "ml_design", "advanced_ml_design.json",
+    );
+    try {
+      const advancedFile = loadJson<QuestionsFile>(advancedPath);
+      questions.push(...advancedFile.questions);
+    } catch { /* file may not exist */ }
+  }
+
   return questions;
 }
 

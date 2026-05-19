@@ -1,0 +1,203 @@
+{
+  "meta": {
+    "description": "System design interview questions commonly associated with Google SWE interviews",
+    "sources": ["Glassdoor", "Blind", "system design primer", "public interview prep"],
+    "last_updated": "2026-05-19"
+  },
+  "framework": {
+    "steps": [
+      "Requirements clarification (functional + non-functional)",
+      "Capacity estimation (traffic, storage, bandwidth)",
+      "API design",
+      "Data model / schema design",
+      "High-level architecture",
+      "Detailed component design",
+      "Scalability & trade-offs",
+      "Monitoring, alerting, and operations"
+    ]
+  },
+  "questions": [
+    {
+      "id": "gsd001",
+      "title": "Design Google Search",
+      "difficulty": "hard",
+      "target_levels": ["L4", "L5", "L6"],
+      "target_roles": ["SWE"],
+      "description": "Design a web search engine that crawls the internet, indexes billions of web pages, and serves relevant results with sub-second latency.",
+      "key_discussion_points": [
+        "Web crawler architecture: politeness, URL frontier, deduplication",
+        "Inverted index construction and storage",
+        "Ranking: PageRank, relevance scoring, learning-to-rank",
+        "Query parsing and intent understanding",
+        "Serving architecture: sharding the index across thousands of machines",
+        "Caching strategy for popular queries",
+        "Snippet generation and result rendering",
+        "Freshness: incremental crawling and real-time indexing"
+      ],
+      "expected_depth_by_level": {
+        "L4": "Core crawler-indexer-ranker pipeline, inverted index basics, simple ranking signals, query serving path",
+        "L5": "Distributed index sharding, PageRank computation at scale, caching layers, freshness vs completeness trade-offs, query understanding pipeline",
+        "L6": "Global multi-datacenter architecture, real-time indexing pipeline, personalization and localization, search quality feedback loops, capacity planning at planetary scale"
+      }
+    },
+    {
+      "id": "gsd002",
+      "title": "Design YouTube",
+      "difficulty": "hard",
+      "target_levels": ["L4", "L5", "L6"],
+      "target_roles": ["SWE"],
+      "description": "Design a video-sharing platform that supports uploading, processing, storing, and streaming billions of videos to users worldwide.",
+      "key_discussion_points": [
+        "Video upload and transcoding pipeline (multiple resolutions, formats)",
+        "Video storage: blob storage for raw and processed video segments",
+        "Adaptive bitrate streaming (DASH/HLS)",
+        "CDN architecture for global delivery",
+        "Recommendation and home feed generation",
+        "Search and discovery features",
+        "Live streaming support",
+        "Monetization: ad insertion and creator analytics"
+      ],
+      "expected_depth_by_level": {
+        "L4": "Upload pipeline, transcoding basics, blob storage, CDN-based delivery, basic recommendation",
+        "L5": "Adaptive bitrate streaming, global CDN optimization, async transcoding pipeline with retries, recommendation system integration, live streaming architecture",
+        "L6": "Multi-region content placement optimization, cost-efficient storage tiering, end-to-end latency optimization, platform-level decisions around live vs VOD infrastructure"
+      }
+    },
+    {
+      "id": "gsd003",
+      "title": "Design Google Maps",
+      "difficulty": "hard",
+      "target_levels": ["L4", "L5", "L6"],
+      "target_roles": ["SWE"],
+      "description": "Design a mapping and navigation system that provides directions, real-time traffic updates, and location search for users globally.",
+      "key_discussion_points": [
+        "Map tile rendering and serving (vector vs raster tiles)",
+        "Routing engine: graph-based shortest path (Dijkstra, A*, contraction hierarchies)",
+        "Real-time traffic integration and ETA computation",
+        "Geocoding and reverse geocoding services",
+        "Points of interest (POI) search and indexing",
+        "Location data ingestion from multiple sources (GPS probes, street view, satellite)",
+        "Offline maps and data synchronization",
+        "Multi-modal routing (driving, walking, transit, cycling)"
+      ],
+      "expected_depth_by_level": {
+        "L4": "Tile serving basics, graph-based routing with Dijkstra/A*, geocoding API, basic traffic overlay",
+        "L5": "Contraction hierarchies for fast routing, real-time traffic aggregation pipeline, tile pre-rendering and caching, multi-modal route planning",
+        "L6": "Global road graph partitioning, real-time rerouting at scale, predictive traffic modeling, map data pipeline from raw imagery to served tiles, offline-online consistency"
+      }
+    },
+    {
+      "id": "gsd004",
+      "title": "Design Gmail",
+      "difficulty": "medium",
+      "target_levels": ["L4", "L5"],
+      "target_roles": ["SWE"],
+      "description": "Design an email service that handles billions of emails per day with search, spam filtering, labels, and near-instant delivery.",
+      "key_discussion_points": [
+        "Email receiving pipeline (SMTP ingestion, MX records)",
+        "Email storage: per-user mailbox storage and indexing",
+        "Full-text search over email content and attachments",
+        "Spam and phishing detection pipeline",
+        "Push notifications and real-time sync across devices",
+        "Attachment handling and virus scanning",
+        "Labels, filters, and smart categorization (Primary, Social, Promotions)",
+        "Data retention, archival, and compliance"
+      ],
+      "expected_depth_by_level": {
+        "L4": "SMTP pipeline, per-user storage design, basic full-text search, spam filtering with ML, label system",
+        "L5": "Distributed email storage with replication, search index sharding per user, real-time sync protocol, smart categorization ML pipeline, privacy and compliance considerations"
+      }
+    },
+    {
+      "id": "gsd005",
+      "title": "Design Google Drive",
+      "difficulty": "medium",
+      "target_levels": ["L4", "L5", "L6"],
+      "target_roles": ["SWE"],
+      "description": "Design a cloud file storage and synchronization service that allows users to store, share, and collaborate on files across devices.",
+      "key_discussion_points": [
+        "File upload and chunked transfer for large files",
+        "Storage backend: metadata store vs blob store separation",
+        "File versioning and revision history",
+        "Sync protocol: detecting and resolving conflicts across devices",
+        "Sharing and permissions model (ACLs, link sharing)",
+        "Deduplication at the block level",
+        "Quota management and storage tiering",
+        "Notifications for shared file changes"
+      ],
+      "expected_depth_by_level": {
+        "L4": "Chunked upload, metadata vs blob storage, basic sync protocol, file versioning",
+        "L5": "Conflict resolution strategies, block-level deduplication, efficient delta sync, permission model with cascading ACLs, notification pipeline",
+        "L6": "Global consistency for shared files, cost-optimized storage tiering (hot/warm/cold), cross-region replication strategy, enterprise compliance and DLP integration"
+      }
+    },
+    {
+      "id": "gsd006",
+      "title": "Design Google Docs (Real-Time Collaboration)",
+      "difficulty": "hard",
+      "target_levels": ["L5", "L6"],
+      "target_roles": ["SWE"],
+      "description": "Design a real-time collaborative document editing system where multiple users can simultaneously edit the same document.",
+      "key_discussion_points": [
+        "Real-time collaboration: Operational Transformation (OT) vs CRDTs",
+        "Cursor and selection presence for multiple editors",
+        "Document storage model (structured content vs plain text)",
+        "WebSocket-based real-time communication layer",
+        "Conflict resolution and consistency guarantees",
+        "Revision history and undo/redo across collaborators",
+        "Offline editing and reconciliation on reconnect",
+        "Access control and real-time permission enforcement"
+      ],
+      "expected_depth_by_level": {
+        "L5": "OT or CRDT fundamentals, WebSocket-based sync architecture, document model design, cursor presence, revision history",
+        "L6": "Deep OT vs CRDT trade-offs, consistency guarantees under network partitions, offline editing reconciliation, cross-document linking, platform-level infrastructure for multiple doc types"
+      }
+    },
+    {
+      "id": "gsd007",
+      "title": "Design Google Photos",
+      "difficulty": "medium",
+      "target_levels": ["L4", "L5", "L6"],
+      "target_roles": ["SWE"],
+      "description": "Design a photo and video storage service with automatic organization, search by content, and intelligent features like face grouping and memory creation.",
+      "key_discussion_points": [
+        "Photo/video upload, processing, and thumbnail generation pipeline",
+        "Storage optimization: compression, deduplication, tiered storage",
+        "ML-powered features: face detection/clustering, object recognition, scene classification",
+        "Search by content (people, places, objects, text in photos)",
+        "Auto-created albums, collages, and memories",
+        "Sharing and collaborative albums",
+        "Sync across devices with bandwidth optimization",
+        "Storage quota management and quality tiers (original vs compressed)"
+      ],
+      "expected_depth_by_level": {
+        "L4": "Upload pipeline, thumbnail generation, basic storage design, face detection integration, content-based search",
+        "L5": "ML pipeline for feature extraction at scale, embedding-based search, face clustering across user library, deduplication, bandwidth-aware sync",
+        "L6": "Cost-optimized storage at exabyte scale, ML model serving infrastructure, privacy-preserving on-device processing, cross-product photo platform"
+      }
+    },
+    {
+      "id": "gsd008",
+      "title": "Design Google Translate",
+      "difficulty": "hard",
+      "target_levels": ["L4", "L5", "L6"],
+      "target_roles": ["SWE"],
+      "description": "Design a machine translation service that translates text, documents, web pages, and real-time speech across 100+ languages.",
+      "key_discussion_points": [
+        "Translation API design: text, document, web page, and speech input modes",
+        "ML model serving: transformer-based NMT models for 100+ language pairs",
+        "Language detection as a preprocessing step",
+        "Pivot language strategy vs direct translation for low-resource pairs",
+        "Real-time speech translation pipeline (ASR + MT + TTS)",
+        "Caching frequently translated phrases and segments",
+        "Model management: per-language-pair models vs multilingual models",
+        "Quality estimation and user feedback collection"
+      ],
+      "expected_depth_by_level": {
+        "L4": "Core API design, model serving architecture, language detection, caching strategy for common translations",
+        "L5": "Multilingual vs per-pair model trade-offs, low-resource language strategies, real-time speech pipeline, model versioning and rollout",
+        "L6": "Platform-level ML infrastructure for 100+ languages, quality-cost optimization, on-device translation for offline use, speech-to-speech latency optimization, community-driven translation improvement loops"
+      }
+    }
+  ]
+}

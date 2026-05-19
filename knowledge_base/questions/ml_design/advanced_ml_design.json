@@ -1,0 +1,213 @@
+{
+  "meta": {
+    "description": "Advanced ML system design interview questions targeting senior and staff-level engineers",
+    "sources": ["Glassdoor", "Blind", "ML system design primers", "public interview prep"],
+    "last_updated": "2026-05-19"
+  },
+  "framework": {
+    "steps": [
+      "Problem formulation (clarify objective, define ML task type)",
+      "Metrics (offline: AUC, precision/recall, NDCG; online: CTR, engagement, revenue)",
+      "Data (sources, labeling, sampling, feature engineering)",
+      "Model architecture (baseline → advanced, trade-offs)",
+      "Training pipeline (infrastructure, distributed training, hyperparameter tuning)",
+      "Serving and inference (latency, throughput, batch vs real-time)",
+      "Evaluation and experimentation (A/B testing, guardrail metrics)",
+      "Monitoring and iteration (data drift, model staleness, feedback loops)"
+    ]
+  },
+  "questions": [
+    {
+      "id": "aml001",
+      "title": "Design a Real-Time Bidding System",
+      "difficulty": "hard",
+      "target_levels": ["E5", "E6", "L5", "L6"],
+      "description": "Design an ML-powered real-time bidding (RTB) system that decides how much to bid on ad impressions within a 100ms budget, optimizing for advertiser ROI and platform revenue.",
+      "key_discussion_points": [
+        "Bid optimization formulation: predict click/conversion probability, compute optimal bid price",
+        "Feature engineering: user context, ad creative features, publisher signals, time-of-day patterns, historical auction data",
+        "Model architecture: deep neural networks with cross features (DCN-v2), calibration layers for accurate probability estimation",
+        "Pacing and budget management: ensuring advertiser budgets are spent evenly across the campaign period",
+        "Exploration vs exploitation: Thompson sampling or epsilon-greedy for new creatives and audience segments",
+        "Training at scale: billions of impression-level samples per day, online learning for rapid adaptation",
+        "Serving under extreme latency constraints: model distillation, feature caching, prediction pre-computation",
+        "Feedback attribution: conversion delay handling, multi-touch attribution models",
+        "Privacy-preserving bidding: differential privacy, on-device signals, cookieless targeting"
+      ],
+      "expected_depth_by_level": {
+        "E5": "Bid optimization formulation, CTR/CVR prediction models, feature engineering, calibration importance, basic pacing algorithm, serving latency optimization",
+        "E6": "End-to-end auction dynamics, multi-objective bid optimization, online learning pipeline, budget pacing with control theory, privacy-preserving ML, cross-channel attribution modeling",
+        "L5": "Bid optimization formulation, CTR/CVR prediction models, feature engineering, calibration importance, basic pacing algorithm, serving latency optimization",
+        "L6": "End-to-end auction dynamics, multi-objective bid optimization, online learning pipeline, budget pacing with control theory, privacy-preserving ML, cross-channel attribution modeling"
+      }
+    },
+    {
+      "id": "aml002",
+      "title": "Design a Language Translation System",
+      "difficulty": "hard",
+      "target_levels": ["E5", "E6", "L5", "L6"],
+      "description": "Design an ML system for neural machine translation that supports 100+ languages, handles low-resource language pairs, and serves translations at scale with low latency.",
+      "key_discussion_points": [
+        "Model architecture: encoder-decoder transformers, multilingual vs per-language-pair models",
+        "Training data: parallel corpora, back-translation for data augmentation, synthetic data generation",
+        "Low-resource languages: transfer learning from high-resource pairs, pivot languages, zero-shot translation",
+        "Tokenization: SentencePiece, BPE with shared vocabulary across languages, handling morphologically rich languages",
+        "Training at scale: distributed training across GPU clusters, mixed precision, curriculum learning",
+        "Serving infrastructure: model sharding, batching strategies, KV-cache optimization for autoregressive decoding",
+        "Quality evaluation: BLEU, COMET, human evaluation pipelines, language-specific quality assessment",
+        "Continuous improvement: human-in-the-loop feedback, active learning for translation quality, A/B testing across language pairs",
+        "Domain adaptation: fine-tuning for legal, medical, technical domains without catastrophic forgetting"
+      ],
+      "expected_depth_by_level": {
+        "E5": "Transformer encoder-decoder architecture, training data pipeline, BPE tokenization, BLEU evaluation, basic serving with batching, multilingual vs per-pair trade-offs",
+        "E6": "Multilingual foundation model design, low-resource transfer learning strategies, distributed training infrastructure, quality-aware serving with model routing, domain adaptation without forgetting, human evaluation at scale",
+        "L5": "Transformer encoder-decoder architecture, training data pipeline, BPE tokenization, BLEU evaluation, basic serving with batching, multilingual vs per-pair trade-offs",
+        "L6": "Multilingual foundation model design, low-resource transfer learning strategies, distributed training infrastructure, quality-aware serving with model routing, domain adaptation without forgetting, human evaluation at scale"
+      }
+    },
+    {
+      "id": "aml003",
+      "title": "Design an Image Generation Pipeline",
+      "difficulty": "hard",
+      "target_levels": ["E5", "E6", "L5", "L6"],
+      "description": "Design an ML system for text-to-image generation that produces high-quality images from text prompts, with controllability, safety guardrails, and efficient serving.",
+      "key_discussion_points": [
+        "Model architecture: diffusion models (U-Net denoiser, latent diffusion), text encoder (CLIP/T5) for conditioning",
+        "Training pipeline: large-scale image-text dataset curation, filtering for quality and safety, aesthetic scoring",
+        "Controllability: classifier-free guidance, ControlNet for spatial conditioning, style transfer, inpainting",
+        "Safety and content moderation: NSFW filtering, prompt blocklisting, output classifiers, watermarking for provenance",
+        "Serving infrastructure: GPU cluster management, batching denoising steps, latency vs quality trade-offs with step count",
+        "Model optimization: knowledge distillation for fewer steps, quantization, TensorRT acceleration",
+        "Evaluation: FID, CLIP score, human preference studies, red-teaming for adversarial prompts",
+        "Personalization: fine-tuning with user-provided images (DreamBooth, LoRA), efficient adapter management",
+        "Intellectual property and copyright: training data provenance, opt-out mechanisms, content attribution"
+      ],
+      "expected_depth_by_level": {
+        "E5": "Diffusion model fundamentals (forward/reverse process), latent diffusion architecture, text conditioning with CLIP, safety classifier pipeline, basic serving with GPU batching",
+        "E6": "Training data curation at scale, controllability mechanisms (ControlNet, guidance), model distillation for efficient serving, personalization with efficient fine-tuning (LoRA), comprehensive safety and IP framework, human evaluation pipelines",
+        "L5": "Diffusion model fundamentals (forward/reverse process), latent diffusion architecture, text conditioning with CLIP, safety classifier pipeline, basic serving with GPU batching",
+        "L6": "Training data curation at scale, controllability mechanisms (ControlNet, guidance), model distillation for efficient serving, personalization with efficient fine-tuning (LoRA), comprehensive safety and IP framework, human evaluation pipelines"
+      }
+    },
+    {
+      "id": "aml004",
+      "title": "Design a Conversational AI System",
+      "difficulty": "hard",
+      "target_levels": ["E5", "E6", "L5", "L6"],
+      "description": "Design an ML system for a multi-turn conversational AI assistant that can handle open-domain chat, task completion, and knowledge-grounded responses at scale.",
+      "key_discussion_points": [
+        "Model architecture: large language model (decoder-only transformer), instruction tuning, RLHF/DPO alignment",
+        "Context management: conversation history, context window optimization, retrieval-augmented generation (RAG)",
+        "Training pipeline: pre-training data curation, SFT data quality, reward model training, reinforcement learning from human feedback",
+        "Safety and alignment: constitutional AI, red-teaming, refusal training, jailbreak detection",
+        "Tool use and function calling: structured output generation, API integration, action execution",
+        "Serving infrastructure: KV-cache management, speculative decoding, continuous batching, model parallelism",
+        "Multi-turn dialog: state tracking, coreference resolution, topic switching, user personalization",
+        "Evaluation: human preference ratings, automated benchmarks, safety evaluations, task-completion metrics",
+        "Responsible AI: bias mitigation, factuality verification, hallucination reduction, transparency and explainability"
+      ],
+      "expected_depth_by_level": {
+        "E5": "LLM architecture choices, instruction tuning pipeline, RAG for knowledge grounding, KV-cache serving optimization, safety classifier integration, basic evaluation framework",
+        "E6": "RLHF/DPO training pipeline design, advanced serving (speculative decoding, continuous batching), tool-use architecture, comprehensive safety framework, multi-turn state management, platform-level infrastructure for serving LLMs at scale",
+        "L5": "LLM architecture choices, instruction tuning pipeline, RAG for knowledge grounding, KV-cache serving optimization, safety classifier integration, basic evaluation framework",
+        "L6": "RLHF/DPO training pipeline design, advanced serving (speculative decoding, continuous batching), tool-use architecture, comprehensive safety framework, multi-turn state management, platform-level infrastructure for serving LLMs at scale"
+      }
+    },
+    {
+      "id": "aml005",
+      "title": "Design an Anomaly Detection Platform",
+      "difficulty": "hard",
+      "target_levels": ["E5", "E6", "L5", "L6"],
+      "description": "Design a general-purpose ML platform for detecting anomalies across diverse data streams including time-series metrics, log data, network traffic, and financial transactions.",
+      "key_discussion_points": [
+        "Problem taxonomy: point anomalies, contextual anomalies, collective anomalies across different data modalities",
+        "Model approaches: statistical methods (Z-score, STL decomposition), isolation forests, autoencoders, transformer-based time-series models",
+        "Feature engineering: temporal patterns, seasonality, trend decomposition, cross-metric correlations",
+        "Multi-tenancy: per-metric model vs shared model with metric embeddings, automatic hyperparameter tuning per stream",
+        "Training pipeline: self-supervised learning (reconstruction loss), handling label scarcity with active learning",
+        "Real-time scoring: streaming inference with sliding windows, sub-second detection latency",
+        "Alert management: severity scoring, alert deduplication, root cause grouping, reducing alert fatigue",
+        "Evaluation: precision/recall with delayed ground truth, time-to-detect metrics, false positive rate at operator-level",
+        "Platform design: onboarding new data sources, configurable detection sensitivity, integration with incident management"
+      ],
+      "expected_depth_by_level": {
+        "E5": "Anomaly types and model selection, autoencoder-based detection, temporal feature engineering, streaming inference architecture, alert severity scoring, evaluation methodology",
+        "E6": "Multi-tenant platform with per-stream adaptation, self-supervised training at scale, cross-metric correlation detection, automated root cause analysis, platform API design for onboarding, organization-wide anomaly detection strategy",
+        "L5": "Anomaly types and model selection, autoencoder-based detection, temporal feature engineering, streaming inference architecture, alert severity scoring, evaluation methodology",
+        "L6": "Multi-tenant platform with per-stream adaptation, self-supervised training at scale, cross-metric correlation detection, automated root cause analysis, platform API design for onboarding, organization-wide anomaly detection strategy"
+      }
+    },
+    {
+      "id": "aml006",
+      "title": "Design a Content Moderation System at Scale",
+      "difficulty": "hard",
+      "target_levels": ["E5", "E6", "L5", "L6"],
+      "description": "Design an ML system that moderates user-generated content across text, images, video, and audio at the scale of billions of posts per day, balancing safety with free expression.",
+      "key_discussion_points": [
+        "Multi-modal classification: separate and fused models for text, image, video, and audio content",
+        "Policy taxonomy: hate speech, violence, nudity, misinformation, spam, harassment, self-harm categories with severity levels",
+        "Model architecture: transformer-based text models, vision transformers for images, temporal models for video, multi-modal fusion with cross-attention",
+        "Training data: human labeling pipelines, inter-annotator agreement, active learning for hard cases, handling policy changes",
+        "Precision-recall trade-offs: per-category thresholds, severity-based escalation, appeal handling",
+        "Adversarial robustness: text obfuscation, steganography in images, adversarial training and data augmentation",
+        "Human review optimization: routing to specialized reviewers, review queue prioritization, reviewer well-being considerations",
+        "Serving at scale: tiered moderation (lightweight pre-filter, full model, human review), latency budgets for upload-time vs feed-time moderation",
+        "Evaluation: policy-specific metrics, cross-cultural fairness audits, false positive impact on marginalized communities"
+      ],
+      "expected_depth_by_level": {
+        "E5": "Multi-modal classification architecture, policy taxonomy mapping to ML tasks, precision/recall threshold management, human review queue integration, adversarial content handling",
+        "E6": "Multi-modal fusion research, policy-as-code framework for rapid category updates, cross-cultural fairness evaluation, adversarial robustness pipeline, human review optimization with active learning, organization-wide moderation platform design",
+        "L5": "Multi-modal classification architecture, policy taxonomy mapping to ML tasks, precision/recall threshold management, human review queue integration, adversarial content handling",
+        "L6": "Multi-modal fusion research, policy-as-code framework for rapid category updates, cross-cultural fairness evaluation, adversarial robustness pipeline, human review optimization with active learning, organization-wide moderation platform design"
+      }
+    },
+    {
+      "id": "aml007",
+      "title": "Design a Personalized Email Marketing ML System",
+      "difficulty": "hard",
+      "target_levels": ["E5", "E6", "L5", "L6"],
+      "description": "Design an ML system that personalizes email marketing campaigns, optimizing what content to send, to whom, when, and how often, maximizing conversions while minimizing unsubscribes.",
+      "key_discussion_points": [
+        "User segmentation: behavioral clustering, RFM analysis, propensity modeling for purchase likelihood",
+        "Send-time optimization: per-user optimal delivery time prediction based on open/click history",
+        "Content personalization: product recommendation within email, dynamic subject line generation, template selection",
+        "Volume optimization: reinforcement learning for per-user frequency capping, fatigue modeling",
+        "Multi-touch attribution: credit assignment across email, push, in-app channels using causal inference",
+        "Training pipeline: large-scale user behavior data, handling selection bias (only see outcomes for sent emails), inverse propensity weighting",
+        "Model architecture: multi-task learning for open/click/convert/unsubscribe prediction, calibrated probabilities",
+        "Uplift modeling: estimating incremental impact of sending vs not sending (causal ML)",
+        "Evaluation: incremental revenue per email, long-term user LTV impact, holdout group experimentation"
+      ],
+      "expected_depth_by_level": {
+        "E5": "User segmentation and propensity scoring, send-time optimization, content personalization models, multi-task prediction for engagement outcomes, basic A/B testing framework",
+        "E6": "Uplift modeling for causal impact estimation, RL-based frequency optimization, selection bias correction, multi-touch attribution with causal inference, long-term LTV optimization, platform design for campaign orchestration at scale",
+        "L5": "User segmentation and propensity scoring, send-time optimization, content personalization models, multi-task prediction for engagement outcomes, basic A/B testing framework",
+        "L6": "Uplift modeling for causal impact estimation, RL-based frequency optimization, selection bias correction, multi-touch attribution with causal inference, long-term LTV optimization, platform design for campaign orchestration at scale"
+      }
+    },
+    {
+      "id": "aml008",
+      "title": "Design a Self-Driving Car Perception System",
+      "difficulty": "hard",
+      "target_levels": ["E5", "E6", "L5", "L6"],
+      "description": "Design the ML perception stack for an autonomous vehicle that detects and tracks objects, understands road scenes, and predicts the behavior of other road users in real time.",
+      "key_discussion_points": [
+        "Sensor fusion: camera, LiDAR, radar data alignment and fusion strategies (early vs late fusion)",
+        "3D object detection: point cloud processing (PointPillars, CenterPoint), camera-based 3D detection (BEV projection)",
+        "Multi-object tracking: data association, Kalman filtering, track lifecycle management",
+        "Semantic scene understanding: lane detection, drivable area segmentation, traffic sign/light recognition",
+        "Behavior prediction: trajectory forecasting for vehicles, pedestrians, cyclists using graph neural networks and transformers",
+        "Training data: large-scale driving datasets, simulation-generated data, auto-labeling with foundation models",
+        "Model architecture: bird's-eye-view (BEV) backbone for unified multi-sensor representation",
+        "Real-time inference: model optimization for on-vehicle compute (TensorRT, INT8 quantization), strict latency budgets (<50ms)",
+        "Safety: redundancy across sensor modalities, uncertainty estimation, out-of-distribution detection, formal verification"
+      ],
+      "expected_depth_by_level": {
+        "E5": "Camera and LiDAR processing pipelines, 3D object detection architectures, multi-object tracking, BEV representation, model optimization for on-vehicle inference, core evaluation metrics (AP, MOTA)",
+        "E6": "End-to-end sensor fusion architecture, trajectory prediction with interaction modeling, simulation-to-real domain adaptation, uncertainty-aware perception, auto-labeling pipeline design, safety validation framework, perception platform architecture for fleet-wide model deployment",
+        "L5": "Camera and LiDAR processing pipelines, 3D object detection architectures, multi-object tracking, BEV representation, model optimization for on-vehicle inference, core evaluation metrics (AP, MOTA)",
+        "L6": "End-to-end sensor fusion architecture, trajectory prediction with interaction modeling, simulation-to-real domain adaptation, uncertainty-aware perception, auto-labeling pipeline design, safety validation framework, perception platform architecture for fleet-wide model deployment"
+      }
+    }
+  ]
+}
