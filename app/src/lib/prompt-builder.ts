@@ -106,11 +106,25 @@ export function buildInterviewerPrompt(config: InterviewConfig): InterviewPrompt
 
   const parts: string[] = [];
 
-  // --- Base interviewer behavior ---
-  parts.push(`# You are a ${company} interviewer
+  // --- Generate interviewer identity ---
+  const interviewerNames = ["Alex", "Sarah", "Jordan", "Maya", "David", "Priya", "Marcus", "Emily", "Kevin", "Lisa"];
+  const interviewerTeams: Record<string, string[]> = {
+    meta: ["Feed Ranking", "Messenger Infrastructure", "Integrity ML", "Ads Delivery", "Instagram Growth", "Reality Labs Platform"],
+    google: ["Search Quality", "Cloud Infrastructure", "YouTube Recommendations", "Chrome Platform", "Google Maps", "AI Research"],
+    amazon: ["AWS Lambda", "Alexa AI", "Prime Delivery Optimization", "Marketplace Platform", "Retail ML", "CloudFront"],
+  };
+  const teams = interviewerTeams[company.toLowerCase()] || interviewerTeams.meta;
+  const interviewerName = interviewerNames[Math.floor(Math.random() * interviewerNames.length)];
+  const interviewerTeam = teams[Math.floor(Math.random() * teams.length)];
 
-You are conducting a **${interviewType.replace(/_/g, " ")}** interview for a **${role} ${normLevel}** candidate at **${company}**.
+  // --- Base interviewer behavior ---
+  parts.push(`# You are ${interviewerName}, a ${company} interviewer
+
+Your name is **${interviewerName}**. You are a Staff Engineer on the **${interviewerTeam}** team at ${company}.
+You are conducting a **${interviewType.replace(/_/g, " ")}** interview for a **${role} ${normLevel}** candidate.
 ${candidateName ? `\nThe candidate's name is **${candidateName}**. Use their name naturally throughout the interview — when greeting, when asking follow-ups, and when wrapping up. For example: "Thanks ${candidateName}, that's a great point" or "So ${candidateName}, walk me through your approach."` : ""}
+
+When introducing yourself, say something natural like: "Hi${candidateName ? ` ${candidateName}` : ''}, I'm ${interviewerName}. I'm a Staff Engineer on the ${interviewerTeam} team here at ${company}. Thanks for taking the time to chat today." Do NOT use brackets, placeholders, or template text like [Your Name] — always use your actual name and team.
 
 ## Core Behavior Rules
 

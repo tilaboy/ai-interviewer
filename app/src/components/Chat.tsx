@@ -32,18 +32,40 @@ function TypingIndicator() {
   )
 }
 
+// Ranked list of natural-sounding voices to prefer (macOS/Chrome)
+const PREFERRED_VOICES = [
+  'Zoe (Premium)',       // macOS premium
+  'Samantha (Premium)',  // macOS premium
+  'Karen (Premium)',     // macOS premium Australian
+  'Daniel (Premium)',    // macOS premium British
+  'Zoe',                // macOS
+  'Samantha',           // macOS default
+  'Google UK English Female',
+  'Google US English',
+  'Microsoft Zira',     // Windows
+  'Microsoft David',    // Windows
+]
+
+function getBestVoice(): SpeechSynthesisVoice | null {
+  const voices = window.speechSynthesis.getVoices()
+  for (const name of PREFERRED_VOICES) {
+    const match = voices.find((v) => v.name.includes(name))
+    if (match) return match
+  }
+  // Fallback: any English voice that isn't "compact" or "espeak"
+  return voices.find((v) => v.lang.startsWith('en') && !v.name.toLowerCase().includes('compact') && !v.name.toLowerCase().includes('espeak'))
+    || voices.find((v) => v.lang.startsWith('en'))
+    || null
+}
+
 function speakText(text: string) {
   if (typeof window === 'undefined' || !window.speechSynthesis) return
   window.speechSynthesis.cancel()
   const utterance = new SpeechSynthesisUtterance(text)
-  utterance.rate = 1.05
-  utterance.pitch = 1
-  // Prefer a natural-sounding English voice
-  const voices = window.speechSynthesis.getVoices()
-  const preferred = voices.find(
-    (v) => v.lang.startsWith('en') && (v.name.includes('Samantha') || v.name.includes('Google') || v.name.includes('Natural'))
-  ) || voices.find((v) => v.lang.startsWith('en'))
-  if (preferred) utterance.voice = preferred
+  utterance.rate = 0.95  // slightly slower for natural pacing
+  utterance.pitch = 1.0
+  const voice = getBestVoice()
+  if (voice) utterance.voice = voice
   window.speechSynthesis.speak(utterance)
 }
 
@@ -58,16 +80,13 @@ function MessageBubble({ message, isLatest }: { message: Message; isLatest: bool
     if (isInterviewer && isLatest && !hasSpoken.current && typeof window !== 'undefined' && window.speechSynthesis) {
       hasSpoken.current = true
       setIsSpeaking(true)
-      // Strip code blocks from speech
       const cleanText = message.content.replace(/```[\s\S]*?```/g, '(code block omitted)').trim()
       window.speechSynthesis.cancel()
       const utterance = new SpeechSynthesisUtterance(cleanText)
-      utterance.rate = 1.05
-      const voices = window.speechSynthesis.getVoices()
-      const preferred = voices.find(
-        (v) => v.lang.startsWith('en') && (v.name.includes('Samantha') || v.name.includes('Google') || v.name.includes('Natural'))
-      ) || voices.find((v) => v.lang.startsWith('en'))
-      if (preferred) utterance.voice = preferred
+      utterance.rate = 0.95
+      utterance.pitch = 1.0
+      const voice = getBestVoice()
+      if (voice) utterance.voice = voice
       utterance.onend = () => setIsSpeaking(false)
       utterance.onerror = () => setIsSpeaking(false)
       window.speechSynthesis.speak(utterance)
