@@ -1,0 +1,209 @@
+{
+  "meta": {
+    "description": "Coding interview questions organized by difficulty and topic",
+    "sources": ["LeetCode Meta tagged", "Glassdoor", "Blind", "public interview prep blogs"],
+    "last_updated": "2026-05-19"
+  },
+  "questions": [
+    {
+      "id": "c001",
+      "title": "Two Sum",
+      "difficulty": "easy",
+      "target_levels": ["E3"],
+      "topics": ["arrays", "hash_maps"],
+      "description": "Given an array of integers and a target, return indices of two numbers that add up to the target.",
+      "follow_ups": ["Can you do it in one pass?", "What if there are multiple valid pairs?"],
+      "evaluation_criteria": ["optimal O(n) solution", "edge case handling", "clean code"]
+    },
+    {
+      "id": "c002",
+      "title": "Valid Parentheses",
+      "difficulty": "easy",
+      "target_levels": ["E3"],
+      "topics": ["stacks", "strings"],
+      "description": "Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.",
+      "follow_ups": ["What if we add wildcard character '*'?"],
+      "evaluation_criteria": ["stack-based solution", "edge cases", "clean code"]
+    },
+    {
+      "id": "c003",
+      "title": "Merge Intervals",
+      "difficulty": "medium",
+      "target_levels": ["E3", "E4"],
+      "topics": ["arrays", "sorting"],
+      "description": "Given an array of intervals, merge all overlapping intervals.",
+      "follow_ups": ["What if intervals are streaming in?", "How would you handle this in a distributed setting?"],
+      "evaluation_criteria": ["sorting approach", "O(n log n) solution", "edge cases"]
+    },
+    {
+      "id": "c004",
+      "title": "Binary Tree Right Side View",
+      "difficulty": "medium",
+      "target_levels": ["E3", "E4"],
+      "topics": ["trees", "BFS"],
+      "description": "Given a binary tree, return the values of the nodes you can see from the right side.",
+      "follow_ups": ["What about left side view?", "Can you do it with DFS?"],
+      "evaluation_criteria": ["BFS level-order traversal", "DFS alternative", "clean implementation"]
+    },
+    {
+      "id": "c005",
+      "title": "Product of Array Except Self",
+      "difficulty": "medium",
+      "target_levels": ["E3", "E4"],
+      "topics": ["arrays", "prefix_sum"],
+      "description": "Given an integer array, return an array where each element is the product of all elements except itself, without using division.",
+      "follow_ups": ["Can you do it in O(1) extra space?", "What if the array contains zeros?"],
+      "evaluation_criteria": ["prefix/suffix approach", "no division constraint", "space optimization"]
+    },
+    {
+      "id": "c006",
+      "title": "Clone Graph",
+      "difficulty": "medium",
+      "target_levels": ["E4"],
+      "topics": ["graphs", "BFS", "DFS", "hash_maps"],
+      "description": "Given a reference to a node in a connected undirected graph, return a deep copy of the graph.",
+      "follow_ups": ["How do you handle cycles?", "BFS vs DFS trade-offs?"],
+      "evaluation_criteria": ["handle cycles with visited map", "correct deep copy", "BFS or DFS approach"]
+    },
+    {
+      "id": "c007",
+      "title": "Lowest Common Ancestor of a Binary Tree",
+      "difficulty": "medium",
+      "target_levels": ["E4"],
+      "topics": ["trees", "recursion"],
+      "description": "Given a binary tree, find the lowest common ancestor of two given nodes.",
+      "follow_ups": ["What if it's a BST?", "What if nodes might not exist?", "What if you have parent pointers?"],
+      "evaluation_criteria": ["recursive solution", "handle edge cases", "understand LCA concept"]
+    },
+    {
+      "id": "c008",
+      "title": "Word Break",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "topics": ["dynamic_programming", "strings"],
+      "description": "Given a string and a dictionary of words, determine if the string can be segmented into space-separated sequence of dictionary words.",
+      "follow_ups": ["Return all possible segmentations", "What if the dictionary is very large?"],
+      "evaluation_criteria": ["DP approach", "optimal substructure identification", "time complexity analysis"]
+    },
+    {
+      "id": "c009",
+      "title": "Number of Islands",
+      "difficulty": "medium",
+      "target_levels": ["E3", "E4"],
+      "topics": ["graphs", "BFS", "DFS", "union_find"],
+      "description": "Given a 2D grid of '1's (land) and '0's (water), count the number of islands.",
+      "follow_ups": ["What if islands can be added dynamically?", "How would you solve this in a distributed system?"],
+      "evaluation_criteria": ["BFS/DFS traversal", "visited tracking", "Union-Find alternative discussion"]
+    },
+    {
+      "id": "c010",
+      "title": "Minimum Window Substring",
+      "difficulty": "hard",
+      "target_levels": ["E4", "E5"],
+      "topics": ["sliding_window", "hash_maps", "strings"],
+      "description": "Given strings s and t, find the minimum window substring of s that contains all characters of t.",
+      "follow_ups": ["What if we need exactly the count of each character?", "Optimize for very long strings"],
+      "evaluation_criteria": ["sliding window technique", "character frequency tracking", "O(n) solution"]
+    },
+    {
+      "id": "c011",
+      "title": "Alien Dictionary",
+      "difficulty": "hard",
+      "target_levels": ["E5", "E6"],
+      "topics": ["graphs", "topological_sort"],
+      "description": "Given a sorted dictionary of an alien language, find the order of characters.",
+      "follow_ups": ["What if there are contradictions?", "What if multiple valid orderings exist?"],
+      "evaluation_criteria": ["graph construction from constraints", "topological sort", "cycle detection"]
+    },
+    {
+      "id": "c012",
+      "title": "Design Add and Search Words Data Structure",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "topics": ["trie", "design", "DFS"],
+      "description": "Design a data structure that supports adding words and searching with '.' wildcard.",
+      "follow_ups": ["How would you optimize for memory?", "What about prefix matching?"],
+      "evaluation_criteria": ["trie implementation", "wildcard DFS search", "API design"]
+    },
+    {
+      "id": "c013",
+      "title": "LRU Cache",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "topics": ["design", "hash_maps", "linked_list"],
+      "description": "Design a data structure for Least Recently Used (LRU) cache with O(1) get and put.",
+      "follow_ups": ["How would you make it thread-safe?", "What about LFU cache?", "How does this work in a distributed setting?"],
+      "evaluation_criteria": ["doubly-linked list + hashmap", "O(1) operations", "clean API"]
+    },
+    {
+      "id": "c014",
+      "title": "Serialize and Deserialize Binary Tree",
+      "difficulty": "hard",
+      "target_levels": ["E5", "E6"],
+      "topics": ["trees", "design", "BFS", "DFS"],
+      "description": "Design an algorithm to serialize and deserialize a binary tree.",
+      "follow_ups": ["What about N-ary tree?", "How would you handle very large trees?", "Compressed serialization?"],
+      "evaluation_criteria": ["correct serialization format", "handle nulls", "BFS vs DFS trade-off"]
+    },
+    {
+      "id": "c015",
+      "title": "Median of Two Sorted Arrays",
+      "difficulty": "hard",
+      "target_levels": ["E5", "E6"],
+      "topics": ["binary_search", "divide_and_conquer"],
+      "description": "Find the median of two sorted arrays in O(log(m+n)) time.",
+      "follow_ups": ["Generalize to kth element", "What if arrays are of very different sizes?"],
+      "evaluation_criteria": ["binary search approach", "O(log(min(m,n))) solution", "edge case handling"]
+    },
+    {
+      "id": "c016",
+      "title": "Random Pick with Weight",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "topics": ["binary_search", "prefix_sum", "randomization"],
+      "description": "Given an array of positive integers w, implement pickIndex() which randomly picks an index in proportion to its weight.",
+      "follow_ups": ["How would you test the randomness?", "What if weights change frequently?"],
+      "evaluation_criteria": ["prefix sum + binary search", "understanding of probability", "clean implementation"]
+    },
+    {
+      "id": "c017",
+      "title": "K Closest Points to Origin",
+      "difficulty": "medium",
+      "target_levels": ["E3", "E4"],
+      "topics": ["heap", "sorting", "quickselect"],
+      "description": "Given an array of points, find the K closest points to the origin.",
+      "follow_ups": ["What if points are streaming?", "Quickselect vs heap trade-offs?"],
+      "evaluation_criteria": ["heap or quickselect approach", "time complexity analysis", "trade-off discussion"]
+    },
+    {
+      "id": "c018",
+      "title": "Subarray Sum Equals K",
+      "difficulty": "medium",
+      "target_levels": ["E3", "E4"],
+      "topics": ["prefix_sum", "hash_maps"],
+      "description": "Given an array of integers and an integer k, find the total number of continuous subarrays whose sum equals k.",
+      "follow_ups": ["What if we need the actual subarrays?", "What about non-negative numbers only?"],
+      "evaluation_criteria": ["prefix sum with hashmap", "O(n) solution", "handle negative numbers"]
+    },
+    {
+      "id": "c019",
+      "title": "Accounts Merge",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "topics": ["union_find", "graphs", "DFS"],
+      "description": "Given a list of accounts where each element is a list of strings (name + emails), merge accounts belonging to the same person.",
+      "follow_ups": ["How would you handle billions of accounts?", "What data structure is most efficient?"],
+      "evaluation_criteria": ["Union-Find or DFS approach", "correct merging logic", "efficiency discussion"]
+    },
+    {
+      "id": "c020",
+      "title": "Task Scheduler",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "topics": ["greedy", "heap", "math"],
+      "description": "Given tasks with cooldown period n, find the minimum time to finish all tasks.",
+      "follow_ups": ["Return the actual schedule", "What if tasks have priorities?"],
+      "evaluation_criteria": ["greedy/math approach", "understanding idle slots", "optimal solution"]
+    }
+  ]
+}

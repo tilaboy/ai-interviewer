@@ -1,0 +1,74 @@
+{
+  "company": "Google",
+  "source": "Public career pages, Glassdoor, Blind, interview prep resources",
+  "last_updated": "2026-05-19",
+  "general_notes": "Google interviews are known for strong coding focus (historically 2-3 coding rounds). System design is expected at L4+. Behavioral round assesses Googleyness and leadership. Google uses a hiring committee — the interviewer does not make the hiring decision alone.",
+  "roles": {
+    "SWE": {
+      "title": "Software Engineer",
+      "levels": {
+        "L3": {
+          "interview_rounds": [
+            { "type": "coding", "count": 3, "duration_min": 45, "description": "Three coding rounds. Medium to hard problems. Google tends to give 1 problem per round and expects optimal + clean solution.", "focus_areas": ["arrays", "strings", "hash_maps", "trees", "graphs", "BFS/DFS", "dynamic_programming", "recursion"] },
+            { "type": "behavioral", "count": 1, "duration_min": 45, "description": "Googleyness and leadership. Less emphasis on leadership for L3 — focus on collaboration, learning, doing the right thing.", "focus_areas": ["collaboration", "intellectual_humility", "handling_ambiguity", "learning_agility"] }
+          ],
+          "notes": "No system design for L3. Heavier coding bar than Meta E3."
+        },
+        "L4": {
+          "interview_rounds": [
+            { "type": "coding", "count": 2, "duration_min": 45, "description": "Two coding rounds. Medium-hard to hard. Must reach optimal solutions.", "focus_areas": ["graphs", "dynamic_programming", "binary_search", "greedy", "trees", "design_patterns"] },
+            { "type": "system_design", "count": 1, "duration_min": 45, "description": "System design. Similar to Meta E4 bar — demonstrate structured thinking and core component knowledge.", "focus_areas": ["web_services", "storage_systems", "distributed_basics", "caching"] },
+            { "type": "behavioral", "count": 1, "duration_min": 45, "description": "Googleyness and leadership assessment.", "focus_areas": ["googleyness", "emergent_leadership", "collaboration", "intellectual_humility"] }
+          ]
+        },
+        "L5": {
+          "interview_rounds": [
+            { "type": "coding", "count": 2, "duration_min": 45, "description": "Two coding rounds at senior level. Hard problems expected.", "focus_areas": ["advanced_algorithms", "optimization", "complex_data_structures", "concurrency"] },
+            { "type": "system_design", "count": 1, "duration_min": 60, "description": "Deep system design. Must drive conversation, discuss trade-offs at depth, address production concerns.", "focus_areas": ["distributed_systems", "consistency_models", "large_scale_storage", "real_time_systems"] },
+            { "type": "behavioral", "count": 1, "duration_min": 45, "description": "Googleyness + leadership. Must show leadership beyond own team.", "focus_areas": ["technical_leadership", "cross_team_influence", "mentoring", "navigating_ambiguity"] }
+          ]
+        },
+        "L6": {
+          "interview_rounds": [
+            { "type": "coding", "count": 2, "duration_min": 45, "description": "Staff-level coding.", "focus_areas": ["advanced_algorithms", "system_level_optimization", "architecture_in_code"] },
+            { "type": "system_design", "count": 1, "duration_min": 60, "description": "Staff-level system design with Google-scale expectations.", "focus_areas": ["planet_scale_systems", "multi_region", "consistency_availability", "cost_efficiency", "system_evolution"] },
+            { "type": "behavioral", "count": 1, "duration_min": 45, "description": "Staff leadership. Org-level impact expected.", "focus_areas": ["org_impact", "technical_vision", "building_teams", "cross_org_influence"] }
+          ]
+        }
+      }
+    },
+    "MLE": {
+      "title": "Machine Learning Engineer",
+      "levels": {
+        "L3": {
+          "interview_rounds": [
+            { "type": "coding", "count": 2, "duration_min": 45, "description": "Coding with potential ML-flavored problems.", "focus_areas": ["algorithms", "data_structures", "ML_basics_in_code", "numpy_patterns"] },
+            { "type": "ml_design", "count": 1, "duration_min": 45, "description": "ML fundamentals. Basic ML system design.", "focus_areas": ["supervised_learning", "model_evaluation", "basic_feature_engineering", "overfitting"] },
+            { "type": "behavioral", "count": 1, "duration_min": 45, "description": "Googleyness.", "focus_areas": ["collaboration", "learning_agility", "intellectual_humility"] }
+          ]
+        },
+        "L4": {
+          "interview_rounds": [
+            { "type": "coding", "count": 2, "duration_min": 45, "description": "Coding interviews.", "focus_areas": ["algorithms", "ML_coding", "data_processing"] },
+            { "type": "ml_design", "count": 1, "duration_min": 45, "description": "ML system design. End-to-end ML pipeline.", "focus_areas": ["recommendation_systems", "ranking", "feature_engineering", "model_serving"] },
+            { "type": "behavioral", "count": 1, "duration_min": 45, "description": "Googleyness + leadership.", "focus_areas": ["googleyness", "ML_project_leadership", "collaboration"] }
+          ]
+        },
+        "L5": {
+          "interview_rounds": [
+            { "type": "coding", "count": 2, "duration_min": 45, "description": "Senior coding.", "focus_areas": ["advanced_algorithms", "ML_system_coding", "optimization"] },
+            { "type": "ml_design", "count": 1, "duration_min": 60, "description": "Deep ML system design.", "focus_areas": ["large_scale_ML", "multi_objective", "real_time_ML", "model_monitoring", "experimentation"] },
+            { "type": "behavioral", "count": 1, "duration_min": 45, "description": "Senior leadership.", "focus_areas": ["technical_leadership", "ML_strategy", "cross_team_influence"] }
+          ]
+        },
+        "L6": {
+          "interview_rounds": [
+            { "type": "coding", "count": 2, "duration_min": 45, "description": "Staff coding.", "focus_areas": ["advanced_algorithms", "system_optimization"] },
+            { "type": "ml_design", "count": 1, "duration_min": 60, "description": "Staff ML design.", "focus_areas": ["ML_platform", "foundation_models", "ML_efficiency", "cross_product_ML"] },
+            { "type": "behavioral", "count": 1, "duration_min": 45, "description": "Staff leadership.", "focus_areas": ["org_ML_strategy", "building_ML_teams", "technical_vision"] }
+          ]
+        }
+      }
+    }
+  }
+}

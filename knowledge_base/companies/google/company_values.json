@@ -1,0 +1,53 @@
+{
+  "company": "Google",
+  "values": [
+    {
+      "name": "Googleyness",
+      "description": "A combination of traits Google looks for: intellectual humility, comfort with ambiguity, bias for action, and collaborative nature.",
+      "behavioral_signals": [
+        "Thrives in ambiguity — doesn't need everything spelled out",
+        "Intellectually humble — open to being wrong, eager to learn",
+        "Collaborative — defaults to working with others, shares credit",
+        "Fun to work with — positive energy without being fake",
+        "Does the right thing — ethical compass, user-first thinking",
+        "Pushes back thoughtfully — disagrees with data, not ego"
+      ]
+    },
+    {
+      "name": "General Cognitive Ability (GCA)",
+      "description": "Ability to learn and solve novel problems, not just apply known patterns.",
+      "behavioral_signals": [
+        "Asks insightful questions that reframe the problem",
+        "Draws connections between unrelated domains",
+        "Adapts approach when initial plan doesn't work",
+        "Reasons from first principles, not just pattern matching"
+      ]
+    },
+    {
+      "name": "Leadership",
+      "description": "Emergent leadership — stepping up when needed, not positional authority.",
+      "behavioral_signals": [
+        "Leads when appropriate, follows when appropriate",
+        "Navigates ambiguity and brings clarity to teams",
+        "Empowers others rather than controlling",
+        "Takes ownership of hard problems others avoid"
+      ]
+    },
+    {
+      "name": "Role-Related Knowledge",
+      "description": "Deep technical expertise relevant to the role.",
+      "behavioral_signals": [
+        "Strong fundamentals, not just surface-level knowledge",
+        "Can go deep on relevant topics when probed",
+        "Applies knowledge practically, not just theoretically",
+        "Stays current in their domain"
+      ]
+    }
+  ],
+  "level_mapping": {
+    "L3": { "title": "Software Engineer II", "meta_equivalent": "E3", "amazon_equivalent": "SDE I" },
+    "L4": { "title": "Software Engineer III", "meta_equivalent": "E4", "amazon_equivalent": "SDE II" },
+    "L5": { "title": "Senior Software Engineer", "meta_equivalent": "E5", "amazon_equivalent": "Senior SDE" },
+    "L6": { "title": "Staff Software Engineer", "meta_equivalent": "E6", "amazon_equivalent": "Principal SDE" }
+  }
+}

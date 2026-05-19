@@ -1,0 +1,232 @@
+{
+  "meta": {
+    "description": "ML system design interview questions for MLE roles at Meta",
+    "sources": ["Glassdoor", "Blind", "ML system design primers", "public interview prep"],
+    "last_updated": "2026-05-19"
+  },
+  "framework": {
+    "steps": [
+      "Problem formulation (clarify objective, define ML task type)",
+      "Metrics (offline: AUC, precision/recall, NDCG; online: CTR, engagement, revenue)",
+      "Data (sources, labeling, sampling, feature engineering)",
+      "Model architecture (baseline → advanced, trade-offs)",
+      "Training pipeline (infrastructure, distributed training, hyperparameter tuning)",
+      "Serving and inference (latency, throughput, batch vs real-time)",
+      "Evaluation and experimentation (A/B testing, guardrail metrics)",
+      "Monitoring and iteration (data drift, model staleness, feedback loops)"
+    ]
+  },
+  "questions": [
+    {
+      "id": "ml001",
+      "title": "Design a News Feed Ranking System",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "description": "Design the ML system that ranks posts in a user's news feed to maximize engagement.",
+      "key_discussion_points": [
+        "Multi-objective optimization (likes, comments, shares, time spent, negative feedback)",
+        "Feature engineering (user features, post features, context, social graph)",
+        "Model architecture (two-tower, multi-task learning)",
+        "Training data: implicit vs explicit signals",
+        "Real-time feature computation",
+        "Position bias handling",
+        "Exploration vs exploitation",
+        "Responsible AI: filter bubbles, misinformation"
+      ],
+      "expected_depth_by_level": {
+        "E4": "Core ranking formulation, basic features, logistic regression → neural network progression, offline metrics",
+        "E5": "Multi-task learning, real-time features, position debiasing, online experimentation, fairness considerations"
+      }
+    },
+    {
+      "id": "ml002",
+      "title": "Design an Ads Click-Through Rate Prediction System",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5", "E6"],
+      "description": "Design the ML system that predicts whether a user will click on an ad.",
+      "key_discussion_points": [
+        "Problem formulation (binary classification, calibration matters)",
+        "Feature engineering (user profile, ad features, context, historical interactions)",
+        "Model: logistic regression → GBDT → deep learning (DCN, DeepFM)",
+        "Training: large-scale, daily retraining, online learning",
+        "Serving: latency constraints, model compression",
+        "Calibration and auction mechanics",
+        "Cold start for new ads/users",
+        "Privacy: differential privacy, on-device"
+      ],
+      "expected_depth_by_level": {
+        "E4": "Core CTR formulation, feature categories, model progression, basic serving",
+        "E5": "Calibration importance, online learning, cold start solutions, privacy-preserving ML",
+        "E6": "Full auction integration, privacy at scale, model efficiency research, org-wide ML platform"
+      }
+    },
+    {
+      "id": "ml003",
+      "title": "Design a Content Recommendation System",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "description": "Design an ML system that recommends videos/reels/content to users.",
+      "key_discussion_points": [
+        "Two-stage: candidate generation → ranking",
+        "Candidate generation: collaborative filtering, content-based, two-tower models",
+        "Ranking: learning-to-rank with engagement signals",
+        "Embedding-based retrieval (ANN search)",
+        "Cold start problem (new users, new content)",
+        "Diversity and serendipity",
+        "Content safety filtering",
+        "Feedback loops and popularity bias"
+      ],
+      "expected_depth_by_level": {
+        "E4": "Two-stage architecture, basic collaborative filtering, content features, offline evaluation",
+        "E5": "Two-tower embeddings, ANN infrastructure, diversity injection, feedback loop mitigation, online experimentation"
+      }
+    },
+    {
+      "id": "ml004",
+      "title": "Design a Harmful Content Detection System",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "description": "Design an ML system that detects harmful content (hate speech, violence, misinformation) across text, images, and video.",
+      "key_discussion_points": [
+        "Multi-modal classification (text + image + video)",
+        "Taxonomy of violations (hate speech, violence, nudity, misinformation)",
+        "Labeling: human review pipelines, active learning",
+        "Model: BERT/transformer for text, CNN/ViT for images, multi-modal fusion",
+        "Precision vs recall trade-offs (false positive = censorship, false negative = harm)",
+        "Adversarial content and evasion",
+        "Scaling: billions of posts per day",
+        "Human-in-the-loop review queue prioritization"
+      ],
+      "expected_depth_by_level": {
+        "E4": "Classification formulation, text model choice, precision/recall trade-off, basic pipeline",
+        "E5": "Multi-modal fusion, adversarial robustness, active learning, human review optimization, policy iteration"
+      }
+    },
+    {
+      "id": "ml005",
+      "title": "Design a People You May Know System",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "description": "Design the ML system behind friend/connection recommendations.",
+      "key_discussion_points": [
+        "Graph-based features (mutual friends, triadic closure)",
+        "Candidate generation from social graph",
+        "Feature engineering: profile similarity, interaction history, location",
+        "Model: gradient boosted trees → graph neural networks",
+        "Ranking and scoring",
+        "Privacy considerations (contact upload, location)",
+        "Evaluation: friend request sent, accepted, long-term engagement",
+        "Avoiding creepy recommendations"
+      ],
+      "expected_depth_by_level": {
+        "E4": "Graph features, mutual friends baseline, classification model, basic evaluation",
+        "E5": "Graph neural networks, privacy-preserving features, creepiness filtering, A/B testing methodology"
+      }
+    },
+    {
+      "id": "ml006",
+      "title": "Design a Search Ranking System",
+      "difficulty": "hard",
+      "target_levels": ["E5", "E6"],
+      "description": "Design the ML system that ranks search results for Facebook/Instagram search.",
+      "key_discussion_points": [
+        "Query understanding (intent classification, entity recognition)",
+        "Multi-vertical search (people, posts, groups, pages, marketplace)",
+        "Retrieval: inverted index + embedding-based retrieval",
+        "Ranking: learning-to-rank (pointwise, pairwise, listwise)",
+        "Personalization vs relevance",
+        "Real-time indexing for fresh content",
+        "Evaluation: NDCG, MRR, engagement metrics",
+        "Query auto-correction and suggestion"
+      ],
+      "expected_depth_by_level": {
+        "E5": "Query understanding pipeline, multi-stage retrieval, LTR models, evaluation methodology",
+        "E6": "Cross-vertical unified ranking, embedding retrieval infrastructure, real-time indexing, platform-level search ML"
+      }
+    },
+    {
+      "id": "ml007",
+      "title": "Design a Fraud Detection System",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "description": "Design an ML system that detects fraudulent accounts and activities on the platform.",
+      "key_discussion_points": [
+        "Anomaly detection vs supervised classification",
+        "Feature engineering: behavioral patterns, network analysis, device fingerprinting",
+        "Extreme class imbalance handling",
+        "Real-time vs batch detection",
+        "Graph-based fraud detection (fraud rings)",
+        "Adversarial adaptation (fraudsters evolve)",
+        "False positive impact (legitimate users blocked)",
+        "Human review integration"
+      ],
+      "expected_depth_by_level": {
+        "E4": "Classification formulation, class imbalance handling, basic features, evaluation metrics",
+        "E5": "Graph-based detection, adversarial robustness, real-time scoring, feedback loop management"
+      }
+    },
+    {
+      "id": "ml008",
+      "title": "Design an ML System for Estimated Time of Arrival",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "description": "Design an ML system that predicts delivery or travel time (applicable to Marketplace delivery, ride-sharing).",
+      "key_discussion_points": [
+        "Regression formulation",
+        "Features: distance, route, traffic patterns, time of day, weather",
+        "Spatial and temporal features",
+        "Model: gradient boosted trees → sequence models for routes",
+        "Real-time traffic integration",
+        "Evaluation: MAE, percentile errors",
+        "Handling uncertainty (prediction intervals)",
+        "Cold start for new routes/areas"
+      ],
+      "expected_depth_by_level": {
+        "E4": "Regression formulation, core features, model choice, evaluation metrics",
+        "E5": "Spatial-temporal modeling, uncertainty quantification, real-time updates, graph-based route modeling"
+      }
+    },
+    {
+      "id": "ml009",
+      "title": "Design a Video Understanding System",
+      "difficulty": "hard",
+      "target_levels": ["E5", "E6"],
+      "description": "Design an ML system that understands video content for recommendations, search, and safety.",
+      "key_discussion_points": [
+        "Multi-modal: visual frames, audio, text (captions, OCR)",
+        "Video feature extraction (3D CNNs, Video Transformers)",
+        "Temporal modeling across frames",
+        "Pre-training and transfer learning",
+        "Efficient inference (not every frame)",
+        "Multiple downstream tasks: classification, search, recommendation",
+        "Serving: pre-compute embeddings vs on-demand",
+        "Scale: billions of videos"
+      ],
+      "expected_depth_by_level": {
+        "E5": "Multi-modal architecture, efficient frame sampling, embedding pipeline, downstream task adaptation",
+        "E6": "Foundation model approach, cross-modal pre-training, infrastructure for billion-scale, model efficiency research"
+      }
+    },
+    {
+      "id": "ml010",
+      "title": "Design a Notification Optimization System",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "description": "Design an ML system that decides which notifications to send, when, and through which channel to maximize user engagement without causing fatigue.",
+      "key_discussion_points": [
+        "Multi-objective: engagement vs notification fatigue",
+        "Volume optimization (how many per day)",
+        "Timing optimization (when to send)",
+        "Channel selection (push, email, in-app)",
+        "Content personalization",
+        "User-level models vs global policies",
+        "Long-term user retention vs short-term engagement",
+        "Causal inference for measuring true impact"
+      ],
+      "expected_depth_by_level": {
+        "E4": "Classification for send/don't-send, basic features, engagement metrics",
+        "E5": "Multi-objective optimization, causal inference, long-term value modeling, reinforcement learning formulation"
+      }
+    }
+  ]
+}

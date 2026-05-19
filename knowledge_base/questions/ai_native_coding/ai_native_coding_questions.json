@@ -1,0 +1,255 @@
+{
+  "meta": {
+    "description": "AI-native coding interview questions — a newer interview format where candidates use AI coding assistants during the interview",
+    "confidence": "medium — format is new, limited public documentation. Update as more data surfaces.",
+    "sources": ["industry trends", "engineering blogs", "community reports"],
+    "last_updated": "2026-05-19"
+  },
+  "format_overview": {
+    "what_it_is": "A coding interview where candidates are expected (or allowed) to use AI coding assistants (e.g., Copilot, Claude, ChatGPT) as part of their workflow. The goal is to evaluate how effectively an engineer works WITH AI, not just raw coding from scratch.",
+    "why_it_exists": "As AI coding tools become standard in day-to-day engineering, companies want to assess skills that matter in an AI-augmented workflow: problem decomposition, prompt engineering, critical evaluation of AI output, and the ability to tackle larger-scope problems with AI leverage.",
+    "how_it_differs_from_traditional": {
+      "traditional": "45 min, 1-2 LeetCode-style problems, no external tools, tests raw algorithm knowledge and coding speed",
+      "ai_native": "45-60 min, larger-scope or more ambiguous problems, AI tools available, tests how you leverage AI effectively and evaluate its output"
+    },
+    "tools_typically_allowed": [
+      "AI coding assistants (Copilot, Claude, ChatGPT, Cursor)",
+      "IDE with autocomplete",
+      "Documentation / reference lookup"
+    ]
+  },
+  "skills_evaluated": [
+    {
+      "skill": "Problem Decomposition",
+      "description": "Breaking a large, ambiguous problem into well-scoped sub-tasks that can be delegated to AI or solved manually",
+      "weight": "high"
+    },
+    {
+      "skill": "Effective Prompting",
+      "description": "Writing clear, specific prompts that get useful output from AI tools. Iterating when the first result isn't right.",
+      "weight": "high"
+    },
+    {
+      "skill": "Critical Evaluation of AI Output",
+      "description": "Reading, understanding, and verifying AI-generated code. Catching bugs, security issues, edge cases, and suboptimal patterns.",
+      "weight": "high"
+    },
+    {
+      "skill": "Knowing When NOT to Use AI",
+      "description": "Recognizing when it's faster/better to write code directly vs. prompting AI. Not over-relying on AI for trivial things.",
+      "weight": "medium"
+    },
+    {
+      "skill": "Debugging AI-Generated Code",
+      "description": "When AI produces broken or subtly wrong code, efficiently diagnosing and fixing issues.",
+      "weight": "high"
+    },
+    {
+      "skill": "Architecture and Design Judgment",
+      "description": "AI can generate code but the candidate drives the overall design, API choices, and architecture.",
+      "weight": "high"
+    },
+    {
+      "skill": "Speed and Scope",
+      "description": "With AI assistance, candidates should accomplish more in the same time. The interviewer evaluates ambition and execution.",
+      "weight": "medium"
+    },
+    {
+      "skill": "Communication",
+      "description": "Explaining your thought process, why you're prompting AI in a certain way, and how you're evaluating the output.",
+      "weight": "medium"
+    }
+  ],
+  "evaluation_rubric": {
+    "strong_hire": [
+      "Decomposes problem into clear sub-tasks before touching AI",
+      "Writes targeted, specific prompts — not vague asks",
+      "Critically reviews every line of AI output, catches issues",
+      "Makes deliberate choices about what to delegate vs write manually",
+      "Achieves significantly more scope than a no-AI interview would allow",
+      "Maintains clear architecture ownership — AI is a tool, not the driver",
+      "Communicates reasoning throughout"
+    ],
+    "weak": [
+      "Copies AI output without reading or understanding it",
+      "Struggles to debug when AI produces wrong code",
+      "Uses AI for trivial things where direct coding is faster",
+      "No clear problem decomposition — just throws the whole problem at AI",
+      "Can't explain the generated code when asked",
+      "Achieves less than expected even with AI assistance",
+      "Loses time fighting with AI prompts on things they should know"
+    ]
+  },
+  "questions": [
+    {
+      "id": "ai001",
+      "title": "Build a REST API with Rate Limiting and Caching",
+      "difficulty": "medium",
+      "target_levels": ["E3", "E4"],
+      "target_roles": ["SWE"],
+      "description": "Build a REST API service with endpoints for a simple resource (e.g., user profiles). Include rate limiting per API key, response caching with TTL, and proper error handling. You may use any framework and AI tools.",
+      "why_ai_native": "Scope is too large for a traditional 45-min interview. With AI, a strong candidate can scaffold the project, generate boilerplate, and focus on the interesting parts (rate limiting logic, cache invalidation).",
+      "what_to_evaluate": [
+        "Do they use AI for boilerplate but own the rate limiting design?",
+        "Do they verify the AI-generated code works?",
+        "Do they catch edge cases AI might miss (race conditions in rate limiting)?",
+        "Can they explain the caching strategy?"
+      ],
+      "follow_ups": ["How would you handle distributed rate limiting?", "What happens when the cache goes down?", "How would you test this?"],
+      "topics": ["API_design", "rate_limiting", "caching", "error_handling"]
+    },
+    {
+      "id": "ai002",
+      "title": "Build a Log Analyzer with Pattern Detection",
+      "difficulty": "medium",
+      "target_levels": ["E3", "E4"],
+      "target_roles": ["SWE", "DE"],
+      "description": "Given a large log file, build a tool that parses the logs, detects anomalous patterns (e.g., error spikes, unusual request patterns), and produces a summary report. Use AI tools freely.",
+      "why_ai_native": "Combines parsing, data analysis, and pattern detection — broad scope that benefits from AI scaffolding. Tests whether the candidate can direct AI toward the right analysis approach.",
+      "what_to_evaluate": [
+        "Do they define what 'anomalous' means before prompting AI?",
+        "Do they validate the parsing logic against edge cases in log formats?",
+        "Do they iterate on the detection algorithm or just accept the first AI suggestion?",
+        "Is the output actually useful?"
+      ],
+      "follow_ups": ["How would you handle logs streaming in real-time?", "What if log format changes?", "How do you reduce false positives?"],
+      "topics": ["log_parsing", "anomaly_detection", "data_processing", "CLI_tools"]
+    },
+    {
+      "id": "ai003",
+      "title": "Implement a Task Queue with Retry and Dead Letter Queue",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "target_roles": ["SWE"],
+      "description": "Implement an in-memory task queue system that supports: enqueue/dequeue, configurable retry with exponential backoff, dead letter queue for failed tasks, priority levels, and basic monitoring (queue depth, failure rate). AI tools allowed.",
+      "why_ai_native": "A strong candidate uses AI for the queue data structures and retry boilerplate but owns the concurrency design and failure handling semantics.",
+      "what_to_evaluate": [
+        "Do they think through concurrency issues (thread safety)?",
+        "Do they verify the exponential backoff implementation?",
+        "Do they design the DLQ semantics or just let AI decide?",
+        "Can they explain trade-offs in their priority queue implementation?"
+      ],
+      "follow_ups": ["How would you make this distributed?", "How would you handle poison messages?", "What monitoring would you add in production?"],
+      "topics": ["concurrency", "queue_systems", "error_handling", "retry_patterns"]
+    },
+    {
+      "id": "ai004",
+      "title": "Build a Schema Migration Tool",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "target_roles": ["SWE", "DE"],
+      "description": "Build a database schema migration tool that can: read migration files (SQL or DSL), track which migrations have been applied, apply pending migrations in order, support rollback, and handle migration conflicts. AI tools allowed.",
+      "why_ai_native": "Tests whether candidates can architect a multi-component system quickly with AI help, while maintaining correctness guarantees (migration ordering, idempotency).",
+      "what_to_evaluate": [
+        "Do they define the migration file format and ordering semantics first?",
+        "Do they handle edge cases: partial failures, concurrent migrations?",
+        "Do they verify AI-generated SQL is correct?",
+        "Do they test rollback actually works?"
+      ],
+      "follow_ups": ["How would you handle migrations on a live production database?", "What about zero-downtime migrations?", "How do you handle team conflicts in migration ordering?"],
+      "topics": ["database", "schema_management", "idempotency", "tooling"]
+    },
+    {
+      "id": "ai005",
+      "title": "Build a Markdown-to-HTML Converter with Extensions",
+      "difficulty": "easy",
+      "target_levels": ["E3"],
+      "target_roles": ["SWE"],
+      "description": "Build a Markdown-to-HTML converter that handles standard Markdown syntax plus custom extensions: syntax-highlighted code blocks, table of contents generation, and footnotes. AI tools allowed.",
+      "why_ai_native": "Good entry-level AI-native problem. Tests whether E3 candidates can use AI to handle the parsing complexity while understanding the output format and edge cases.",
+      "what_to_evaluate": [
+        "Do they break this into incremental steps (basic markdown first, then extensions)?",
+        "Do they test with tricky markdown inputs?",
+        "Do they understand the HTML output structure?",
+        "Can they extend beyond what AI generates?"
+      ],
+      "follow_ups": ["How would you handle malicious markdown (XSS)?", "How would you add a custom extension?"],
+      "topics": ["parsing", "string_processing", "HTML", "extensibility"]
+    },
+    {
+      "id": "ai006",
+      "title": "Design and Implement a Feature Flag Service",
+      "difficulty": "hard",
+      "target_levels": ["E5", "E6"],
+      "target_roles": ["SWE"],
+      "description": "Design and implement a feature flag service that supports: boolean and percentage-based rollouts, user segment targeting (by attribute), flag dependencies, audit logging, and a simple API. Discuss how it would work at scale. AI tools allowed.",
+      "why_ai_native": "Staff-level problem: large scope requiring both design thinking and implementation. Tests whether the candidate drives the architecture while using AI for rapid implementation of components.",
+      "what_to_evaluate": [
+        "Do they start with API/data model design before implementation?",
+        "Do they own the targeting/rollout logic design?",
+        "Do they consider consistency (what if flag state changes mid-request)?",
+        "How do they handle the evaluation engine performance?"
+      ],
+      "follow_ups": ["How would you handle flag evaluation at 1M QPS?", "How do you prevent flag conflicts?", "How would you implement gradual rollout with canary analysis?"],
+      "topics": ["system_design", "API_design", "rollout_strategy", "distributed_systems"]
+    },
+    {
+      "id": "ai007",
+      "title": "Build a Data Pipeline Validator",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "target_roles": ["DE", "MLE"],
+      "description": "Build a tool that validates data pipeline outputs: schema validation, data quality checks (nulls, outliers, distribution drift), cross-table referential integrity, and generates a report. AI tools allowed.",
+      "why_ai_native": "Tests data engineering judgment — can the candidate define what 'data quality' means for a given context, or do they just accept AI's generic checks?",
+      "what_to_evaluate": [
+        "Do they define meaningful quality checks or accept generic ones?",
+        "Do they handle large datasets efficiently?",
+        "Do they think about distribution drift detection methodology?",
+        "Is the report actionable?"
+      ],
+      "follow_ups": ["How would you integrate this into a CI/CD pipeline?", "How do you set thresholds for drift detection?", "What about PII detection?"],
+      "topics": ["data_quality", "validation", "statistics", "pipeline_tooling"]
+    },
+    {
+      "id": "ai008",
+      "title": "Implement an ML Model Serving Layer",
+      "difficulty": "hard",
+      "target_levels": ["E5", "E6"],
+      "target_roles": ["MLE"],
+      "description": "Build a model serving layer that supports: loading models from a registry, A/B traffic splitting between model versions, request batching for throughput, response caching, latency monitoring, and graceful model swaps. AI tools allowed.",
+      "why_ai_native": "MLE staff-level problem combining systems engineering and ML infrastructure. Tests whether the candidate uses AI for boilerplate while owning the critical decisions (batching strategy, traffic splitting correctness).",
+      "what_to_evaluate": [
+        "Do they design the model loading/swapping lifecycle?",
+        "Do they think through batching trade-offs (latency vs throughput)?",
+        "Do they handle edge cases in A/B splitting (consistency per user)?",
+        "Can they explain performance implications?"
+      ],
+      "follow_ups": ["How would you handle model rollback on metric regression?", "How do you ensure A/B consistency per user session?", "Shadow mode deployment?"],
+      "topics": ["ML_infrastructure", "serving", "batching", "AB_testing", "model_lifecycle"]
+    },
+    {
+      "id": "ai009",
+      "title": "Build a Git Diff Analyzer and Code Review Bot",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "target_roles": ["SWE"],
+      "description": "Build a tool that takes a git diff as input, analyzes the changes, and produces automated code review comments: identifying potential bugs, style issues, security concerns, and test coverage gaps. AI tools allowed.",
+      "why_ai_native": "Meta-level: using AI to build an AI-powered tool. Tests whether the candidate can architect an analysis pipeline and critically evaluate what automated review can and can't catch.",
+      "what_to_evaluate": [
+        "Do they parse the diff format correctly?",
+        "Do they categorize findings by severity?",
+        "Do they understand the limits of static analysis vs. AI review?",
+        "Do they handle multi-file diffs with cross-file dependencies?"
+      ],
+      "follow_ups": ["How would you reduce false positives?", "How would you handle diffs in unfamiliar languages?", "How would you integrate with a CI pipeline?"],
+      "topics": ["code_analysis", "git", "static_analysis", "developer_tools"]
+    },
+    {
+      "id": "ai010",
+      "title": "Build a SQL Query Optimizer Advisor",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "target_roles": ["DE"],
+      "description": "Build a tool that takes a SQL query and a table schema, then suggests optimizations: index recommendations, query rewrites, partition pruning opportunities, and estimated cost improvements. AI tools allowed.",
+      "why_ai_native": "Tests deep SQL knowledge — can the candidate evaluate whether AI's optimization suggestions are actually correct and beneficial?",
+      "what_to_evaluate": [
+        "Do they understand query execution plans?",
+        "Do they verify AI's index recommendations make sense for the workload?",
+        "Do they consider write-path impact of suggested indexes?",
+        "Can they explain why each optimization helps?"
+      ],
+      "follow_ups": ["How would you handle queries with CTEs?", "What about queries that are fast but wasteful on resources?", "How do you prioritize recommendations?"],
+      "topics": ["SQL", "query_optimization", "indexing", "database_internals"]
+    }
+  ]
+}

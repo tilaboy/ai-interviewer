@@ -1,0 +1,65 @@
+{
+  "company": "Meta",
+  "values": [
+    {
+      "name": "Move Fast",
+      "description": "Moving fast helps us build and learn faster. We value speed over perfection in most cases.",
+      "behavioral_signals": [
+        "Bias for action over analysis paralysis",
+        "Comfortable making decisions with incomplete information",
+        "Ships iteratively rather than waiting for perfect",
+        "Learns from experiments and course-corrects quickly"
+      ]
+    },
+    {
+      "name": "Focus on Long-Term Impact",
+      "description": "Focus on the most important problems. Be willing to make short-term sacrifices for long-term gains.",
+      "behavioral_signals": [
+        "Prioritizes high-leverage work over easy wins",
+        "Kills projects that aren't working despite sunk cost",
+        "Thinks about second and third-order effects",
+        "Measures impact, not just output"
+      ]
+    },
+    {
+      "name": "Build Awesome Things",
+      "description": "Build things that matter and that people love.",
+      "behavioral_signals": [
+        "Cares deeply about product quality and user experience",
+        "Goes beyond minimum requirements",
+        "Seeks feedback to improve",
+        "Takes pride in craft"
+      ]
+    },
+    {
+      "name": "Live in the Future",
+      "description": "Build for where things are going, not where they are.",
+      "behavioral_signals": [
+        "Stays current with technology trends",
+        "Proposes forward-looking solutions",
+        "Anticipates future requirements in design",
+        "Experiments with emerging technologies"
+      ]
+    },
+    {
+      "name": "Be Direct and Respect Your Colleagues",
+      "description": "Be straightforward and honest with feedback. Respect others even in disagreement.",
+      "behavioral_signals": [
+        "Gives candid feedback directly, not behind someone's back",
+        "Receives criticism gracefully and acts on it",
+        "Disagrees respectfully with clear reasoning",
+        "Creates psychological safety for others to speak up"
+      ]
+    },
+    {
+      "name": "Meta, Pair, Me",
+      "description": "Prioritize what's best for Meta, then your team, then yourself.",
+      "behavioral_signals": [
+        "Makes decisions that benefit the company even at personal cost",
+        "Collaborates across teams rather than optimizing locally",
+        "Shares knowledge and resources",
+        "Puts team success above personal recognition"
+      ]
+    }
+  ]
+}

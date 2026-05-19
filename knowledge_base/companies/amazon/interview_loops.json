@@ -1,0 +1,45 @@
+{
+  "company": "Amazon",
+  "source": "Public career pages, Glassdoor, Blind",
+  "last_updated": "2026-05-19",
+  "general_notes": "Amazon interviews are heavily LP-driven. Each behavioral interviewer is assigned 2-3 specific LPs to evaluate. The 'Bar Raiser' is an independent interviewer from another team who ensures hiring bar consistency. Amazon uses a loop of 4-5 interviews (often called 'the loop').",
+  "roles": {
+    "SWE": {
+      "title": "Software Development Engineer",
+      "levels": {
+        "SDE_I": {
+          "meta_equivalent": "E3",
+          "interview_rounds": [
+            { "type": "coding", "count": 2, "duration_min": 60, "description": "Two coding rounds. Each 60 min: ~15 min behavioral (LP questions) + ~45 min coding. Amazon combines behavioral + coding in the same round.", "focus_areas": ["arrays", "strings", "hash_maps", "trees", "graphs", "sorting", "basic_OOP"] },
+            { "type": "behavioral", "count": 2, "duration_min": 60, "description": "Two behavioral-heavy rounds (may include light coding or system design discussion). LP-focused. One is typically the Bar Raiser.", "focus_areas": ["customer_obsession", "ownership", "learn_and_be_curious", "bias_for_action", "deliver_results"] }
+          ],
+          "notes": "Amazon rounds are 60 min, not 45. Each round typically starts with LP questions. SDE I has no formal system design round."
+        },
+        "SDE_II": {
+          "meta_equivalent": "E4",
+          "interview_rounds": [
+            { "type": "coding", "count": 2, "duration_min": 60, "description": "Two coding rounds with LP questions embedded. Medium to hard problems.", "focus_areas": ["algorithms", "data_structures", "OOP_design", "complexity_analysis"] },
+            { "type": "system_design", "count": 1, "duration_min": 60, "description": "System design round. LP questions may be embedded. Lighter bar than senior.", "focus_areas": ["service_oriented_architecture", "database_design", "API_design", "basic_distributed_systems"] },
+            { "type": "behavioral", "count": 1, "duration_min": 60, "description": "Pure behavioral (Bar Raiser round). Deep LP probing.", "focus_areas": ["ownership", "dive_deep", "earn_trust", "have_backbone", "deliver_results"] }
+          ]
+        },
+        "Senior_SDE": {
+          "meta_equivalent": "E5",
+          "interview_rounds": [
+            { "type": "coding", "count": 2, "duration_min": 60, "description": "Senior coding with LP. Hard problems.", "focus_areas": ["advanced_algorithms", "system_level_coding", "optimization", "concurrency"] },
+            { "type": "system_design", "count": 1, "duration_min": 60, "description": "Deep system design. AWS-scale thinking.", "focus_areas": ["distributed_systems", "microservices", "event_driven_architecture", "scalability", "reliability"] },
+            { "type": "behavioral", "count": 1, "duration_min": 60, "description": "Bar Raiser behavioral. Leadership LPs heavily weighted.", "focus_areas": ["insist_on_highest_standards", "think_big", "hire_and_develop_the_best", "have_backbone"] }
+          ]
+        },
+        "Principal_SDE": {
+          "meta_equivalent": "E6",
+          "interview_rounds": [
+            { "type": "coding", "count": 1, "duration_min": 60, "description": "One coding round at staff level.", "focus_areas": ["advanced_algorithms", "architecture_in_code"] },
+            { "type": "system_design", "count": 2, "duration_min": 60, "description": "Two system design rounds — broader scope and depth.", "focus_areas": ["org_wide_architecture", "cross_service_design", "cost_optimization", "multi_region", "system_evolution"] },
+            { "type": "behavioral", "count": 1, "duration_min": 60, "description": "Bar Raiser. Org-level leadership signals.", "focus_areas": ["think_big", "ownership_at_scale", "hire_and_develop_the_best", "customer_obsession_at_org_level"] }
+          ]
+        }
+      }
+    }
+  }
+}

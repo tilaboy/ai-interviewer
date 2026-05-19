@@ -1,0 +1,161 @@
+{
+  "meta": {
+    "description": "Meta behavioral interview questions organized by level and Meta core values",
+    "sources": ["Glassdoor", "Blind", "public interview prep resources"],
+    "last_updated": "2026-05-19"
+  },
+  "meta_core_values": [
+    "Move Fast",
+    "Focus on Long-Term Impact",
+    "Build Awesome Things",
+    "Live in the Future",
+    "Be Direct and Respect Your Colleagues",
+    "Meta, Pair, Me (prioritize company > team > self)"
+  ],
+  "questions": [
+    {
+      "id": "b001",
+      "category": "project_ownership",
+      "target_levels": ["E3", "E4"],
+      "question": "Tell me about a project you're most proud of. What was your role and what impact did it have?",
+      "what_interviewer_looks_for": ["Clear ownership", "measurable impact", "technical depth appropriate for level", "self-awareness"],
+      "follow_ups": ["What would you do differently?", "How did you measure success?", "Who else was involved?"],
+      "evaluation_rubric": {
+        "strong": "Clear ownership, quantified impact, thoughtful reflection on what worked and what didn't",
+        "weak": "Vague contributions, no measurable outcomes, can't articulate personal role vs team effort"
+      }
+    },
+    {
+      "id": "b002",
+      "category": "conflict_resolution",
+      "target_levels": ["E3", "E4", "E5"],
+      "question": "Tell me about a time you had a disagreement with a teammate or manager. How did you handle it?",
+      "what_interviewer_looks_for": ["Maturity", "empathy", "focus on resolution not blame", "willingness to compromise or escalate appropriately"],
+      "follow_ups": ["What was the outcome?", "Would you handle it differently now?", "How did this affect the relationship?"],
+      "evaluation_rubric": {
+        "strong": "Shows empathy, seeks to understand the other perspective, focuses on the best outcome for the team/project",
+        "weak": "Blames others, avoids conflict entirely, or escalates without attempting resolution"
+      }
+    },
+    {
+      "id": "b003",
+      "category": "failure_and_learning",
+      "target_levels": ["E3", "E4", "E5"],
+      "question": "Tell me about a time you failed. What happened and what did you learn?",
+      "what_interviewer_looks_for": ["Genuine vulnerability", "root cause analysis", "concrete learnings applied going forward"],
+      "follow_ups": ["How did you apply what you learned?", "How did you communicate the failure to stakeholders?"],
+      "evaluation_rubric": {
+        "strong": "Genuine failure (not a humble brag), clear analysis of what went wrong, specific actions taken to prevent recurrence",
+        "weak": "Trivial failure, no real self-reflection, blames external factors"
+      }
+    },
+    {
+      "id": "b004",
+      "category": "move_fast",
+      "target_levels": ["E4", "E5"],
+      "question": "Tell me about a time you had to make a decision with incomplete information. What did you do?",
+      "what_interviewer_looks_for": ["Bias for action", "risk assessment", "ability to iterate", "comfort with ambiguity"],
+      "follow_ups": ["What was the risk?", "How did you mitigate downside?", "What was the outcome?"],
+      "evaluation_rubric": {
+        "strong": "Made a reasoned decision quickly, identified key risks, had a plan to course-correct",
+        "weak": "Paralyzed by lack of information, or acted recklessly without considering risks"
+      }
+    },
+    {
+      "id": "b005",
+      "category": "technical_leadership",
+      "target_levels": ["E5", "E6"],
+      "question": "Tell me about a time you drove a significant technical decision for your team or organization.",
+      "what_interviewer_looks_for": ["Technical depth", "stakeholder alignment", "trade-off analysis", "long-term thinking"],
+      "follow_ups": ["How did you get buy-in?", "What alternatives did you consider?", "How did it turn out long-term?"],
+      "evaluation_rubric": {
+        "strong": "Clear technical reasoning, considered multiple alternatives, built consensus, measured outcomes",
+        "weak": "Imposed decision without buy-in, shallow technical reasoning, no follow-through"
+      }
+    },
+    {
+      "id": "b006",
+      "category": "cross_team_collaboration",
+      "target_levels": ["E4", "E5", "E6"],
+      "question": "Tell me about a project that required working across multiple teams. How did you coordinate?",
+      "what_interviewer_looks_for": ["Communication skills", "ability to align incentives", "handling dependencies", "proactive coordination"],
+      "follow_ups": ["What was the biggest challenge?", "How did you handle misaligned priorities?"],
+      "evaluation_rubric": {
+        "strong": "Proactively identified dependencies, aligned stakeholders, handled conflicts constructively",
+        "weak": "Waited for others to coordinate, blamed other teams for delays"
+      }
+    },
+    {
+      "id": "b007",
+      "category": "mentoring",
+      "target_levels": ["E5", "E6"],
+      "question": "Tell me about a time you mentored someone. What was your approach and what was the outcome?",
+      "what_interviewer_looks_for": ["Investment in others' growth", "tailored approach", "measurable improvement in mentee"],
+      "follow_ups": ["How did you adapt your style?", "What did you learn from the experience?"],
+      "evaluation_rubric": {
+        "strong": "Tailored mentoring approach, measurable growth in mentee, continued investment",
+        "weak": "Generic advice, no follow-through, can't describe specific impact on mentee"
+      }
+    },
+    {
+      "id": "b008",
+      "category": "impact_focus",
+      "target_levels": ["E4", "E5", "E6"],
+      "question": "Tell me about a time you identified an opportunity that others hadn't noticed. How did you act on it?",
+      "what_interviewer_looks_for": ["Proactive thinking", "ability to prioritize", "execution from idea to impact"],
+      "follow_ups": ["How did you convince others?", "What was the impact?", "How did you prioritize this against existing work?"],
+      "evaluation_rubric": {
+        "strong": "Identified genuine opportunity, built a case, executed to measurable impact",
+        "weak": "Opportunity was obvious, didn't follow through, or impact was trivial"
+      }
+    },
+    {
+      "id": "b009",
+      "category": "handling_pressure",
+      "target_levels": ["E3", "E4", "E5"],
+      "question": "Tell me about a time you had to deliver under a tight deadline. How did you manage it?",
+      "what_interviewer_looks_for": ["Prioritization", "scope management", "communication under pressure", "quality vs speed trade-offs"],
+      "follow_ups": ["What did you cut?", "How did you communicate trade-offs?", "Would you change your approach?"],
+      "evaluation_rubric": {
+        "strong": "Clear prioritization, proactive communication about trade-offs, delivered core value on time",
+        "weak": "Worked unsustainably, didn't communicate, or delivered poor quality"
+      }
+    },
+    {
+      "id": "b010",
+      "category": "org_impact",
+      "target_levels": ["E6"],
+      "question": "Tell me about a time you influenced your organization's technical direction or strategy.",
+      "what_interviewer_looks_for": ["Strategic thinking", "influence without authority", "alignment of technical and business goals"],
+      "follow_ups": ["How did you build alignment?", "What resistance did you face?", "How did you measure success at the org level?"],
+      "evaluation_rubric": {
+        "strong": "Clear vision connected to business goals, built broad alignment, measurable org-level impact",
+        "weak": "Narrow technical scope, didn't connect to business value, couldn't build consensus"
+      }
+    },
+    {
+      "id": "b011",
+      "category": "adaptability",
+      "target_levels": ["E3", "E4"],
+      "question": "Tell me about a time you had to quickly learn a new technology or domain to deliver a project.",
+      "what_interviewer_looks_for": ["Learning agility", "resourcefulness", "humility", "ability to deliver while learning"],
+      "follow_ups": ["What resources did you use?", "How did you know when you knew enough to act?"],
+      "evaluation_rubric": {
+        "strong": "Structured learning approach, leveraged experts, delivered successfully despite the ramp-up",
+        "weak": "Struggled without asking for help, or claimed expertise too quickly"
+      }
+    },
+    {
+      "id": "b012",
+      "category": "building_teams",
+      "target_levels": ["E6"],
+      "question": "Tell me about a time you built or significantly grew a team. What was your approach to hiring, culture, and technical excellence?",
+      "what_interviewer_looks_for": ["Team building philosophy", "hiring bar", "culture cultivation", "technical standards"],
+      "follow_ups": ["How did you maintain quality as the team grew?", "How did you handle underperformance?"],
+      "evaluation_rubric": {
+        "strong": "Clear team-building philosophy, high hiring bar, invested in culture and growth",
+        "weak": "Focused only on headcount, no culture or growth strategy"
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "company": "Google",
+  "persona": {
+    "tone": "Methodical, patient, intellectually curious. More academic feel than Meta.",
+    "style": "Structured and thorough. Feels like a peer technical discussion. Interviewers are trained to be consistent.",
+    "pacing": "Moderate pace. Lets candidates think. Comfortable with silence. Prefers one deep problem over two shallow ones.",
+    "hint_style": "Hints through questions rather than statements. 'What if the input were sorted?' rather than 'Try sorting the input.' Socratic method.",
+    "follow_up_style": "Explores depth. 'Can you generalize this?' 'What if we relax this constraint?' 'What's the lower bound for this problem?'",
+    "behavioral_style": "Assesses Googleyness holistically. Looks for intellectual humility — can the candidate admit what they don't know? Probes for collaboration and doing the right thing.",
+    "time_management": "Less aggressive time management than Meta. May let a deep discussion run if it's productive.",
+    "encouragement": "Neutral and professional. Acknowledges good ideas but doesn't over-react. 'That's an interesting approach' is high praise."
+  }
+}

@@ -1,0 +1,342 @@
+{
+  "meta": {
+    "description": "Meta interview loops by role and level (publicly documented)",
+    "source": "Public career pages, Glassdoor, Blind, LeetCode discuss",
+    "last_updated": "2026-05-19"
+  },
+  "interview_types": {
+    "coding": "Traditional algorithmic coding (data structures, algorithms, problem solving)",
+    "system_design": "Design scalable distributed systems",
+    "ml_design": "Design end-to-end ML systems (MLE-specific)",
+    "behavioral": "Past experience, leadership, Meta core values",
+    "ai_native_coding": "Coding with AI assistant tools allowed — evaluates how effectively candidates leverage AI for larger-scope problems, critical evaluation of AI output, and architectural ownership"
+  },
+  "ai_native_coding_overview": {
+    "description": "Newer interview format where candidates use AI coding assistants (Copilot, Claude, ChatGPT, Cursor) during the interview. Problems are broader in scope than traditional coding rounds. Evaluates collaboration with AI, not just raw coding.",
+    "confidence": "medium — format is relatively new, limited public documentation",
+    "skills_evaluated": [
+      "Problem decomposition into AI-delegable sub-tasks",
+      "Effective prompting and iteration",
+      "Critical evaluation and debugging of AI-generated code",
+      "Knowing when to use AI vs. code directly",
+      "Architecture and design ownership",
+      "Speed and scope with AI leverage"
+    ],
+    "key_difference": "Traditional coding tests if you can solve algorithm problems from scratch. AI-native tests if you can build real software effectively with AI as a collaborator.",
+    "applicable_roles": ["SWE", "MLE", "DE"],
+    "applicable_levels": ["E3", "E4", "E5", "E6"],
+    "notes": "May replace one of the two traditional coding rounds, or be an additional round. Format varies and is evolving."
+  },
+  "roles": {
+    "SWE": {
+      "title": "Software Engineer",
+      "levels": {
+        "E3": {
+          "title": "Entry-level / New Grad",
+          "interview_rounds": [
+            {
+              "type": "coding",
+              "count": 2,
+              "duration_min": 45,
+              "description": "Two coding interviews focusing on data structures and algorithms. Expect medium-level problems. Interviewer looks for clean code, optimal solutions, and clear communication.",
+              "focus_areas": ["arrays", "strings", "hash_maps", "trees", "graphs", "BFS/DFS", "dynamic_programming_basics", "sorting"]
+            },
+            {
+              "type": "behavioral",
+              "count": 1,
+              "duration_min": 45,
+              "description": "Behavioral interview assessing Meta core values: Move Fast, Be Bold, Focus on Impact, Build Social Value, Be Open. Uses past experience questions.",
+              "focus_areas": ["teamwork", "conflict_resolution", "learning_from_failure", "initiative"]
+            }
+          ],
+          "notes": "Phone screen (1 coding) precedes onsite. New grads may have a lighter behavioral bar."
+        },
+        "E4": {
+          "title": "Mid-level",
+          "interview_rounds": [
+            {
+              "type": "coding",
+              "count": 2,
+              "duration_min": 45,
+              "description": "Two coding interviews. Medium to hard problems. Expected to reach optimal solutions and discuss trade-offs.",
+              "focus_areas": ["arrays", "strings", "hash_maps", "trees", "graphs", "BFS/DFS", "dynamic_programming", "greedy", "binary_search", "sliding_window"]
+            },
+            {
+              "type": "system_design",
+              "count": 1,
+              "duration_min": 45,
+              "description": "System design interview. Design a scaled system. E4 bar: demonstrate understanding of core components, trade-offs, and basic scalability.",
+              "focus_areas": ["news_feed", "chat_system", "url_shortener", "notification_system", "rate_limiter", "key_value_store"]
+            },
+            {
+              "type": "behavioral",
+              "count": 1,
+              "duration_min": 45,
+              "description": "Behavioral interview with deeper probes on impact, ownership, and collaboration.",
+              "focus_areas": ["project_ownership", "cross_team_collaboration", "handling_ambiguity", "driving_impact", "meta_core_values"]
+            }
+          ],
+          "notes": "System design expectations are lighter than E5. Focus on demonstrating structured thinking."
+        },
+        "E5": {
+          "title": "Senior",
+          "interview_rounds": [
+            {
+              "type": "coding",
+              "count": 2,
+              "duration_min": 45,
+              "description": "Two coding interviews. Medium to hard problems. Must reach optimal solution quickly, discuss time/space complexity, handle edge cases thoroughly.",
+              "focus_areas": ["advanced_graph_algorithms", "dynamic_programming", "complex_data_structures", "concurrency", "system_optimization", "design_patterns"]
+            },
+            {
+              "type": "system_design",
+              "count": 1,
+              "duration_min": 45,
+              "description": "Full system design interview. Expected to drive the conversation, make deliberate trade-offs, discuss scalability, reliability, and monitoring.",
+              "focus_areas": ["distributed_systems", "microservices", "caching_strategies", "database_sharding", "load_balancing", "content_delivery", "real_time_systems", "search_systems"]
+            },
+            {
+              "type": "behavioral",
+              "count": 1,
+              "duration_min": 45,
+              "description": "Deep behavioral interview. Assessed on leadership, mentorship, technical influence, and driving large projects.",
+              "focus_areas": ["technical_leadership", "mentoring", "driving_org_impact", "navigating_ambiguity", "stakeholder_management", "strategic_thinking"]
+            }
+          ],
+          "notes": "Higher bar on system design depth and behavioral leadership signals. Must show senior-level ownership."
+        },
+        "E6": {
+          "title": "Staff",
+          "interview_rounds": [
+            {
+              "type": "coding",
+              "count": 2,
+              "duration_min": 45,
+              "description": "Two coding interviews. Hard problems. Expected to solve efficiently while discussing architecture implications.",
+              "focus_areas": ["advanced_algorithms", "optimization", "complex_system_interactions", "code_design_at_scale"]
+            },
+            {
+              "type": "system_design",
+              "count": 1,
+              "duration_min": 60,
+              "description": "Deep system design. Expected to architect systems at Meta scale, discuss capacity planning, failure modes, observability, and evolution over time.",
+              "focus_areas": ["large_scale_distributed_systems", "cross_region_replication", "consistency_models", "capacity_planning", "system_evolution", "performance_at_scale"]
+            },
+            {
+              "type": "behavioral",
+              "count": 1,
+              "duration_min": 45,
+              "description": "Leadership-focused behavioral. Assessed on org-level impact, technical vision, cross-functional influence.",
+              "focus_areas": ["org_level_impact", "technical_vision", "cross_functional_leadership", "building_teams", "influencing_without_authority", "long_term_strategy"]
+            }
+          ],
+          "notes": "E6 loop may include additional calibration discussions. System design bar is significantly higher — must show staff-level depth."
+        }
+      }
+    },
+    "MLE": {
+      "title": "Machine Learning Engineer",
+      "levels": {
+        "E3": {
+          "interview_rounds": [
+            {
+              "type": "coding",
+              "count": 2,
+              "duration_min": 45,
+              "description": "Standard coding interviews similar to SWE E3.",
+              "focus_areas": ["arrays", "strings", "hash_maps", "trees", "graphs", "sorting", "basic_ml_coding"]
+            },
+            {
+              "type": "ml_design",
+              "count": 1,
+              "duration_min": 45,
+              "description": "ML fundamentals and basic ML system design. Focus on understanding ML concepts rather than building complex systems.",
+              "focus_areas": ["supervised_learning_basics", "model_evaluation", "feature_engineering_basics", "overfitting_underfitting", "basic_ml_pipelines"]
+            },
+            {
+              "type": "behavioral",
+              "count": 1,
+              "duration_min": 45,
+              "description": "Same behavioral format as SWE.",
+              "focus_areas": ["teamwork", "learning_from_failure", "initiative", "meta_core_values"]
+            }
+          ]
+        },
+        "E4": {
+          "interview_rounds": [
+            {
+              "type": "coding",
+              "count": 2,
+              "duration_min": 45,
+              "description": "Coding interviews. May include ML-flavored coding problems (implement a model component, data processing pipeline).",
+              "focus_areas": ["algorithms", "data_structures", "ml_coding", "data_processing", "numpy_pandas_patterns"]
+            },
+            {
+              "type": "ml_design",
+              "count": 1,
+              "duration_min": 45,
+              "description": "ML system design. Design an end-to-end ML system for a product use case.",
+              "focus_areas": ["recommendation_systems", "ranking_models", "feature_engineering", "model_training_pipelines", "online_serving", "model_evaluation_metrics"]
+            },
+            {
+              "type": "behavioral",
+              "count": 1,
+              "duration_min": 45,
+              "description": "Behavioral with focus on ML project experience.",
+              "focus_areas": ["ml_project_ownership", "experiment_design", "cross_team_collaboration", "data_driven_decisions"]
+            }
+          ]
+        },
+        "E5": {
+          "interview_rounds": [
+            {
+              "type": "coding",
+              "count": 2,
+              "duration_min": 45,
+              "description": "Coding interviews at senior level.",
+              "focus_areas": ["advanced_algorithms", "ml_system_coding", "optimization", "distributed_data_processing"]
+            },
+            {
+              "type": "ml_design",
+              "count": 1,
+              "duration_min": 45,
+              "description": "Deep ML system design. Full end-to-end system including data pipelines, feature stores, model architecture choices, training infrastructure, serving, monitoring, and iteration.",
+              "focus_areas": ["large_scale_recommendation", "ads_ranking", "content_understanding", "integrity_ml", "real_time_ml", "model_monitoring", "AB_testing", "feature_stores"]
+            },
+            {
+              "type": "behavioral",
+              "count": 1,
+              "duration_min": 45,
+              "description": "Leadership behavioral with ML focus.",
+              "focus_areas": ["technical_leadership_in_ml", "driving_ml_adoption", "mentoring", "cross_org_ml_impact"]
+            }
+          ]
+        },
+        "E6": {
+          "interview_rounds": [
+            {
+              "type": "coding",
+              "count": 2,
+              "duration_min": 45,
+              "description": "Coding at staff level.",
+              "focus_areas": ["advanced_algorithms", "system_optimization", "ml_infrastructure_coding"]
+            },
+            {
+              "type": "ml_design",
+              "count": 1,
+              "duration_min": 60,
+              "description": "Staff-level ML system design. Architect ML platforms, define ML strategy, reason about long-term evolution of ML systems.",
+              "focus_areas": ["ml_platform_architecture", "multi_model_systems", "foundation_models_deployment", "ml_efficiency_at_scale", "cross_product_ml_strategy", "model_lifecycle_management"]
+            },
+            {
+              "type": "behavioral",
+              "count": 1,
+              "duration_min": 45,
+              "description": "Staff-level leadership behavioral.",
+              "focus_areas": ["org_level_ml_strategy", "building_ml_teams", "technical_vision", "cross_functional_influence"]
+            }
+          ]
+        }
+      }
+    },
+    "DE": {
+      "title": "Data Engineer",
+      "levels": {
+        "E3": {
+          "interview_rounds": [
+            {
+              "type": "coding",
+              "count": 2,
+              "duration_min": 45,
+              "description": "Coding with emphasis on data processing patterns. SQL is heavily tested.",
+              "focus_areas": ["SQL_queries", "data_structures", "ETL_logic", "basic_algorithms", "string_processing", "aggregations"]
+            },
+            {
+              "type": "behavioral",
+              "count": 1,
+              "duration_min": 45,
+              "description": "Standard behavioral interview.",
+              "focus_areas": ["teamwork", "learning_from_failure", "initiative", "meta_core_values"]
+            }
+          ],
+          "notes": "DE E3 may not have a system design round. Heavy SQL focus in coding rounds."
+        },
+        "E4": {
+          "interview_rounds": [
+            {
+              "type": "coding",
+              "count": 2,
+              "duration_min": 45,
+              "description": "Coding interviews with SQL and general algorithms. At least one round is SQL-heavy.",
+              "focus_areas": ["complex_SQL", "window_functions", "data_modeling", "ETL_patterns", "algorithms", "data_structures"]
+            },
+            {
+              "type": "system_design",
+              "count": 1,
+              "duration_min": 45,
+              "description": "Data systems design. Design data pipelines, warehouses, or analytics platforms.",
+              "focus_areas": ["data_pipeline_design", "data_warehouse_modeling", "batch_vs_streaming", "data_quality", "schema_design", "ETL_architecture"]
+            },
+            {
+              "type": "behavioral",
+              "count": 1,
+              "duration_min": 45,
+              "description": "Behavioral with data engineering focus.",
+              "focus_areas": ["data_project_ownership", "stakeholder_management", "data_quality_incidents", "cross_team_collaboration"]
+            }
+          ]
+        },
+        "E5": {
+          "interview_rounds": [
+            {
+              "type": "coding",
+              "count": 2,
+              "duration_min": 45,
+              "description": "Senior-level coding with data engineering flavor.",
+              "focus_areas": ["advanced_SQL", "distributed_data_processing", "optimization", "complex_ETL", "data_structures"]
+            },
+            {
+              "type": "system_design",
+              "count": 1,
+              "duration_min": 45,
+              "description": "Senior data systems design. End-to-end data platform with scalability, reliability, and governance.",
+              "focus_areas": ["large_scale_data_platforms", "data_lake_architecture", "real_time_analytics", "data_governance", "data_lineage", "privacy_compliance"]
+            },
+            {
+              "type": "behavioral",
+              "count": 1,
+              "duration_min": 45,
+              "description": "Senior behavioral.",
+              "focus_areas": ["technical_leadership", "mentoring", "driving_data_culture", "org_impact"]
+            }
+          ]
+        },
+        "E6": {
+          "interview_rounds": [
+            {
+              "type": "coding",
+              "count": 2,
+              "duration_min": 45,
+              "description": "Staff-level coding.",
+              "focus_areas": ["advanced_algorithms", "distributed_systems_coding", "data_infrastructure"]
+            },
+            {
+              "type": "system_design",
+              "count": 1,
+              "duration_min": 60,
+              "description": "Staff-level data platform design. Architect org-wide data infrastructure.",
+              "focus_areas": ["enterprise_data_architecture", "cross_region_data_replication", "data_mesh", "metadata_platforms", "privacy_at_scale", "cost_optimization"]
+            },
+            {
+              "type": "behavioral",
+              "count": 1,
+              "duration_min": 45,
+              "description": "Staff behavioral.",
+              "focus_areas": ["org_level_data_strategy", "building_teams", "technical_vision", "cross_functional_influence"]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

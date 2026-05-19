@@ -1,0 +1,119 @@
+{
+  "company": "Amazon",
+  "values_name": "Leadership Principles",
+  "description": "Amazon's 16 Leadership Principles are central to every interview. Behavioral questions are explicitly mapped to LPs. Interviewers are assigned specific LPs to evaluate.",
+  "leadership_principles": [
+    {
+      "name": "Customer Obsession",
+      "description": "Leaders start with the customer and work backwards.",
+      "interview_probes": ["Tell me about a time you prioritized the customer over short-term business goals", "How do you gather and use customer feedback?"],
+      "positive_signals": ["Starts reasoning from customer needs", "Has concrete examples of customer-driven decisions", "Measures success by customer outcomes"],
+      "negative_signals": ["Internally focused", "Optimizes for convenience over customer value"]
+    },
+    {
+      "name": "Ownership",
+      "description": "Leaders are owners. They think long term and don't sacrifice long-term value for short-term results. They act on behalf of the entire company, beyond just their own team.",
+      "interview_probes": ["Tell me about a time you took on something outside your area of responsibility", "Describe a time you saw a problem and fixed it without being asked"],
+      "positive_signals": ["Goes beyond job description", "Thinks about long-term consequences", "Doesn't say 'that's not my job'"],
+      "negative_signals": ["Stays in lane", "Only does what's assigned", "Blames other teams"]
+    },
+    {
+      "name": "Invent and Simplify",
+      "description": "Leaders expect and require innovation and invention from their teams and always find ways to simplify.",
+      "interview_probes": ["Tell me about a time you found a simple solution to a complex problem", "Describe an innovative approach you took"],
+      "positive_signals": ["Simplifies rather than adds complexity", "Creative problem-solving", "Challenges status quo"],
+      "negative_signals": ["Over-engineers", "Accepts complexity without questioning"]
+    },
+    {
+      "name": "Are Right, A Lot",
+      "description": "Leaders are right a lot. They have strong judgment and good instincts. They seek diverse perspectives and work to disconfirm their beliefs.",
+      "interview_probes": ["Tell me about a time you made a key decision with limited data", "Describe a time your judgment was wrong — what did you learn?"],
+      "positive_signals": ["Strong reasoning with evidence", "Seeks disconfirming data", "Good calibration of confidence"],
+      "negative_signals": ["Overconfident without evidence", "Can't admit being wrong"]
+    },
+    {
+      "name": "Learn and Be Curious",
+      "description": "Leaders are never done learning and always seek to improve themselves.",
+      "interview_probes": ["How do you stay current in your field?", "Tell me about something new you learned recently that changed your approach"],
+      "positive_signals": ["Active learner", "Applies new knowledge", "Explores beyond comfort zone"],
+      "negative_signals": ["Stagnant skillset", "Not curious about how things work"]
+    },
+    {
+      "name": "Hire and Develop the Best",
+      "description": "Leaders raise the performance bar with every hire and promotion.",
+      "interview_probes": ["Tell me about a time you mentored or developed someone", "How do you evaluate talent?"],
+      "positive_signals": ["Invests in others' growth", "High bar for hiring", "Gives specific, actionable feedback"],
+      "negative_signals": ["Doesn't invest in team development", "Threatened by strong team members"]
+    },
+    {
+      "name": "Insist on the Highest Standards",
+      "description": "Leaders have relentlessly high standards. They continually raise the bar.",
+      "interview_probes": ["Tell me about a time you refused to accept a mediocre outcome", "How do you define quality in your work?"],
+      "positive_signals": ["Clear quality standards", "Pushes for excellence", "Catches issues others miss"],
+      "negative_signals": ["Accepts 'good enough'", "No clear quality criteria"]
+    },
+    {
+      "name": "Think Big",
+      "description": "Leaders create and communicate a bold direction that inspires results.",
+      "interview_probes": ["Tell me about your most ambitious project", "Describe a time you proposed something others thought was too big"],
+      "positive_signals": ["Ambitious goals", "Inspires others", "Thinks beyond incremental improvements"],
+      "negative_signals": ["Small, safe goals only", "Can't articulate a bigger vision"]
+    },
+    {
+      "name": "Bias for Action",
+      "description": "Speed matters in business. Many decisions and actions are reversible and do not need extensive study.",
+      "interview_probes": ["Tell me about a time you made a decision without all the data you wanted", "Describe a time when taking quick action was critical"],
+      "positive_signals": ["Acts decisively", "Distinguishes reversible from irreversible decisions", "Doesn't over-analyze"],
+      "negative_signals": ["Analysis paralysis", "Waits for perfect information"]
+    },
+    {
+      "name": "Frugality",
+      "description": "Accomplish more with less. Constraints breed resourcefulness, self-sufficiency, and invention.",
+      "interview_probes": ["Tell me about a time you accomplished a big result with limited resources", "How do you prioritize when you can't do everything?"],
+      "positive_signals": ["Resourceful", "Creative with constraints", "Focuses on high-ROI work"],
+      "negative_signals": ["Throws resources at problems", "Can't prioritize"]
+    },
+    {
+      "name": "Earn Trust",
+      "description": "Leaders listen attentively, speak candidly, and treat others respectfully.",
+      "interview_probes": ["Tell me about a time you had to rebuild trust with a colleague", "Describe a time you gave difficult feedback"],
+      "positive_signals": ["Transparent communication", "Admits mistakes", "Builds genuine relationships"],
+      "negative_signals": ["Avoids difficult conversations", "Takes credit for others' work"]
+    },
+    {
+      "name": "Dive Deep",
+      "description": "Leaders operate at all levels, stay connected to the details, audit frequently, and are skeptical when metrics and anecdotes differ.",
+      "interview_probes": ["Tell me about a time you found a problem by diving into the details", "Describe a time metrics told a different story than what people were saying"],
+      "positive_signals": ["Data-driven", "Digs into root causes", "Questions surface-level explanations"],
+      "negative_signals": ["Stays at high level", "Trusts reports without verification"]
+    },
+    {
+      "name": "Have Backbone; Disagree and Commit",
+      "description": "Leaders are obligated to respectfully challenge decisions when they disagree, even when doing so is uncomfortable. Once a decision is made, they commit wholly.",
+      "interview_probes": ["Tell me about a time you disagreed with your manager or team", "Describe a time you committed to a decision you didn't agree with"],
+      "positive_signals": ["Voices disagreement with evidence", "Commits fully once decided", "Doesn't sabotage decisions they disagree with"],
+      "negative_signals": ["Goes along to get along", "Undermines decisions after the fact"]
+    },
+    {
+      "name": "Deliver Results",
+      "description": "Leaders focus on the key inputs for their business and deliver them with the right quality and in a timely fashion.",
+      "interview_probes": ["Tell me about the most impactful result you've delivered", "Describe a time you had to overcome significant obstacles to deliver"],
+      "positive_signals": ["Quantified results", "Persistent through obstacles", "Focuses on outcomes over activities"],
+      "negative_signals": ["Describes activities not results", "Gives up when things get hard"]
+    },
+    {
+      "name": "Strive to be Earth's Best Employer",
+      "description": "Leaders work to create a safer, more productive, more diverse, and more just work environment.",
+      "interview_probes": ["How do you create an inclusive team environment?", "Tell me about a time you advocated for a team member"],
+      "positive_signals": ["Invests in team wellbeing", "Promotes diversity", "Creates safe environment"],
+      "negative_signals": ["Ignores team dynamics", "Only focused on output"]
+    },
+    {
+      "name": "Success and Scale Bring Broad Responsibility",
+      "description": "Leaders create more than they consume and always leave things better than they found them.",
+      "interview_probes": ["Tell me about a time you considered the broader impact of your work", "How do you think about the societal impact of technology?"],
+      "positive_signals": ["Thinks about externalities", "Considers broader impact", "Leaves things better"],
+      "negative_signals": ["Narrow focus", "No consideration of broader consequences"]
+    }
+  ]
+}

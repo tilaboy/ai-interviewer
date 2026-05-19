@@ -1,0 +1,266 @@
+{
+  "meta": {
+    "description": "System design interview questions for SWE and DE roles at Meta",
+    "sources": ["Glassdoor", "Blind", "system design primer", "public interview prep"],
+    "last_updated": "2026-05-19"
+  },
+  "framework": {
+    "steps": [
+      "Requirements clarification (functional + non-functional)",
+      "Capacity estimation (traffic, storage, bandwidth)",
+      "API design",
+      "Data model / schema design",
+      "High-level architecture",
+      "Detailed component design",
+      "Scalability & trade-offs",
+      "Monitoring, alerting, and operations"
+    ]
+  },
+  "questions": [
+    {
+      "id": "sd001",
+      "title": "Design Facebook News Feed",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "target_roles": ["SWE"],
+      "description": "Design the news feed system that shows relevant posts to users when they open Facebook.",
+      "key_discussion_points": [
+        "Feed generation: push vs pull model",
+        "Ranking algorithm integration",
+        "Caching strategy (pre-computed feeds vs on-demand)",
+        "Handling celebrity users (fan-out problem)",
+        "Real-time updates vs periodic refresh",
+        "Data storage: posts, social graph, user activity"
+      ],
+      "expected_depth_by_level": {
+        "E4": "Core architecture, basic push/pull trade-off, simple caching",
+        "E5": "Hybrid push/pull with celebrity handling, multi-tier caching, ranking pipeline integration, monitoring"
+      }
+    },
+    {
+      "id": "sd002",
+      "title": "Design Facebook Messenger",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "target_roles": ["SWE"],
+      "description": "Design a real-time chat system supporting 1:1 and group conversations.",
+      "key_discussion_points": [
+        "WebSocket / long-polling for real-time",
+        "Message storage and ordering",
+        "Online/offline presence",
+        "Group chat scalability",
+        "End-to-end encryption considerations",
+        "Message delivery guarantees (sent, delivered, read)",
+        "Media message handling"
+      ],
+      "expected_depth_by_level": {
+        "E4": "Basic WebSocket architecture, message storage, delivery states",
+        "E5": "Connection management at scale, message ordering guarantees, E2E encryption trade-offs, multi-device sync"
+      }
+    },
+    {
+      "id": "sd003",
+      "title": "Design Instagram",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "target_roles": ["SWE"],
+      "description": "Design a photo-sharing social network with feed, stories, and explore features.",
+      "key_discussion_points": [
+        "Image upload, processing, and storage pipeline",
+        "CDN for media delivery",
+        "Feed generation and ranking",
+        "Stories (ephemeral content) architecture",
+        "Search and explore / discovery",
+        "Notification system"
+      ],
+      "expected_depth_by_level": {
+        "E4": "Upload pipeline, CDN basics, feed generation",
+        "E5": "Multi-resolution processing, global CDN strategy, content moderation pipeline, explore ranking"
+      }
+    },
+    {
+      "id": "sd004",
+      "title": "Design a URL Shortener",
+      "difficulty": "easy",
+      "target_levels": ["E4"],
+      "target_roles": ["SWE"],
+      "description": "Design a URL shortening service like bit.ly.",
+      "key_discussion_points": [
+        "URL encoding strategy (hash vs counter)",
+        "Read-heavy workload optimization",
+        "Caching hot URLs",
+        "Analytics and click tracking",
+        "Expiration and cleanup",
+        "Custom short URLs"
+      ],
+      "expected_depth_by_level": {
+        "E4": "Core encode/decode, database choice, basic caching, analytics"
+      }
+    },
+    {
+      "id": "sd005",
+      "title": "Design a Rate Limiter",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "target_roles": ["SWE"],
+      "description": "Design a distributed rate limiter for API endpoints.",
+      "key_discussion_points": [
+        "Token bucket vs sliding window vs fixed window",
+        "Distributed rate limiting (Redis-based)",
+        "Race conditions and atomicity",
+        "Per-user vs per-IP vs per-API-key",
+        "Graceful degradation",
+        "Rate limit headers and client communication"
+      ],
+      "expected_depth_by_level": {
+        "E4": "Algorithm choices, Redis implementation, basic distributed coordination",
+        "E5": "Consistency in distributed setting, multi-tier rate limiting, monitoring and alerting"
+      }
+    },
+    {
+      "id": "sd006",
+      "title": "Design a Notification System",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "target_roles": ["SWE"],
+      "description": "Design a system that sends push notifications, SMS, and email at scale.",
+      "key_discussion_points": [
+        "Multi-channel delivery (push, SMS, email)",
+        "Priority and batching",
+        "User preference management",
+        "Rate limiting notifications",
+        "Delivery tracking and analytics",
+        "Template management",
+        "Reliability and retry logic"
+      ],
+      "expected_depth_by_level": {
+        "E4": "Core pipeline, multi-channel routing, basic priority handling",
+        "E5": "Deduplication, intelligent batching, user fatigue modeling, cross-platform coordination"
+      }
+    },
+    {
+      "id": "sd007",
+      "title": "Design a Distributed Key-Value Store",
+      "difficulty": "hard",
+      "target_levels": ["E5", "E6"],
+      "target_roles": ["SWE"],
+      "description": "Design a distributed key-value store like DynamoDB or Cassandra.",
+      "key_discussion_points": [
+        "Partitioning (consistent hashing)",
+        "Replication strategy",
+        "Consistency models (eventual vs strong)",
+        "Conflict resolution (vector clocks, LWW)",
+        "Failure detection and recovery",
+        "Read/write path",
+        "Compaction and garbage collection"
+      ],
+      "expected_depth_by_level": {
+        "E5": "Consistent hashing, replication, basic consistency trade-offs",
+        "E6": "Detailed consistency models, anti-entropy protocols, cross-datacenter replication, capacity planning"
+      }
+    },
+    {
+      "id": "sd008",
+      "title": "Design a Search Autocomplete System",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "target_roles": ["SWE"],
+      "description": "Design a typeahead / autocomplete system for a search bar.",
+      "key_discussion_points": [
+        "Trie-based data structure",
+        "Ranking suggestions (frequency, personalization, recency)",
+        "Data collection pipeline",
+        "Latency requirements (<100ms)",
+        "Caching strategy",
+        "Multi-language support"
+      ],
+      "expected_depth_by_level": {
+        "E4": "Trie structure, basic ranking, caching",
+        "E5": "Personalized ranking, real-time trend detection, distributed trie, A/B testing integration"
+      }
+    },
+    {
+      "id": "sd009",
+      "title": "Design a Data Pipeline for Analytics",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5"],
+      "target_roles": ["DE"],
+      "description": "Design a data pipeline that ingests events from multiple sources and makes them available for analytics within minutes.",
+      "key_discussion_points": [
+        "Event ingestion (Kafka / message queue)",
+        "Batch vs stream processing",
+        "Data warehouse / data lake architecture",
+        "Schema evolution and data quality",
+        "Exactly-once processing guarantees",
+        "Query layer (Presto/Spark SQL)",
+        "Data lineage and governance"
+      ],
+      "expected_depth_by_level": {
+        "E4": "Core pipeline architecture, batch vs streaming trade-offs, basic schema management",
+        "E5": "Exactly-once semantics, schema evolution strategy, data quality monitoring, governance framework"
+      }
+    },
+    {
+      "id": "sd010",
+      "title": "Design a Data Warehouse",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5", "E6"],
+      "target_roles": ["DE"],
+      "description": "Design a data warehouse supporting petabyte-scale analytics for a social media company.",
+      "key_discussion_points": [
+        "Dimensional modeling (star schema vs snowflake)",
+        "Partitioning and bucketing strategy",
+        "Slowly changing dimensions",
+        "ETL vs ELT patterns",
+        "Query optimization",
+        "Cost management",
+        "Access control and privacy"
+      ],
+      "expected_depth_by_level": {
+        "E4": "Basic dimensional modeling, partition strategy, ETL pipeline",
+        "E5": "Advanced SCD handling, query optimization, cost management, multi-tenant access control",
+        "E6": "Enterprise-wide modeling strategy, cross-region architecture, privacy-by-design, cost optimization at scale"
+      }
+    },
+    {
+      "id": "sd011",
+      "title": "Design a Real-Time Analytics Dashboard",
+      "difficulty": "hard",
+      "target_levels": ["E5", "E6"],
+      "target_roles": ["DE", "SWE"],
+      "description": "Design a system that powers real-time dashboards showing metrics with < 1 minute latency.",
+      "key_discussion_points": [
+        "Stream processing (Flink/Spark Streaming)",
+        "Pre-aggregation vs on-demand computation",
+        "Time-series storage",
+        "Dashboard push vs pull updates",
+        "Handling late-arriving data",
+        "Approximate vs exact counts at scale"
+      ],
+      "expected_depth_by_level": {
+        "E5": "Stream processing pipeline, pre-aggregation strategy, time-series storage choice",
+        "E6": "Multi-dimensional pre-aggregation, approximate algorithms (HyperLogLog, Count-Min), late data handling, cross-DC consistency"
+      }
+    },
+    {
+      "id": "sd012",
+      "title": "Design Facebook Live Video",
+      "difficulty": "hard",
+      "target_levels": ["E5", "E6"],
+      "target_roles": ["SWE"],
+      "description": "Design a live video streaming system supporting millions of concurrent viewers.",
+      "key_discussion_points": [
+        "Video encoding pipeline (adaptive bitrate)",
+        "CDN and edge caching",
+        "Real-time comments and reactions",
+        "Viewer count aggregation",
+        "Recording and replay",
+        "Content moderation during live stream"
+      ],
+      "expected_depth_by_level": {
+        "E5": "Encoding pipeline, CDN strategy, basic real-time interaction",
+        "E6": "Global CDN optimization, adaptive quality, edge computing, content moderation at scale"
+      }
+    }
+  ]
+}
