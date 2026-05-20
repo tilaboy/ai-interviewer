@@ -2,7 +2,7 @@ import { TextToSpeechClient } from "@google-cloud/text-to-speech";
 
 const VOICE_CONFIG = {
   languageCode: "en-US",
-  name: "en-US-Studio-O", // Studio voice — high quality, natural female
+  name: "en-US-Wavenet-F", // WaveNet female — good quality, free tier eligible
   ssmlGender: "FEMALE" as const,
 };
 
@@ -12,11 +12,10 @@ const AUDIO_CONFIG = {
   pitch: 0,
 };
 
-// Fallback voices in case Studio isn't available
 const FALLBACK_VOICES = [
-  "en-US-Neural2-F",  // Neural2 female
-  "en-US-Neural2-C",  // Neural2 female variant
-  "en-US-Wavenet-F",  // WaveNet female
+  "en-US-Wavenet-C",  // WaveNet female variant
+  "en-US-Wavenet-E",  // WaveNet female variant
+  "en-US-Standard-F", // Standard (lowest cost)
 ];
 
 export async function POST(request: Request) {
