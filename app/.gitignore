@@ -30,11 +30,14 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files
+# env files and credentials
 .env
 .env.local
 .env*.local
 !.env.example
+*.credentials.json
+*-credentials.json
+gen-lang-client-*.json
 
 # vercel
 .vercel
