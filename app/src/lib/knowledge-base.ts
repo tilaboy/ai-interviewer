@@ -250,12 +250,29 @@ function getAllQuestions(
  *   3. Filters by target_roles if present.
  *   4. Falls back to the full pool if no filtered match.
  */
+/**
+ * Select the demo question for a given interview type (guest trial flow).
+ */
+export function selectDemoQuestion(interviewType: string): Question {
+  const demoPath = path.join(KNOWLEDGE_BASE_ROOT, "questions", "demo", "demo_questions.json");
+  const demoFile = loadJson<QuestionsFile>(demoPath);
+  const match = demoFile.questions.find(
+    (q) => (q.type as string) === interviewType || q.category === interviewType
+  );
+  return match || demoFile.questions[0];
+}
+
 export function selectQuestion(
   interviewType: string,
   level: string,
   role: string,
   company?: string,
+  mode?: string,
 ): Question {
+  if (mode === "demo") {
+    return selectDemoQuestion(interviewType);
+  }
+
   const questions = getAllQuestions(interviewType, company ?? "meta", role);
 
   const normLevel = level.toUpperCase();

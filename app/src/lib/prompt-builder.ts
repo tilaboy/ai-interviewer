@@ -18,6 +18,7 @@ export interface InterviewConfig {
   level: string;
   interviewType: string;
   candidateName?: string;
+  mode?: string;
 }
 
 export interface InterviewPromptResult {
@@ -84,7 +85,7 @@ export function buildInterviewerPrompt(config: InterviewConfig): InterviewPrompt
 
   // Map level to company-specific code (e.g. "mid" -> "E4" for Meta)
   const normLevel = resolveLevel(company, level);
-  const question = selectQuestion(interviewType, normLevel, role, company);
+  const question = selectQuestion(interviewType, normLevel, role, company, config.mode);
 
   // Resolve interview round metadata for context
   const roleData = loops.roles?.[role.toUpperCase()];

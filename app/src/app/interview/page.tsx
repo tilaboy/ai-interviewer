@@ -113,6 +113,7 @@ function InterviewContent() {
   const level = searchParams.get('level') || 'mid'
   const interviewType = searchParams.get('type') || 'behavioral'
   const candidateName = searchParams.get('name') || ''
+  const mode = searchParams.get('mode') || 'random'
 
   const [messages, setMessages] = useState<Message[]>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -130,7 +131,7 @@ function InterviewContent() {
   // AI assistant prompt history (only used for ai_native_coding)
   const [promptHistory, setPromptHistory] = useState<PromptLogEntry[]>([])
 
-  const config = { company, role, level, interviewType, candidateName }
+  const config = { company, role, level, interviewType, candidateName, mode }
 
   const handleLanguageChange = useCallback(
     (newLanguage: string) => {

@@ -1,0 +1,100 @@
+{
+  "meta": {
+    "description": "Curated demo questions for the guest trial flow. These are chosen to showcase the product well — interesting problems that produce good conversation and demonstrate the AI interviewer's capabilities.",
+    "last_updated": "2026-05-20"
+  },
+  "questions": [
+    {
+      "id": "demo_coding_1",
+      "type": "coding",
+      "title": "Group Anagrams",
+      "difficulty": "medium",
+      "target_levels": ["E3", "E4", "E5"],
+      "topics": ["hash_maps", "strings", "sorting"],
+      "question": "Given an array of strings, group the anagrams together. You can return the answer in any order.",
+      "description": "Given an array of strings strs, group the anagrams together. An anagram is a word formed by rearranging the letters of another word. For example, 'eat', 'tea', and 'ate' are anagrams of each other.\n\nExample:\nInput: strs = [\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]\nOutput: [[\"bat\"],[\"nat\",\"tan\"],[\"ate\",\"eat\",\"tea\"]]",
+      "starter_code": "def group_anagrams(strs: list[str]) -> list[list[str]]:\n    # Example:\n    # Input: [\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]\n    # Output: [[\"bat\"],[\"nat\",\"tan\"],[\"ate\",\"eat\",\"tea\"]]\n    pass",
+      "what_interviewer_looks_for": [
+        "Identifies sorting or character-count as the key insight",
+        "Uses a hash map to group strings by canonical form",
+        "Discusses time complexity: O(n * k log k) with sorting or O(n * k) with counting",
+        "Handles edge cases: empty strings, single characters"
+      ],
+      "follow_ups": [
+        "Can you solve this without sorting the individual strings?",
+        "What's the time and space complexity?",
+        "How would this work if strings could be very long (millions of characters)?"
+      ],
+      "evaluation_rubric": {
+        "strong": "Quickly identifies the hash map approach with sorted key or char-count key, implements cleanly, discusses trade-offs between approaches",
+        "weak": "Tries brute-force pairwise comparison, can't identify the grouping key, struggles with the hash map pattern"
+      }
+    },
+    {
+      "id": "demo_system_design_1",
+      "type": "system_design",
+      "title": "Design a URL Shortener",
+      "difficulty": "medium",
+      "target_levels": ["E4", "E5", "E6"],
+      "topics": ["distributed_systems", "hashing", "caching", "database_design"],
+      "question": "Design a URL shortening service like bit.ly. Users can submit a long URL and get a short one. When someone visits the short URL, they are redirected to the original.",
+      "description": "Design a URL shortening service. The system should:\n- Generate short URLs from long URLs\n- Redirect short URLs to original URLs\n- Handle analytics (click counts)\n- Support custom short URLs\n- Handle high read traffic (100:1 read to write ratio)",
+      "what_interviewer_looks_for": [
+        "Clarifies requirements before designing (scale, features, constraints)",
+        "Discusses URL encoding strategy (hash vs counter-based)",
+        "Addresses caching for hot URLs",
+        "Considers database choice and schema",
+        "Discusses scalability and potential bottlenecks"
+      ],
+      "key_discussion_points": [
+        "URL encoding strategy (base62, hash, counter)",
+        "Read-heavy workload optimization",
+        "Caching hot URLs (Redis/Memcached)",
+        "Database choice and sharding",
+        "Analytics and click tracking",
+        "Expiration and cleanup",
+        "Custom short URLs and collision handling"
+      ],
+      "follow_ups": [
+        "How would you handle a billion URLs?",
+        "What happens if two users submit the same long URL?",
+        "How would you implement expiration?"
+      ],
+      "expected_depth_by_level": {
+        "E4": "Core encode/decode, database choice, basic caching, simple analytics",
+        "E5": "Distributed ID generation, multi-tier caching, sharding strategy, monitoring",
+        "E6": "Global distribution, consistency trade-offs, capacity planning, cost optimization"
+      },
+      "evaluation_rubric": {
+        "strong": "Drives the conversation, asks good clarifying questions, makes deliberate trade-offs, discusses scalability proactively",
+        "weak": "Jumps into implementation without requirements, misses caching, doesn't consider scale"
+      }
+    },
+    {
+      "id": "demo_behavioral_1",
+      "type": "behavioral",
+      "title": "Technical Challenge",
+      "difficulty": "medium",
+      "target_levels": ["E3", "E4", "E5"],
+      "category": "project_ownership",
+      "question": "Tell me about a technical project you led or contributed significantly to. What was the challenge, what did you do, and what was the impact?",
+      "what_interviewer_looks_for": [
+        "Clear STAR structure (Situation, Task, Action, Result)",
+        "Specific personal contributions vs vague team efforts",
+        "Quantified impact where possible",
+        "Technical depth appropriate for level",
+        "Self-awareness and lessons learned"
+      ],
+      "follow_ups": [
+        "What was the hardest technical decision you had to make?",
+        "How did you handle disagreements with teammates?",
+        "What would you do differently if you could do it again?",
+        "How did you measure the success of the project?"
+      ],
+      "evaluation_rubric": {
+        "strong": "Compelling story with clear ownership, specific actions, measurable results, and genuine reflection",
+        "weak": "Vague story, can't distinguish personal role, no measurable outcome, no reflection"
+      }
+    }
+  ]
+}
