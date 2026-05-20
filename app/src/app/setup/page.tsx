@@ -232,15 +232,27 @@ function SetupContent() {
           </div>
         </section>
 
-        {/* Start Button */}
-        <div className="flex justify-end pt-6 border-t border-slate-800/50">
+        {/* Spacer for sticky button */}
+        <div className="h-20" />
+      </div>
+
+      {/* Sticky Start Button */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 glass-header">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+          <div className="text-sm text-slate-400">
+            {isComplete ? (
+              <span>Ready to start</span>
+            ) : (
+              <span>Select {!company ? 'a company' : !role ? 'a role' : !level ? 'a level' : 'an interview type'} to continue</span>
+            )}
+          </div>
           <button
             onClick={handleStart}
             disabled={!isComplete}
-            className={`group inline-flex items-center justify-center px-8 py-3.5 text-base font-semibold rounded-xl transition-all duration-200 ${
+            className={`group inline-flex items-center justify-center px-8 py-3 text-sm font-semibold rounded-xl transition-all duration-200 ${
               isComplete
                 ? 'text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 glow-blue hover:scale-[1.02] cursor-pointer'
-                : 'text-slate-600 bg-slate-800/50 cursor-not-allowed'
+                : 'text-slate-600 glass cursor-not-allowed'
             }`}
           >
             Start Interview
@@ -249,6 +261,7 @@ function SetupContent() {
             </svg>
           </button>
         </div>
+        <div className="h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent" />
       </div>
     </div>
   )
