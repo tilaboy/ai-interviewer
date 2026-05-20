@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, Suspense } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import {
   type Company,
   type Role,
@@ -60,21 +60,22 @@ const steps = [
   { num: 4, label: 'Type' },
 ]
 
-export default function SetupPage() {
+function SetupContent() {
   const router = useRouter()
-  const [candidateName, setCandidateName] = useState('')
+  const searchParams = useSearchParams()
+  const candidateName = searchParams.get('name') || ''
   const [company, setCompany] = useState<Company | null>(null)
   const [role, setRole] = useState<Role | null>(null)
   const [level, setLevel] = useState<Level | null>(null)
   const [interviewType, setInterviewType] = useState<InterviewType | null>(null)
   const [questionMode, setQuestionMode] = useState<QuestionMode>('random')
 
-  const isComplete = company && role && level && interviewType && candidateName.trim()
+  const isComplete = company && role && level && interviewType
   const currentStep = !company ? 1 : !role ? 2 : !level ? 3 : !interviewType ? 4 : 5
 
   function handleStart() {
     if (!isComplete) return
-    const params = new URLSearchParams({ company, role, level, type: interviewType, mode: questionMode, name: candidateName.trim() })
+    const params = new URLSearchParams({ company, role, level, type: interviewType, mode: questionMode, name: candidateName })
     router.push(`/interview?${params.toString()}`)
   }
 
@@ -82,8 +83,10 @@ export default function SetupPage() {
     <div className="bg-grid min-h-[calc(100vh-4rem)]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <div className="mb-10">
-          <h1 className="text-3xl font-bold text-white mb-2">Set Up Your Interview</h1>
-          <p className="text-slate-400">Configure your mock interview session.</p>
+          <h1 className="text-3xl font-bold text-white mb-2">
+            {candidateName ? `Hey ${candidateName}, let’s set up your interview` : 'Set Up Your Interview'}
+          </h1>
+          <p className="text-slate-400">Choose your target company, role, level, and interview type.</p>
         </div>
 
         {/* Step indicators */}
@@ -106,18 +109,6 @@ export default function SetupPage() {
             </div>
           ))}
         </div>
-
-        {/* Name */}
-        <section className="mb-10">
-          <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-4">Your Name</h2>
-          <input
-            type="text"
-            value={candidateName}
-            onChange={(e) => setCandidateName(e.target.value)}
-            placeholder="Enter your first name..."
-            className="w-full sm:w-72 px-4 py-3 rounded-xl glass text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/30 transition-all"
-          />
-        </section>
 
         {/* Company */}
         <section className="mb-10">
@@ -260,5 +251,13 @@ export default function SetupPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function SetupPage() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><p className="text-slate-400">Loading...</p></div>}>
+      <SetupContent />
+    </Suspense>
   )
 }

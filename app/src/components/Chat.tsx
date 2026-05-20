@@ -21,7 +21,7 @@ function TypingIndicator() {
           <path strokeLinecap="round" strokeLinejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
         </svg>
       </div>
-      <div className="bg-slate-800/80 border-l-2 border-blue-500/50 rounded-2xl rounded-tl-sm px-4 py-3">
+      <div className="glass-surface border-l-2 border-blue-500/40 rounded-2xl rounded-tl-sm px-4 py-3">
         <div className="flex items-center gap-1.5">
           <span className="w-1.5 h-1.5 bg-blue-400/60 rounded-full animate-bounce [animation-delay:0ms]" />
           <span className="w-1.5 h-1.5 bg-blue-400/60 rounded-full animate-bounce [animation-delay:150ms]" />
@@ -193,7 +193,7 @@ function MessageBubble({ message, isLatest }: { message: Message; isLatest: bool
         <div
           className={`rounded-2xl px-4 py-3 ${
             isInterviewer
-              ? 'bg-slate-800/80 text-slate-100 rounded-tl-sm border-l-2 border-blue-500/40'
+              ? 'glass text-slate-100 rounded-tl-sm border-l-2 border-blue-500/30 light-edge'
               : 'bg-blue-600/80 text-white rounded-tr-sm'
           } ${isInterviewer && isLong ? 'cursor-pointer' : ''}`}
           onClick={isInterviewer && isLong ? () => setExpanded(!expanded) : undefined}
@@ -377,7 +377,7 @@ export default function Chat({ messages, onSendMessage, isLoading }: ChatProps) 
   }
 
   return (
-    <div className="flex flex-col h-full bg-[#0a0f1e]">
+    <div className="flex flex-col h-full bg-transparent">
       <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
         {messages.length === 0 && (
           <div className="flex items-center justify-center h-full">
@@ -391,7 +391,7 @@ export default function Chat({ messages, onSendMessage, isLoading }: ChatProps) 
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="border-t border-slate-800/50 bg-[#0a0f1e]/90 backdrop-blur-sm px-4 py-3">
+      <div className="border-t border-slate-800/50 bg-transparent/90 backdrop-blur-sm px-4 py-3">
         {isListening && (
           <div className="flex items-center gap-2 mb-2 px-1">
             <span className="relative flex h-2.5 w-2.5">

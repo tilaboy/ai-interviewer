@@ -383,8 +383,8 @@ function InterviewContent() {
     ) : null
 
   return (
-    <div className="flex flex-col h-screen bg-[#0a0f1e] text-slate-100">
-      <header className="flex-shrink-0 border-b border-slate-800/50 bg-[#0a0f1e]/90 backdrop-blur-xl">
+    <div className="flex flex-col h-screen bg-[#0a0f1e] text-slate-100 bg-depth">
+      <header className="flex-shrink-0 glass-header">
         <div className="flex items-center justify-between px-4 py-3 w-full">
           <div className="min-w-0 flex items-center gap-3">
             <div className="flex items-center gap-2">

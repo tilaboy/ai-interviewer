@@ -28,8 +28,8 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
-      <body className="min-h-full flex flex-col bg-[#0a0f1e] text-slate-100 font-sans">
-        <header className="sticky top-0 z-50 backdrop-blur-xl bg-[#0a0f1e]/80 border-b border-slate-800/50">
+      <body className="min-h-full flex flex-col bg-[#0a0f1e] text-slate-100 font-sans bg-depth">
+        <header className="sticky top-0 z-50 glass-header">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               <Link href="/" className="flex items-center gap-2.5">
