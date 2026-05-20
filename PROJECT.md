@@ -380,6 +380,258 @@ When user starts an interview:
 
 ---
 
+## User Lifecycle & Growth Plan
+
+### Overview
+
+Two-tier user model: guests can try instantly, registered users get full
+tracking and personalized recommendations. The goal is to let anyone
+experience the product in 60 seconds, then convert them to registered
+users for retention and personalization.
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     GUEST (no account)                      │
+│                                                             │
+│  Landing: enter name → pick Coding or System Design         │
+│  → fixed demo question (curated to showcase the product)    │
+│  → full interview experience (45 min, same AI quality)      │
+│  → full feedback report                                     │
+│                                                             │
+│  After feedback:                                            │
+│  ┌─────────────────────────────────────────────────────┐    │
+│  │ "Sign up to save this result, unlock 134 questions, │    │
+│  │  and get personalized recommendations."             │    │
+│  │              [ Sign Up with Google ]                 │    │
+│  │              [ Sign Up with Email  ]                 │    │
+│  │              [ Continue as Guest → ]                 │    │
+│  └─────────────────────────────────────────────────────┘    │
+└─────────────────────┬───────────────────────────────────────┘
+                      │ signs up
+                      ▼
+┌─────────────────────────────────────────────────────────────┐
+│                   REGISTERED USER                           │
+│                                                             │
+│  ✓ Full question bank (134+ questions, all companies)       │
+│  ✓ Interview history persisted to database                  │
+│  ✓ Per-question tracking (attempted, score, date)           │
+│  ✓ Dimension-level progress (coding: DP weak, graphs OK)    │
+│  ✓ Smart question selection:                                │
+│    - "Focus on weak areas" mode enabled                     │
+│    - Avoids repeating recently-tried questions               │
+│    - Suggests similar questions after poor scores            │
+│  ✓ Study plan generator                                     │
+│  ✓ Progress dashboard with trends                           │
+│  ✓ Share feedback reports                                   │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Implementation Steps
+
+#### Step 7A: Guest Trial Flow (quick win, no auth needed)
+**Goal**: Let anyone try the product in 60 seconds with zero friction.
+
+- [ ] Create a curated demo question pool (2-3 best questions):
+      - Coding: a classic medium problem that's fun to work through
+      - System Design: "Design a URL shortener" (accessible at all levels)
+      - Optional: one behavioral question
+- [ ] Update landing page flow:
+      - Enter name → choose "Try Coding" or "Try System Design"
+      - Skip company/role/level selection (use sensible defaults: Meta, SWE, E4)
+      - Go directly to interview with the demo question
+- [ ] After feedback, show sign-up prompt (modal or banner)
+- [ ] If guest clicks "Continue as Guest", redirect to full setup page
+- [ ] Guest sessions stored in localStorage (current behavior)
+
+#### Step 7B: Authentication
+**Goal**: Know who users are, persist their data server-side.
+
+- [ ] Install and configure NextAuth.js
+- [ ] Auth providers:
+      - Google OAuth (primary — most engineers have Google accounts)
+      - Email magic link (fallback)
+- [ ] Auth pages: /login, /signup (or modal-based)
+- [ ] Session management: JWT or database sessions
+- [ ] Protected routes: /dashboard requires auth, /setup and /interview
+      work for both guests and registered users
+- [ ] Nav updates: show user avatar + name when logged in, "Sign In"
+      button when not
+- [ ] Migrate localStorage sessions to database on first login
+      (preserve guest history)
+
+#### Step 7C: Database & Persistence
+**Goal**: Store user data, interview history, and question tracking.
+
+Tech choice: **Supabase** (PostgreSQL + auth + real-time, generous free tier)
+or **Neon** (serverless PostgreSQL) + Prisma ORM.
+
+```sql
+-- Core tables
+
+CREATE TABLE users (
+  id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email         TEXT UNIQUE NOT NULL,
+  name          TEXT NOT NULL,
+  auth_provider TEXT NOT NULL,          -- 'google' | 'email'
+  created_at    TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE interview_sessions (
+  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id         UUID REFERENCES users(id),
+  company         TEXT NOT NULL,
+  role            TEXT NOT NULL,
+  level           TEXT NOT NULL,
+  interview_type  TEXT NOT NULL,
+  question_id     TEXT NOT NULL,        -- matches knowledge base question.id
+  question_title  TEXT NOT NULL,
+  status          TEXT NOT NULL DEFAULT 'in_progress',  -- in_progress|completed|abandoned
+  started_at      TIMESTAMPTZ DEFAULT now(),
+  ended_at        TIMESTAMPTZ,
+  duration_sec    INT
+);
+
+CREATE TABLE feedback_reports (
+  id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  session_id          UUID UNIQUE REFERENCES interview_sessions(id),
+  overall_score       INT NOT NULL,
+  level_assessment    TEXT NOT NULL,
+  dimension_scores    JSONB NOT NULL,    -- [{name, score, evidence}]
+  positive_signals    JSONB NOT NULL,    -- [{quote, signal, dimension}]
+  negative_signals    JSONB NOT NULL,
+  improvements        JSONB NOT NULL,    -- [string]
+  generated_at        TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE transcripts (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  session_id  UUID REFERENCES interview_sessions(id),
+  messages    JSONB NOT NULL,            -- [{role, content, timestamp}]
+  code        JSONB,                     -- {language, code} for coding interviews
+  diagram     TEXT,                      -- tldraw snapshot JSON
+  prompts     JSONB                      -- [{prompt, response}] for AI-native
+);
+
+-- Derived / computed for fast lookups
+
+CREATE TABLE user_question_history (
+  id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id       UUID REFERENCES users(id),
+  question_id   TEXT NOT NULL,
+  best_score    INT,
+  attempt_count INT DEFAULT 1,
+  last_attempt  TIMESTAMPTZ DEFAULT now(),
+  UNIQUE(user_id, question_id)
+);
+
+CREATE TABLE user_dimension_stats (
+  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id         UUID REFERENCES users(id),
+  interview_type  TEXT NOT NULL,
+  dimension       TEXT NOT NULL,          -- e.g. "Problem Solving", "STAR Structure"
+  avg_score       INT,
+  trend           TEXT,                   -- 'improving' | 'stable' | 'declining'
+  data_points     INT DEFAULT 0,
+  last_updated    TIMESTAMPTZ DEFAULT now(),
+  UNIQUE(user_id, interview_type, dimension)
+);
+```
+
+Implementation:
+- [ ] Set up Supabase project (or Neon + Prisma)
+- [ ] Define Prisma schema matching the above
+- [ ] Migration: create tables
+- [ ] API routes: save sessions, feedback, transcripts to DB
+- [ ] Update feedback page: save to DB instead of (or in addition to) localStorage
+- [ ] Backfill: on first login, migrate localStorage history to DB
+
+#### Step 7D: Smart Question Selection
+**Goal**: Recommend the right next question based on user history.
+
+Algorithm:
+```
+1. Load user's question history (attempted questions, scores)
+2. Load user's dimension stats (weak areas)
+3. Filter available questions by company + role + level + type
+4. Remove recently attempted (last 5 sessions)
+5. Score each candidate question:
+   a. +3 if it targets a weak dimension
+   b. +2 if user hasn't tried this topic area
+   c. +1 if difficulty matches user's level
+   d. -2 if user already scored >80 on this question
+6. Pick top-scored question (with some randomness to avoid repetition)
+```
+
+- [ ] Build recommendation engine in `src/lib/recommender.ts`
+- [ ] Enable "Focus on weak areas" mode on setup page
+- [ ] After feedback: "Based on your results, try this next:" suggestion card
+- [ ] API route: GET /api/recommend?userId=...&type=coding&level=E4
+
+#### Step 7E: Progress Dashboard (registered users)
+**Goal**: Show meaningful progress over time.
+
+- [ ] Per-interview-type score trends (line chart over time)
+- [ ] Dimension heatmap: which areas are strong vs weak
+- [ ] Question coverage: "You've attempted 12/20 coding questions"
+- [ ] Topic coverage: "Strong: arrays, trees. Weak: DP, graphs"
+- [ ] Streak tracker: "3 interviews this week"
+- [ ] Level readiness: "Your coding scores suggest E4 readiness (72 avg).
+      E5 bar is ~80. Focus on: dynamic programming, system optimization."
+- [ ] Comparison (optional): "Your avg: 72. E4 candidates avg: 68."
+
+#### Step 7F: Study Plan Generator
+**Goal**: Turn data into a concrete practice plan.
+
+After enough data (5+ interviews), generate:
+```
+Your 2-week study plan for Meta E5 SWE:
+
+Week 1:
+  Mon: Coding — Dynamic Programming (your weakest area, score 45)
+  Wed: System Design — "Design a distributed cache" (untried topic)
+  Fri: Behavioral — Leadership story prep (STAR structure needs work)
+
+Week 2:
+  Mon: Coding — Graph algorithms (score 62, room to improve)
+  Wed: System Design — "Design a notification system" (retry, prev score 58)
+  Fri: Mock full loop — 2 coding + 1 SD + 1 behavioral
+```
+
+- [ ] Build study plan generator in `src/lib/study-plan.ts`
+- [ ] Display on dashboard with calendar view
+- [ ] "Start next session" button links directly to the recommended interview
+
+### Migration Path (localStorage → Database)
+
+To avoid breaking existing guest users:
+1. Guests continue using localStorage (current behavior)
+2. On sign-up/login, check localStorage for existing sessions
+3. Migrate to database with a one-time import
+4. After migration, clear localStorage flag
+5. Registered users always read/write from database
+6. Guest sessions have `user_id = NULL` — on sign-up, backfill
+
+### Cost Considerations
+
+| Component | Free Tier | Cost After |
+|-----------|-----------|------------|
+| Supabase (DB + Auth) | 500MB, 50K MAU | $25/mo |
+| Google Gemini (AI) | Generous | ~$0.01/interview |
+| Google Cloud TTS (WaveNet) | 1M chars/mo | $16/1M chars |
+| Vercel (hosting) | 100GB bandwidth | $20/mo |
+| **Total for ~1000 users/mo** | | **~$25-50/mo** |
+
+### Monetization Options (future)
+
+| Model | Description |
+|-------|-------------|
+| **Freemium** | 3 interviews/month free, unlimited for $9.99/mo |
+| **Pay-per-interview** | First interview free, then $1.99 each |
+| **Subscription** | $14.99/mo unlimited, includes study plans |
+| **Enterprise** | Team pricing for bootcamps/universities |
+
+---
+
 ## Open Questions
 
 1. **Code execution**: Do we sandbox code execution in-browser (WebContainer)
